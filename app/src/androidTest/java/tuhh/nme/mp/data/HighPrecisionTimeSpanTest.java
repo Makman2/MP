@@ -170,6 +170,35 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     }
 
     /**
+     * Tests the multiplication function multiply().
+     */
+    public void testMultiplication()
+    {
+        HighPrecisionTimeSpan uut;
+        HighPrecisionTimeSpan result;
+
+        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(20));
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(0));
+        assertEquals(result.getTime().longValue(), 0L);
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(1));
+        assertEquals(result.getTime().longValue(), 20L);
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(2));
+        assertEquals(result.getTime().longValue(), 40L);
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(3));
+        assertEquals(result.getTime().longValue(), 60L);
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(10));
+        assertEquals(result.getTime().longValue(), 200L);
+
+        result = uut.multiply(BigIntegerConverter.toBigInteger(1777));
+        assertEquals(result.getTime().longValue(), 35540L);
+    }
+
+    /**
      * Tests the final zero field.
      */
     public void testZeroField()

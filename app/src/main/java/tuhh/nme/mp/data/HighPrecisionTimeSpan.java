@@ -130,6 +130,17 @@ public class HighPrecisionTimeSpan
     }
 
     /**
+     * Multiplies a BigInteger with this HighPrecisionTimeSpan.
+     *
+     * @param factor The factor to multiply with.
+     * @return       A HighPrecisionTimeSpan that represents the product.
+     */
+    public HighPrecisionTimeSpan multiply(BigInteger factor)
+    {
+        return new HighPrecisionTimeSpan(m_Nanoseconds.multiply(factor));
+    }
+
+    /**
      * Checks whether the stored time spans of this and the other object do equal.
      *
      * @param o The other object to check.
