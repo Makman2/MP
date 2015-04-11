@@ -119,6 +119,17 @@ public class HighPrecisionTimeSpan
     }
 
     /**
+     * Subtracts an HighPrecisionTimeSpan from this HighPrecisionTimeSpan.
+     *
+     * @param difference The HighPrecisionTimeSpan to subtract.
+     * @return           A HighPrecisionTimeSpan that represents the difference.
+     */
+    public HighPrecisionTimeSpan subtract(HighPrecisionTimeSpan difference)
+    {
+        return new HighPrecisionTimeSpan(m_Nanoseconds.subtract(difference.getTime()));
+    }
+
+    /**
      * Checks whether the stored time spans of this and the other object do equal.
      *
      * @param o The other object to check.

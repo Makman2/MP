@@ -118,6 +118,40 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     }
 
     /**
+     * Tests the subtraction function subtract().
+     */
+    public void testSubtract()
+    {
+        HighPrecisionTimeSpan uut;
+        HighPrecisionTimeSpan result;
+
+        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
+
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(0L));
+        assertEquals(result.getTime().longValue(), 21700L);
+
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(1L));
+        assertEquals(result.getTime().longValue(), 21699L);
+
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(5L));
+        assertEquals(result.getTime().longValue(), 21695L);
+
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(11772L));
+        assertEquals(result.getTime().longValue(), 9928L);
+
+        // Negative subtraction.
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-5L));
+        assertEquals(result.getTime().longValue(), 21705L);
+
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-712L));
+        assertEquals(result.getTime().longValue(), 22412L);
+
+        // Edge case: Go beyond zero.
+        result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(33000L));
+        assertEquals(result.getTime().longValue(), -11300);
+    }
+
+    /**
      * Tests the equal() function.
      */
     public void testEqual()
