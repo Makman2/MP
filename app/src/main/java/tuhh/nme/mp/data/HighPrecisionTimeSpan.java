@@ -108,6 +108,17 @@ public class HighPrecisionTimeSpan
     }
 
     /**
+     * Adds an HighPrecisionTimeSpan to this HighPrecisionTimeSpan.
+     *
+     * @param sum The HighPrecisionTimeSpan to add.
+     * @return    A HighPrecisionTimeSpan that represents the sum.
+     */
+    public HighPrecisionTimeSpan add(HighPrecisionTimeSpan sum)
+    {
+        return new HighPrecisionTimeSpan(m_Nanoseconds.add(sum.getTime()));
+    }
+
+    /**
      * Checks whether the stored time spans of this and the other object do equal.
      *
      * @param o The other object to check.

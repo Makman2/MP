@@ -2,6 +2,8 @@ package tuhh.nme.mp.data;
 
 import android.test.AndroidTestCase;
 
+import java.math.BigInteger;
+
 public class HighPrecisionTimeSpanTest extends AndroidTestCase
 {
     /**
@@ -78,6 +80,41 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         assertEquals(uut.getTime().longValue(), 11L * 1000L * 1000L * 1000L * 60L * 60L);
         uut = HighPrecisionTimeSpan.fromHours(9918L);
         assertEquals(uut.getTime().longValue(), 9918L * 1000L * 1000L * 1000L * 60L * 60L);
+    }
+
+    // Test the addition function add().
+    public void testAdd()
+    {
+        HighPrecisionTimeSpan uut;
+        HighPrecisionTimeSpan result;
+
+        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(0L));
+        assertEquals(result.getTime().longValue(), 21700L);
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(1L));
+        assertEquals(result.getTime().longValue(), 21701L);
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(5L));
+        assertEquals(result.getTime().longValue(), 21705L);
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(11772L));
+        assertEquals(result.getTime().longValue(), 33472L);
+
+        // Negative addition.
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-5L));
+        assertEquals(result.getTime().longValue(), 21695L);
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-712L));
+        assertEquals(result.getTime().longValue(), 20988L);
+
+        // Edge case: Go beyond long capacity.
+        BigInteger comparison = BigIntegerConverter.toBigInteger(Long.MAX_VALUE);
+        comparison = comparison.add(BigIntegerConverter.toBigInteger(21700));
+
+        result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(Long.MAX_VALUE));
+        assertEquals(result.getTime().compareTo(comparison), 0);
     }
 
     /**
