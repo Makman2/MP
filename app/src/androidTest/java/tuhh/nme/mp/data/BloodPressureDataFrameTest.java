@@ -122,9 +122,9 @@ public class BloodPressureDataFrameTest extends AndroidTestCase
         boolean thrown = false;
         try
         {
-            uut = new BloodPressureDataFrame("1290,1290;Invalid",
-                                             HighPrecisionDate.epoch,
-                                             HighPrecisionTimeSpan.fromNanoseconds(1));
+            new BloodPressureDataFrame("1290,1290;Invalid",
+                                       HighPrecisionDate.epoch,
+                                       HighPrecisionTimeSpan.fromNanoseconds(1));
         }
         catch (NumberFormatException ex)
         {
