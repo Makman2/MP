@@ -4,14 +4,14 @@ import android.test.AndroidTestCase;
 
 import java.util.ArrayList;
 
-public class PressureDataFrameTest extends AndroidTestCase
+public class BloodPressureDataFrameTest extends AndroidTestCase
 {
     /**
      * Tests the interval constructor that associates dates with the given data list.
      */
     public void testAutoIntervalConstructor()
     {
-        PressureDataFrame uut;
+        BloodPressureDataFrame uut;
 
         ArrayList<Float> testdata = new ArrayList<>();
         testdata.add(0.0f);
@@ -22,9 +22,9 @@ public class PressureDataFrameTest extends AndroidTestCase
         testdata.add(-129.7f);
 
         // Test relatively simple behaviour.
-        uut = new PressureDataFrame(testdata,
-                                    HighPrecisionDate.epoch,
-                                    HighPrecisionTimeSpan.fromMilliseconds(1));
+        uut = new BloodPressureDataFrame(testdata,
+                                         HighPrecisionDate.epoch,
+                                         HighPrecisionTimeSpan.fromMilliseconds(1));
 
         ArrayList<DataPoint<HighPrecisionDate, Float>> comparison = new ArrayList<>();
         comparison.add(new DataPoint<>(HighPrecisionDate.epoch, 0.0f));
@@ -43,9 +43,9 @@ public class PressureDataFrameTest extends AndroidTestCase
         assertEquals(comparison, uut.getData());
 
         // Test a bit more complicated.
-        uut = new PressureDataFrame(testdata,
-                                    HighPrecisionDate.fromMinutes(2),
-                                    HighPrecisionTimeSpan.fromSeconds(12));
+        uut = new BloodPressureDataFrame(testdata,
+                                         HighPrecisionDate.fromMinutes(2),
+                                         HighPrecisionTimeSpan.fromSeconds(12));
 
         comparison.clear();
         HighPrecisionDate reference = HighPrecisionDate.fromMinutes(2);
@@ -66,7 +66,7 @@ public class PressureDataFrameTest extends AndroidTestCase
      */
     public void testManualConstructor()
     {
-        PressureDataFrame uut;
+        BloodPressureDataFrame uut;
 
         ArrayList<DataPoint<HighPrecisionDate, Float>> testdata = new ArrayList<>();
         testdata.add(new DataPoint<>(HighPrecisionDate.fromMinutes(12), 109.0f));
@@ -78,7 +78,7 @@ public class PressureDataFrameTest extends AndroidTestCase
         testdata.add(new DataPoint<>(HighPrecisionDate.fromMicroseconds(555), 512992961.0f));
         testdata.add(new DataPoint<>(HighPrecisionDate.fromMicroseconds(555), -2139871.0f));
 
-        uut = new PressureDataFrame(testdata);
+        uut = new BloodPressureDataFrame(testdata);
         assertEquals(testdata, uut.getData());
     }
 
@@ -88,10 +88,10 @@ public class PressureDataFrameTest extends AndroidTestCase
      */
     public void testRawDataConstructor()
     {
-        PressureDataFrame uut;
-        uut = new PressureDataFrame("0,50,30.7,-12.81,33.882,10001221312",
-                                    HighPrecisionDate.epoch,
-                                    HighPrecisionTimeSpan.fromMilliseconds(7));
+        BloodPressureDataFrame uut;
+        uut = new BloodPressureDataFrame("0,50,30.7,-12.81,33.882,10001221312",
+                                         HighPrecisionDate.epoch,
+                                         HighPrecisionTimeSpan.fromMilliseconds(7));
 
 
         ArrayList<DataPoint<HighPrecisionDate, Float>> comparison = new ArrayList<>();
@@ -110,9 +110,9 @@ public class PressureDataFrameTest extends AndroidTestCase
         assertEquals(comparison, uut.getData());
 
         // Test empty.
-        uut = new PressureDataFrame("",
-                                    HighPrecisionDate.epoch,
-                                    HighPrecisionTimeSpan.fromNanoseconds(1));
+        uut = new BloodPressureDataFrame("",
+                                         HighPrecisionDate.epoch,
+                                         HighPrecisionTimeSpan.fromNanoseconds(1));
 
         comparison.clear();
 
@@ -122,15 +122,14 @@ public class PressureDataFrameTest extends AndroidTestCase
         boolean thrown = false;
         try
         {
-            uut = new PressureDataFrame("1290,1290;Invalid",
-                                        HighPrecisionDate.epoch,
-                                        HighPrecisionTimeSpan.fromNanoseconds(1));
+            uut = new BloodPressureDataFrame("1290,1290;Invalid",
+                                             HighPrecisionDate.epoch,
+                                             HighPrecisionTimeSpan.fromNanoseconds(1));
         }
         catch (NumberFormatException ex)
         {
             thrown = true;
         }
         assertTrue(thrown);
-
     }
 }

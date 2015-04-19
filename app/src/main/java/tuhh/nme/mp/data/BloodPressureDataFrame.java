@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A data frame that manages the incoming pressure data from remote module.
  */
-public class PressureDataFrame extends HighPrecisionDatedDataFrame<Float>
+public class BloodPressureDataFrame extends HighPrecisionDatedDataFrame<Float>
 {
     /**
      * Instantiates a new PressureDataFrame class and associates the given data with
@@ -19,9 +19,9 @@ public class PressureDataFrame extends HighPrecisionDatedDataFrame<Float>
      *             the next points.
      * @param step The time difference between each data point.
      */
-    public PressureDataFrame(Collection<Float> data,
-                             HighPrecisionDate time,
-                             HighPrecisionTimeSpan step)
+    public BloodPressureDataFrame(Collection<Float> data,
+                                  HighPrecisionDate time,
+                                  HighPrecisionTimeSpan step)
     {
         super(data, time, step);
     }
@@ -31,7 +31,7 @@ public class PressureDataFrame extends HighPrecisionDatedDataFrame<Float>
      *
      * @param data A collection of data to initialize with.
      */
-    public PressureDataFrame(Collection<DataPoint<HighPrecisionDate, Float>> data)
+    public BloodPressureDataFrame(Collection<DataPoint<HighPrecisionDate, Float>> data)
     {
         super(data);
     }
@@ -46,7 +46,7 @@ public class PressureDataFrame extends HighPrecisionDatedDataFrame<Float>
      * @param step                   The time difference between each data point.
      * @throws NumberFormatException Thrown when the raw data is corrupted.
      */
-    public PressureDataFrame(String raw, HighPrecisionDate time, HighPrecisionTimeSpan step)
+    public BloodPressureDataFrame(String raw, HighPrecisionDate time, HighPrecisionTimeSpan step)
     throws NumberFormatException
     {
         super(parseRawData(raw), time, step);
