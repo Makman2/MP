@@ -167,7 +167,7 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         assertEquals(uut, uut2);
 
         uut2 = HighPrecisionTimeSpan.fromHours(1);
-        assertNotSame(uut, uut2);
+        assertFalse(uut.equals(uut2));
     }
 
     /**
