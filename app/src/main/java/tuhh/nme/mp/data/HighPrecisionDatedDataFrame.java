@@ -2,7 +2,6 @@ package tuhh.nme.mp.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,9 +34,7 @@ public class HighPrecisionDatedDataFrame<T> extends DataFrame<HighPrecisionDate,
      */
     public HighPrecisionDatedDataFrame(Collection<DataPoint<HighPrecisionDate, T>> data)
     {
-        // Implementing ArrayList as list type.
-        m_Data = new ArrayList<>();
-        m_Data.addAll(data);
+        super(data);
     }
 
     /**
@@ -66,19 +63,4 @@ public class HighPrecisionDatedDataFrame<T> extends DataFrame<HighPrecisionDate,
 
         return list;
     }
-
-    /**
-     * Returns an unmodifiable list reference to the complete data content.
-     *
-     * @return The reference to the data stored in this instance.
-     */
-    public List<DataPoint<HighPrecisionDate, T>> getData()
-    {
-        return Collections.unmodifiableList(m_Data);
-    }
-
-    /**
-     * Stores the actual data.
-     */
-    private List<DataPoint<HighPrecisionDate, T>> m_Data;
 }
