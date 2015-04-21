@@ -15,14 +15,14 @@ public class HighPrecisionDateTest extends AndroidTestCase
         HighPrecisionDate uut;
 
         uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(0));
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(1002));
-        assertEquals(uut.getTime().longValue(), 1002L);
+        assertEquals(1002L, uut.getTime().longValue());
 
         uut = new HighPrecisionDate(new Date(1900L));
-        assertEquals(uut.getTime().longValue(), 1900L * 1000L * 1000L);
+        assertEquals(1900L * 1000L * 1000L, uut.getTime().longValue());
         uut = new HighPrecisionDate(new Date(10291092039L));
-        assertEquals(uut.getTime().longValue(), 10291092039L * 1000L * 1000L);
+        assertEquals(10291092039L * 1000L * 1000L, uut.getTime().longValue());
 
         HighPrecisionDate uut2 = new HighPrecisionDate(uut);
         assertEquals(uut2.getTime(), uut.getTime());
@@ -38,51 +38,51 @@ public class HighPrecisionDateTest extends AndroidTestCase
 
         // From nanoseconds.
         uut = HighPrecisionDate.fromNanoseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromNanoseconds(100L);
-        assertEquals(uut.getTime().longValue(), 100L);
+        assertEquals(100L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromNanoseconds(82710L);
-        assertEquals(uut.getTime().longValue(), 82710L);
+        assertEquals(82710L, uut.getTime().longValue());
 
         // From microseconds.
         uut = HighPrecisionDate.fromMicroseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMicroseconds(217L);
-        assertEquals(uut.getTime().longValue(), 217L * 1000L);
+        assertEquals(217L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMicroseconds(777L);
-        assertEquals(uut.getTime().longValue(), 777L * 1000L);
+        assertEquals(777L * 1000L, uut.getTime().longValue());
 
         // From milliseconds.
         uut = HighPrecisionDate.fromMilliseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMilliseconds(45L);
-        assertEquals(uut.getTime().longValue(), 45L * 1000L * 1000L);
+        assertEquals(45L * 1000L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMilliseconds(918);
-        assertEquals(uut.getTime().longValue(), 918L * 1000L * 1000L);
+        assertEquals(918L * 1000L * 1000L, uut.getTime().longValue());
 
         // From seconds.
         uut = HighPrecisionDate.fromSeconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromSeconds(1111L);
-        assertEquals(uut.getTime().longValue(), 1111L * 1000L * 1000L * 1000L);
+        assertEquals(1111L * 1000L * 1000L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromSeconds(217);
-        assertEquals(uut.getTime().longValue(), 217L * 1000L * 1000L * 1000L);
+        assertEquals(217L * 1000L * 1000L * 1000L, uut.getTime().longValue());
 
         // From minutes.
         uut = HighPrecisionDate.fromMinutes(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMinutes(918L);
-        assertEquals(uut.getTime().longValue(), 918L * 1000L * 1000L * 1000L * 60L);
+        assertEquals(918L * 1000L * 1000L * 1000L * 60L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromMinutes(31);
-        assertEquals(uut.getTime().longValue(), 31L * 1000L * 1000L * 1000L * 60L);
+        assertEquals(31L * 1000L * 1000L * 1000L * 60L, uut.getTime().longValue());
 
         // From hours.
         uut = HighPrecisionDate.fromHours(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromHours(11L);
-        assertEquals(uut.getTime().longValue(), 11L * 1000L * 1000L * 1000L * 60L * 60L);
+        assertEquals(11L * 1000L * 1000L * 1000L * 60L * 60L, uut.getTime().longValue());
         uut = HighPrecisionDate.fromHours(9918L);
-        assertEquals(uut.getTime().longValue(), 9918L * 1000L * 1000L * 1000L * 60L * 60L);
+        assertEquals(9918L * 1000L * 1000L * 1000L * 60L * 60L, uut.getTime().longValue());
     }
 
     /**

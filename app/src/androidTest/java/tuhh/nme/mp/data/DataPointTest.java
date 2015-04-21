@@ -12,20 +12,20 @@ public class DataPointTest extends AndroidTestCase
         DataPoint<Integer, Integer> uut;
 
         uut = new DataPoint<>();
-        assertEquals(uut.X, null);
-        assertEquals(uut.Y, null);
+        assertEquals(null, uut.X);
+        assertEquals(null, uut.Y);
 
         uut = new DataPoint<>(1, 5);
-        assertEquals(uut.X.intValue(), 1);
-        assertEquals(uut.Y.intValue(), 5);
+        assertEquals(1, uut.X.intValue());
+        assertEquals(5, uut.Y.intValue());
 
         uut = new DataPoint<>(1000, 1200);
-        assertEquals(uut.X.intValue(), 1000);
-        assertEquals(uut.Y.intValue(), 1200);
+        assertEquals(1000, uut.X.intValue());
+        assertEquals(1200, uut.Y.intValue());
 
         uut = new DataPoint<>(uut);
-        assertEquals(uut.X.intValue(), 1000);
-        assertEquals(uut.Y.intValue(), 1200);
+        assertEquals(1000, uut.X.intValue());
+        assertEquals(1200, uut.Y.intValue());
     }
 
     /**
@@ -36,18 +36,18 @@ public class DataPointTest extends AndroidTestCase
         DataPoint<Integer, Integer> uut;
 
         uut = new DataPoint<>();
-        assertEquals(uut.X, null);
-        assertEquals(uut.Y, null);
+        assertEquals(null, uut.X);
+        assertEquals(null, uut.Y);
 
         uut.X = 100;
         uut.Y = 4512;
-        assertEquals(uut.X.intValue(), 100);
-        assertEquals(uut.Y.intValue(), 4512);
+        assertEquals(100, uut.X.intValue());
+        assertEquals(4512, uut.Y.intValue());
 
         uut.X = 0;
         uut.Y = 111;
-        assertEquals(uut.X.intValue(), 0);
-        assertEquals(uut.Y.intValue(), 111);
+        assertEquals(0, uut.X.intValue());
+        assertEquals(111, uut.Y.intValue());
     }
 
     /**
@@ -62,15 +62,15 @@ public class DataPointTest extends AndroidTestCase
         assertEquals(uut, uut);
 
         test_against = new DataPoint<>(3, 4);
-        assertEquals(uut, test_against);
+        assertEquals(test_against, uut);
 
         test_against = new DataPoint<>(3, 199);
-        assertTrue(!uut.equals(test_against));
+        assertFalse(uut.equals(test_against));
 
         test_against = new DataPoint<>(777, 4);
-        assertTrue(!uut.equals(test_against));
+        assertFalse(uut.equals(test_against));
 
         test_against = new DataPoint<>(777, 199);
-        assertTrue(!uut.equals(test_against));
+        assertFalse(uut.equals(test_against));
     }
 }

@@ -12,7 +12,7 @@ public class BigIntegerConverterTest extends AndroidTestCase
         for (long testvalue : testvalues)
         {
             BigInteger bigint = BigIntegerConverter.toBigInteger(testvalue);
-            assertEquals(bigint.longValue(), testvalue);
+            assertEquals(testvalue, bigint.longValue());
         }
     }
 
@@ -22,7 +22,7 @@ public class BigIntegerConverterTest extends AndroidTestCase
         for (int testvalue : testvalues)
         {
             BigInteger bigint = BigIntegerConverter.toBigInteger(testvalue);
-            assertEquals(bigint.intValue(), testvalue);
+            assertEquals(testvalue, bigint.intValue());
         }
     }
 
@@ -32,7 +32,7 @@ public class BigIntegerConverterTest extends AndroidTestCase
         for (short testvalue : testvalues)
         {
             BigInteger bigint = BigIntegerConverter.toBigInteger(testvalue);
-            assertEquals(bigint.shortValue(), testvalue);
+            assertEquals(testvalue, bigint.shortValue());
         }
     }
 
@@ -42,7 +42,7 @@ public class BigIntegerConverterTest extends AndroidTestCase
         for (byte testvalue : testvalues)
         {
             BigInteger bigint = BigIntegerConverter.toBigInteger(testvalue);
-            assertEquals(bigint.byteValue(), testvalue);
+            assertEquals(testvalue, bigint.byteValue());
         }
     }
 }

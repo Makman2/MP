@@ -14,13 +14,13 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     {
         HighPrecisionTimeSpan uut;
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(0));
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(1000));
-        assertEquals(uut.getTime().longValue(), 1000L);
+        assertEquals(1000L, uut.getTime().longValue());
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21987L));
-        assertEquals(uut.getTime().longValue(), 21987L);
+        assertEquals(21987L, uut.getTime().longValue());
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(Long.MAX_VALUE));
-        assertEquals(uut.getTime().longValue(), Long.MAX_VALUE);
+        assertEquals(Long.MAX_VALUE, uut.getTime().longValue());
 
         HighPrecisionTimeSpan uut2 = new HighPrecisionTimeSpan(uut);
         assertEquals(uut.getTime(), uut2.getTime());
@@ -36,51 +36,51 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
 
         // From nanoseconds.
         uut = HighPrecisionTimeSpan.fromNanoseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromNanoseconds(100L);
-        assertEquals(uut.getTime().longValue(), 100L);
+        assertEquals(100L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromNanoseconds(82710L);
-        assertEquals(uut.getTime().longValue(), 82710L);
+        assertEquals(82710L, uut.getTime().longValue());
 
         // From microseconds.
         uut = HighPrecisionTimeSpan.fromMicroseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMicroseconds(217L);
-        assertEquals(uut.getTime().longValue(), 217L * 1000L);
+        assertEquals(217L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMicroseconds(777L);
-        assertEquals(uut.getTime().longValue(), 777L * 1000L);
+        assertEquals(777L * 1000L, uut.getTime().longValue());
 
         // From milliseconds.
         uut = HighPrecisionTimeSpan.fromMilliseconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMilliseconds(45L);
-        assertEquals(uut.getTime().longValue(), 45L * 1000L * 1000L);
+        assertEquals(45L * 1000L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMilliseconds(918);
-        assertEquals(uut.getTime().longValue(), 918L * 1000L * 1000L);
+        assertEquals(918L * 1000L * 1000L, uut.getTime().longValue());
 
         // From seconds.
         uut = HighPrecisionTimeSpan.fromSeconds(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromSeconds(1111L);
-        assertEquals(uut.getTime().longValue(), 1111L * 1000L * 1000L * 1000L);
+        assertEquals(1111L * 1000L * 1000L * 1000L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromSeconds(217);
-        assertEquals(uut.getTime().longValue(), 217L * 1000L * 1000L * 1000L);
+        assertEquals(217L * 1000L * 1000L * 1000L, uut.getTime().longValue());
 
         // From minutes.
         uut = HighPrecisionTimeSpan.fromMinutes(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMinutes(918L);
-        assertEquals(uut.getTime().longValue(), 918L * 1000L * 1000L * 1000L * 60L);
+        assertEquals(918L * 1000L * 1000L * 1000L * 60L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromMinutes(31);
-        assertEquals(uut.getTime().longValue(), 31L * 1000L * 1000L * 1000L * 60L);
+        assertEquals(31L * 1000L * 1000L * 1000L * 60L, uut.getTime().longValue());
 
         // From hours.
         uut = HighPrecisionTimeSpan.fromHours(0L);
-        assertEquals(uut.getTime().longValue(), 0L);
+        assertEquals(0L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromHours(11L);
-        assertEquals(uut.getTime().longValue(), 11L * 1000L * 1000L * 1000L * 60L * 60L);
+        assertEquals(11L * 1000L * 1000L * 1000L * 60L * 60L, uut.getTime().longValue());
         uut = HighPrecisionTimeSpan.fromHours(9918L);
-        assertEquals(uut.getTime().longValue(), 9918L * 1000L * 1000L * 1000L * 60L * 60L);
+        assertEquals(9918L * 1000L * 1000L * 1000L * 60L * 60L, uut.getTime().longValue());
     }
 
     // Test the addition function add().
@@ -92,30 +92,30 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(0L));
-        assertEquals(result.getTime().longValue(), 21700L);
+        assertEquals(21700L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(1L));
-        assertEquals(result.getTime().longValue(), 21701L);
+        assertEquals(21701L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(5L));
-        assertEquals(result.getTime().longValue(), 21705L);
+        assertEquals(21705L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(11772L));
-        assertEquals(result.getTime().longValue(), 33472L);
+        assertEquals(33472L, result.getTime().longValue());
 
         // Negative addition.
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-5L));
-        assertEquals(result.getTime().longValue(), 21695L);
+        assertEquals(21695L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-712L));
-        assertEquals(result.getTime().longValue(), 20988L);
+        assertEquals(20988L, result.getTime().longValue());
 
         // Edge case: Go beyond long capacity.
         BigInteger comparison = BigIntegerConverter.toBigInteger(Long.MAX_VALUE);
         comparison = comparison.add(BigIntegerConverter.toBigInteger(21700));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(Long.MAX_VALUE));
-        assertEquals(result.getTime().compareTo(comparison), 0);
+        assertEquals(0, result.getTime().compareTo(comparison));
     }
 
     /**
@@ -129,27 +129,27 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(0L));
-        assertEquals(result.getTime().longValue(), 21700L);
+        assertEquals(21700L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(1L));
-        assertEquals(result.getTime().longValue(), 21699L);
+        assertEquals(21699L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(5L));
-        assertEquals(result.getTime().longValue(), 21695L);
+        assertEquals(21695L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(11772L));
-        assertEquals(result.getTime().longValue(), 9928L);
+        assertEquals(9928L, result.getTime().longValue());
 
         // Negative subtraction.
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-5L));
-        assertEquals(result.getTime().longValue(), 21705L);
+        assertEquals(21705L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-712L));
-        assertEquals(result.getTime().longValue(), 22412L);
+        assertEquals(22412L, result.getTime().longValue());
 
         // Edge case: Go beyond zero.
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(33000L));
-        assertEquals(result.getTime().longValue(), -11300);
+        assertEquals(-11300, result.getTime().longValue());
     }
 
     /**
@@ -181,22 +181,22 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(20));
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(0));
-        assertEquals(result.getTime().longValue(), 0L);
+        assertEquals(0L, result.getTime().longValue());
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(1));
-        assertEquals(result.getTime().longValue(), 20L);
+        assertEquals(20L, result.getTime().longValue());
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(2));
-        assertEquals(result.getTime().longValue(), 40L);
+        assertEquals(40L, result.getTime().longValue());
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(3));
-        assertEquals(result.getTime().longValue(), 60L);
+        assertEquals(60L, result.getTime().longValue());
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(10));
-        assertEquals(result.getTime().longValue(), 200L);
+        assertEquals(200L, result.getTime().longValue());
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(1777));
-        assertEquals(result.getTime().longValue(), 35540L);
+        assertEquals(35540L, result.getTime().longValue());
     }
 
     /**
@@ -228,6 +228,6 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     public void testZeroField()
     {
         // The actual value.
-        assertEquals(HighPrecisionTimeSpan.zero.getTime().longValue(), 0);
+        assertEquals(0, HighPrecisionTimeSpan.zero.getTime().longValue());
     }
 }
