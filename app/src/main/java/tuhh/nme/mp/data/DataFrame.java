@@ -47,6 +47,24 @@ public class DataFrame<X, Y> implements Iterable<DataPoint<X, Y>>
     }
 
     /**
+     * Returns whether this object equals another.
+     *
+     * @param object The object that should equal.
+     * @return       true if equal, false if not.
+     */
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == null) return false;
+        if (object == this) return true;
+        if (!(object instanceof DataFrame)) return false;
+
+        DataFrame casted = (DataFrame)object;
+
+        return this.getData().equals(casted.getData());
+    }
+
+    /**
      * The list that stores the DataPoint's.
      */
     private ArrayList<DataPoint<X, Y>> m_List;

@@ -47,4 +47,36 @@ public class DataFrameTest extends AndroidTestCase
         assertEquals(data.get(1), it.next());
         assertEquals(data.get(2), it.next());
     }
+
+    /**
+     * Tests the equals() function.
+     */
+    public void testEquals()
+    {
+        DataFrame<Integer, Integer> uut;
+
+        ArrayList<DataPoint<Integer, Integer>> data = new ArrayList<>();
+        data.add(new DataPoint<>(0, 0));
+        data.add(new DataPoint<>(10, 10));
+        data.add(new DataPoint<>(7, 145));
+        data.add(new DataPoint<>(-3, -88));
+
+        uut = new DataFrame<>(data);
+
+        ArrayList<DataPoint<Integer, Integer>> data2 = new ArrayList<>();
+
+        DataFrame<Integer, Integer> uut2 = new DataFrame<>(data2);
+
+        assertFalse(uut.equals(uut2));
+
+        uut2 = new DataFrame<>(data);
+
+        assertEquals(uut, uut2);
+
+        data2.add(new DataPoint<>(30, 59));
+
+        uut = new DataFrame<>(data2);
+
+        assertFalse(uut.equals(uut2));
+    }
 }
