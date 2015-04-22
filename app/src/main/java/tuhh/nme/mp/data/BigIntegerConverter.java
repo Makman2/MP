@@ -19,9 +19,7 @@ public class BigIntegerConverter
      */
     public static BigInteger toBigInteger(long num)
     {
-        ByteBuffer buf = ByteBuffer.allocate(Long.SIZE / Byte.SIZE);
-        buf.putLong(num);
-        return new BigInteger(buf.array());
+        return BigInteger.valueOf(num);
     }
 
     /**
