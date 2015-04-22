@@ -1,5 +1,6 @@
 package tuhh.nme.mp.data;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -138,6 +139,19 @@ public class HighPrecisionTimeSpan
     public HighPrecisionTimeSpan multiply(BigInteger factor)
     {
         return new HighPrecisionTimeSpan(m_Nanoseconds.multiply(factor));
+    }
+
+    /**
+     * Multiplies a BigDecimal with this HighPrecisionTimeSpan.
+     *
+     * @param factor The factor to multiply with.
+     * @return       A HighPrecisionTimeSpan that represents the product.
+     */
+    public HighPrecisionTimeSpan multiply(BigDecimal factor)
+    {
+        BigDecimal decimal_representation = new BigDecimal(m_Nanoseconds);
+        decimal_representation = decimal_representation.multiply(factor);
+        return new HighPrecisionTimeSpan(decimal_representation.toBigInteger());
     }
 
     /**

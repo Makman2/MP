@@ -2,6 +2,7 @@ package tuhh.nme.mp.data;
 
 import android.test.AndroidTestCase;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class HighPrecisionTimeSpanTest extends AndroidTestCase
@@ -170,7 +171,7 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     }
 
     /**
-     * Tests the multiplication function multiply().
+     * Tests the multiplication function multiply(BigInteger).
      */
     public void testMultiplication()
     {
@@ -196,6 +197,29 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
 
         result = uut.multiply(BigIntegerConverter.toBigInteger(1777));
         assertEquals(result.getTime().longValue(), 35540L);
+    }
+
+    /**
+     * Tests the multiplication function multiply(BigDecimal).
+     */
+    public void testDecimalMultiplication()
+    {
+        HighPrecisionTimeSpan uut;
+        HighPrecisionTimeSpan result;
+
+        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(100));
+
+        result = uut.multiply(BigDecimal.valueOf(0.5));
+        assertEquals(50L, result.getTime().longValue());
+
+        result = uut.multiply(BigDecimal.valueOf(2.0));
+        assertEquals(200L, result.getTime().longValue());
+
+        result = uut.multiply(BigDecimal.valueOf(0.75));
+        assertEquals(75, result.getTime().longValue());
+
+        result = uut.multiply(BigDecimal.valueOf(1001111.57783));
+        assertEquals(100111157, result.getTime().longValue());
     }
 
     /**
