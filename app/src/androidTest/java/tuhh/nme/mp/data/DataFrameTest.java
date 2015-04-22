@@ -3,6 +3,7 @@ package tuhh.nme.mp.data;
 import android.test.AndroidTestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DataFrameTest extends AndroidTestCase
 {
@@ -25,5 +26,25 @@ public class DataFrameTest extends AndroidTestCase
 
         uut = new DataFrame<>(testdata);
         assertEquals(testdata, uut.getData());
+    }
+
+    /**
+     * Tests the iterator() function.
+     */
+    public void testIterator()
+    {
+        DataFrame<Integer, Integer> uut;
+
+        ArrayList<DataPoint<Integer, Integer>> data = new ArrayList<>();
+        data.add(new DataPoint<>(1, 2));
+        data.add(new DataPoint<>(5, 6));
+        data.add(new DataPoint<>(99, -10));
+
+        uut = new DataFrame<>(data);
+
+        Iterator<DataPoint<Integer, Integer>> it = uut.iterator();
+        assertEquals(data.get(0), it.next());
+        assertEquals(data.get(1), it.next());
+        assertEquals(data.get(2), it.next());
     }
 }
