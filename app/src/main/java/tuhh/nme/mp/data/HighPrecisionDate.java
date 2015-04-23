@@ -26,8 +26,7 @@ public class HighPrecisionDate
      */
     public HighPrecisionDate(Date date)
     {
-        this(BigIntegerConverter.toBigInteger(date.getTime())
-                 .multiply(BigIntegerConverter.toBigInteger(1000000)));
+        this(BigInteger.valueOf(date.getTime()).multiply(BigInteger.valueOf(1000000L)));
     }
 
     /**
@@ -47,7 +46,7 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromNanoseconds(long nanoseconds)
     {
-        return new HighPrecisionDate(BigIntegerConverter.toBigInteger(nanoseconds));
+        return new HighPrecisionDate(BigInteger.valueOf(nanoseconds));
     }
 
     /**
@@ -57,8 +56,8 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromMicroseconds(long microseconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000);
-        BigInteger time = BigIntegerConverter.toBigInteger(microseconds);
+        BigInteger factor = BigInteger.valueOf(1000L);
+        BigInteger time = BigInteger.valueOf(microseconds);
         return new HighPrecisionDate(time.multiply(factor));
     }
 
@@ -69,8 +68,8 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromMilliseconds(long milliseconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000000);
-        BigInteger time = BigIntegerConverter.toBigInteger(milliseconds);
+        BigInteger factor = BigInteger.valueOf(1000000L);
+        BigInteger time = BigInteger.valueOf(milliseconds);
         return new HighPrecisionDate(time.multiply(factor));
     }
 
@@ -81,8 +80,8 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromSeconds(long seconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000000000);
-        BigInteger time = BigIntegerConverter.toBigInteger(seconds);
+        BigInteger factor = BigInteger.valueOf(1000000000L);
+        BigInteger time = BigInteger.valueOf(seconds);
         return new HighPrecisionDate(time.multiply(factor));
     }
 
@@ -93,8 +92,8 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromMinutes(long minutes)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(60000000000L);
-        BigInteger time = BigIntegerConverter.toBigInteger(minutes);
+        BigInteger factor = BigInteger.valueOf(60000000000L);
+        BigInteger time = BigInteger.valueOf(minutes);
         return new HighPrecisionDate(time.multiply(factor));
     }
 
@@ -105,8 +104,8 @@ public class HighPrecisionDate
      */
     public static HighPrecisionDate fromHours(long hours)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(3600000000000L);
-        BigInteger time = BigIntegerConverter.toBigInteger(hours);
+        BigInteger factor = BigInteger.valueOf(3600000000000L);
+        BigInteger time = BigInteger.valueOf(hours);
         return new HighPrecisionDate(time.multiply(factor));
     }
 
@@ -129,8 +128,8 @@ public class HighPrecisionDate
      */
     public Date toDate() throws IllegalStateException
     {
-        BigInteger ms = m_Nanoseconds.divide(BigIntegerConverter.toBigInteger(1000000));
-        if (ms.compareTo(BigIntegerConverter.toBigInteger(Long.MAX_VALUE)) == 1)
+        BigInteger ms = m_Nanoseconds.divide(BigInteger.valueOf(1000000L));
+        if (ms.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) == 1)
         {
             throw new IllegalStateException("The current HighPrecisionDate is not convertible " +
                                             "into a Date since it exceeds its capacity limit.");

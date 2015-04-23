@@ -13,13 +13,13 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
     public void testConstruction()
     {
         HighPrecisionTimeSpan uut;
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(0));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(0L));
         assertEquals(0L, uut.getTime().longValue());
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(1000));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(1000L));
         assertEquals(1000L, uut.getTime().longValue());
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21987L));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(21987L));
         assertEquals(21987L, uut.getTime().longValue());
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(Long.MAX_VALUE));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(Long.MAX_VALUE));
         assertEquals(Long.MAX_VALUE, uut.getTime().longValue());
 
         HighPrecisionTimeSpan uut2 = new HighPrecisionTimeSpan(uut);
@@ -89,7 +89,7 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         HighPrecisionTimeSpan uut;
         HighPrecisionTimeSpan result;
 
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(0L));
         assertEquals(21700L, result.getTime().longValue());
@@ -111,8 +111,8 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         assertEquals(20988L, result.getTime().longValue());
 
         // Edge case: Go beyond long capacity.
-        BigInteger comparison = BigIntegerConverter.toBigInteger(Long.MAX_VALUE);
-        comparison = comparison.add(BigIntegerConverter.toBigInteger(21700));
+        BigInteger comparison = BigInteger.valueOf(Long.MAX_VALUE);
+        comparison = comparison.add(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(Long.MAX_VALUE));
         assertEquals(0, result.getTime().compareTo(comparison));
@@ -126,7 +126,7 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         HighPrecisionTimeSpan uut;
         HighPrecisionTimeSpan result;
 
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(21700));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(21700L));
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(0L));
         assertEquals(21700L, result.getTime().longValue());
@@ -178,24 +178,24 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         HighPrecisionTimeSpan uut;
         HighPrecisionTimeSpan result;
 
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(20));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(20L));
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(0));
+        result = uut.multiply(BigInteger.valueOf(0L));
         assertEquals(0L, result.getTime().longValue());
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(1));
+        result = uut.multiply(BigInteger.valueOf(1L));
         assertEquals(20L, result.getTime().longValue());
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(2));
+        result = uut.multiply(BigInteger.valueOf(2L));
         assertEquals(40L, result.getTime().longValue());
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(3));
+        result = uut.multiply(BigInteger.valueOf(3L));
         assertEquals(60L, result.getTime().longValue());
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(10));
+        result = uut.multiply(BigInteger.valueOf(10L));
         assertEquals(200L, result.getTime().longValue());
 
-        result = uut.multiply(BigIntegerConverter.toBigInteger(1777));
+        result = uut.multiply(BigInteger.valueOf(1777L));
         assertEquals(35540L, result.getTime().longValue());
     }
 
@@ -207,7 +207,7 @@ public class HighPrecisionTimeSpanTest extends AndroidTestCase
         HighPrecisionTimeSpan uut;
         HighPrecisionTimeSpan result;
 
-        uut = new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(100));
+        uut = new HighPrecisionTimeSpan(BigInteger.valueOf(100L));
 
         result = uut.multiply(BigDecimal.valueOf(0.5));
         assertEquals(50L, result.getTime().longValue());

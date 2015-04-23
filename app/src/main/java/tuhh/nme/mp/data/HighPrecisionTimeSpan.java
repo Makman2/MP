@@ -35,7 +35,7 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromNanoseconds(long nanoseconds)
     {
-        return new HighPrecisionTimeSpan(BigIntegerConverter.toBigInteger(nanoseconds));
+        return new HighPrecisionTimeSpan(BigInteger.valueOf(nanoseconds));
     }
 
     /**
@@ -45,8 +45,8 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromMicroseconds(long microseconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000);
-        BigInteger time = BigIntegerConverter.toBigInteger(microseconds);
+        BigInteger factor = BigInteger.valueOf(1000L);
+        BigInteger time = BigInteger.valueOf(microseconds);
         return new HighPrecisionTimeSpan(time.multiply(factor));
     }
 
@@ -57,8 +57,8 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromMilliseconds(long milliseconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000000);
-        BigInteger time = BigIntegerConverter.toBigInteger(milliseconds);
+        BigInteger factor = BigInteger.valueOf(1000000L);
+        BigInteger time = BigInteger.valueOf(milliseconds);
         return new HighPrecisionTimeSpan(time.multiply(factor));
     }
 
@@ -69,8 +69,8 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromSeconds(long seconds)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(1000000000);
-        BigInteger time = BigIntegerConverter.toBigInteger(seconds);
+        BigInteger factor = BigInteger.valueOf(1000000000L);
+        BigInteger time = BigInteger.valueOf(seconds);
         return new HighPrecisionTimeSpan(time.multiply(factor));
     }
 
@@ -81,8 +81,8 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromMinutes(long minutes)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(60000000000L);
-        BigInteger time = BigIntegerConverter.toBigInteger(minutes);
+        BigInteger factor = BigInteger.valueOf(60000000000L);
+        BigInteger time = BigInteger.valueOf(minutes);
         return new HighPrecisionTimeSpan(time.multiply(factor));
     }
 
@@ -93,8 +93,8 @@ public class HighPrecisionTimeSpan
      */
     public static HighPrecisionTimeSpan fromHours(long hours)
     {
-        BigInteger factor = BigIntegerConverter.toBigInteger(3600000000000L);
-        BigInteger time = BigIntegerConverter.toBigInteger(hours);
+        BigInteger factor = BigInteger.valueOf(3600000000000L);
+        BigInteger time = BigInteger.valueOf(hours);
         return new HighPrecisionTimeSpan(time.multiply(factor));
     }
 

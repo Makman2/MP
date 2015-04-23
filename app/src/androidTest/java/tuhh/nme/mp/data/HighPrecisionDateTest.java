@@ -14,9 +14,9 @@ public class HighPrecisionDateTest extends AndroidTestCase
     {
         HighPrecisionDate uut;
 
-        uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(0));
+        uut = new HighPrecisionDate(BigInteger.valueOf(0L));
         assertEquals(0L, uut.getTime().longValue());
-        uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(1002));
+        uut = new HighPrecisionDate(BigInteger.valueOf(1002L));
         assertEquals(1002L, uut.getTime().longValue());
 
         uut = new HighPrecisionDate(new Date(1900L));
@@ -138,7 +138,7 @@ public class HighPrecisionDateTest extends AndroidTestCase
         HighPrecisionDate uut;
         HighPrecisionDate result;
 
-        uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(21700));
+        uut = new HighPrecisionDate(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(0L));
         assertEquals(result.getTime().longValue(), 21700L);
@@ -160,8 +160,8 @@ public class HighPrecisionDateTest extends AndroidTestCase
         assertEquals(result.getTime().longValue(), 20988L);
 
         // Edge case: Go beyond long capacity.
-        BigInteger comparison = BigIntegerConverter.toBigInteger(Long.MAX_VALUE);
-        comparison = comparison.add(BigIntegerConverter.toBigInteger(21700));
+        BigInteger comparison = BigInteger.valueOf(Long.MAX_VALUE);
+        comparison = comparison.add(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(Long.MAX_VALUE));
         assertEquals(result.getTime().compareTo(comparison), 0);
@@ -175,7 +175,7 @@ public class HighPrecisionDateTest extends AndroidTestCase
         HighPrecisionDate uut;
         HighPrecisionDate result;
 
-        uut = new HighPrecisionDate(BigIntegerConverter.toBigInteger(21700));
+        uut = new HighPrecisionDate(BigInteger.valueOf(21700L));
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(0L));
         assertEquals(result.getTime().longValue(), 21700L);
