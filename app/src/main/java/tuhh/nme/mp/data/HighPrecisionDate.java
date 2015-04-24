@@ -160,6 +160,17 @@ public class HighPrecisionDate
     }
 
     /**
+     * Subtracts an HighPrecisionDate from this HighPrecisionDate.
+     *
+     * @param date The HighPrecisionDate to subtract.
+     * @return     The relative HighPrecisionTimeSpan difference.
+     */
+    public HighPrecisionTimeSpan subtract(HighPrecisionDate date)
+    {
+        return new HighPrecisionTimeSpan(m_Nanoseconds.subtract(date.getTime()));
+    }
+
+    /**
      * Checks whether the stored dates of this and the other object do equal.
      *
      * @param o The other object to check.

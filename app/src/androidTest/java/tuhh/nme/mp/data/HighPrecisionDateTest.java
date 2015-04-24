@@ -168,7 +168,7 @@ public class HighPrecisionDateTest extends AndroidTestCase
     }
 
     /**
-     * Tests the subtraction function subtract().
+     * Tests the subtraction function subtract(HighPrecisionTimeSpan).
      */
     public void testSubtract()
     {
@@ -199,6 +199,40 @@ public class HighPrecisionDateTest extends AndroidTestCase
         // Edge case: Go beyond zero.
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(33000L));
         assertEquals(result.getTime().longValue(), -11300);
+    }
+
+    /**
+     * Tests the subtract(HighPrecisionDate) function.
+     */
+    public void testDateSubtraction()
+    {
+        HighPrecisionDate uut;
+        HighPrecisionTimeSpan result;
+
+        uut = new HighPrecisionDate(BigInteger.valueOf(21700L));
+
+        result = uut.subtract(HighPrecisionDate.epoch);
+        assertEquals(21700L, result.getTime().longValue());
+
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(1L));
+        assertEquals(21699L, result.getTime().longValue());
+
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(3L));
+        assertEquals(21697L, result.getTime().longValue());
+
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(5177L));
+        assertEquals(16523L, result.getTime().longValue());
+
+        // Negative subtraction.
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(-4L));
+        assertEquals(21704L, result.getTime().longValue());
+
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(-812L));
+        assertEquals(22512L, result.getTime().longValue());
+
+        // Edge case: Go beyond zero.
+        result = uut.subtract(HighPrecisionDate.fromNanoseconds(44000L));
+        assertEquals(-22300, result.getTime().longValue());
     }
 
     /**
