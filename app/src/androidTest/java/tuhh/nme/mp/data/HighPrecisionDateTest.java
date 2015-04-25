@@ -250,7 +250,7 @@ public class HighPrecisionDateTest extends AndroidTestCase
         assertEquals(uut, uut2);
 
         uut2 = HighPrecisionDate.fromHours(1);
-        assertNotSame(uut, uut2);
+        assertFalse(uut.equals(uut2));
     }
 
     /**
