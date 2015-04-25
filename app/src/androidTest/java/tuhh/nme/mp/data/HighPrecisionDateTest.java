@@ -93,25 +93,25 @@ public class HighPrecisionDateTest extends AndroidTestCase
         HighPrecisionDate uut;
 
         uut = HighPrecisionDate.fromNanoseconds(1000L);
-        assertEquals(uut.toDate().getTime(), 0L);
+        assertEquals(0L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromNanoseconds(100000L);
-        assertEquals(uut.toDate().getTime(), 0L);
+        assertEquals(0L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromNanoseconds(1000000L);
-        assertEquals(uut.toDate().getTime(), 1L);
+        assertEquals(1L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromMilliseconds(0L);
-        assertEquals(uut.toDate().getTime(), 0L);
+        assertEquals(0L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromMilliseconds(77L);
-        assertEquals(uut.toDate().getTime(), 77L);
+        assertEquals(77L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromMilliseconds(1112L);
-        assertEquals(uut.toDate().getTime(), 1112L);
+        assertEquals(1112L, uut.toDate().getTime());
 
         uut = HighPrecisionDate.fromMilliseconds(99812786L);
-        assertEquals(uut.toDate().getTime(), 99812786L);
+        assertEquals(99812786L, uut.toDate().getTime());
 
         // Test overflow case.
         uut = HighPrecisionDate.fromMilliseconds(Long.MAX_VALUE);
@@ -141,30 +141,30 @@ public class HighPrecisionDateTest extends AndroidTestCase
         uut = new HighPrecisionDate(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(0L));
-        assertEquals(result.getTime().longValue(), 21700L);
+        assertEquals(21700L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(1L));
-        assertEquals(result.getTime().longValue(), 21701L);
+        assertEquals(21701L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(5L));
-        assertEquals(result.getTime().longValue(), 21705L);
+        assertEquals(21705L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(11772L));
-        assertEquals(result.getTime().longValue(), 33472L);
+        assertEquals(33472L, result.getTime().longValue());
 
         // Negative addition.
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-5L));
-        assertEquals(result.getTime().longValue(), 21695L);
+        assertEquals(21695L, result.getTime().longValue());
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(-712L));
-        assertEquals(result.getTime().longValue(), 20988L);
+        assertEquals(20988L, result.getTime().longValue());
 
         // Edge case: Go beyond long capacity.
         BigInteger comparison = BigInteger.valueOf(Long.MAX_VALUE);
         comparison = comparison.add(BigInteger.valueOf(21700L));
 
         result = uut.add(HighPrecisionTimeSpan.fromNanoseconds(Long.MAX_VALUE));
-        assertEquals(result.getTime().compareTo(comparison), 0);
+        assertEquals(0, result.getTime().compareTo(comparison));
     }
 
     /**
@@ -178,27 +178,27 @@ public class HighPrecisionDateTest extends AndroidTestCase
         uut = new HighPrecisionDate(BigInteger.valueOf(21700L));
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(0L));
-        assertEquals(result.getTime().longValue(), 21700L);
+        assertEquals(21700L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(1L));
-        assertEquals(result.getTime().longValue(), 21699L);
+        assertEquals(21699L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(5L));
-        assertEquals(result.getTime().longValue(), 21695L);
+        assertEquals(21695L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(11772L));
-        assertEquals(result.getTime().longValue(), 9928L);
+        assertEquals(9928L, result.getTime().longValue());
 
         // Negative subtraction.
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-5L));
-        assertEquals(result.getTime().longValue(), 21705L);
+        assertEquals(21705L, result.getTime().longValue());
 
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(-712L));
-        assertEquals(result.getTime().longValue(), 22412L);
+        assertEquals(22412L, result.getTime().longValue());
 
         // Edge case: Go beyond zero.
         result = uut.subtract(HighPrecisionTimeSpan.fromNanoseconds(33000L));
-        assertEquals(result.getTime().longValue(), -11300);
+        assertEquals(-11300, result.getTime().longValue());
     }
 
     /**
@@ -258,6 +258,6 @@ public class HighPrecisionDateTest extends AndroidTestCase
      */
     public void testEpochField()
     {
-        assertEquals(HighPrecisionDate.epoch.getTime().longValue(), 0L);
+        assertEquals(0L, HighPrecisionDate.epoch.getTime().longValue());
     }
 }
