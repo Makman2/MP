@@ -107,28 +107,7 @@ public class BloodPressurePlotDataTest extends AndroidTestCase
         uut.addAll(frames);
 
         assertEquals(2, uut.size());
-
-        Iterator<Collection<Entry>> main_it = uut.mappings().iterator();
-        Iterator<Entry> it = main_it.next().iterator();
-
-        Entry elem = it.next();
-        assertEquals(44.44f, elem.getVal());
-        assertEquals(200, elem.getXIndex());
-        elem = it.next();
-        assertEquals(83.1f, elem.getVal());
-        assertEquals(215, elem.getXIndex());
-
-        it = main_it.next().iterator();
-
-        elem = it.next();
-        assertEquals(1.0f, elem.getVal());
-        assertEquals(100, elem.getXIndex());
-        elem = it.next();
-        assertEquals(2.0f, elem.getVal());
-        assertEquals(105, elem.getXIndex());
-        elem = it.next();
-        assertEquals(33.33f, elem.getVal());
-        assertEquals(110, elem.getXIndex());
+        assertTrue(uut.containsAll(frames));
     }
 
     /**
