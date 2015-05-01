@@ -222,7 +222,8 @@ public abstract class HashMappingList<InputType, MappingType>
      * @param object The InputType to map.
      * @return       The mapped MappingType.
      */
-    protected abstract MappingType map(InputType object);
+    protected abstract MappingType map(InputType object)
+        throws IllegalArgumentException, IllegalStateException, NullPointerException;
 
     /**
      * Stores the InputType's together with their converted data of type MappingType.
