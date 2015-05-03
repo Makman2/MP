@@ -78,4 +78,28 @@ public class BloodPressureDataFrameReaderTest extends AndroidTestCase
 
         assertTrue(thrown);
     }
+
+    /**
+     * Tests what happens when the file length markers are invalid and point after EOF.
+     */
+    public void testInvalidFileLengthDescriptor() throws IOException
+    {
+        ByteArrayOutputStream input = new ByteArrayOutputStream();
+        input.write(new byte[] {0x4D, 0x50, 0x44, 0x46, 0x31});
+        input.write(new byte[] {0, 0, 0, 80});
+        input.write(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+
+        BloodPressureDataFrameReader uut = new BloodPressureDataFrameReader();
+
+        boolean thrown = false;
+        try
+        {
+            uut.read(new ByteArrayInputStream(input.toByteArray()));
+        }
+        catch (MPDFFormatException ex)
+        {
+            thrown = true;
+        }
+        assertTrue(thrown);
+    }
 }
