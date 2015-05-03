@@ -201,5 +201,4 @@ public class BloodPressureDataFrameWriterTest extends AndroidTestCase
     {
         return ByteBuffer.allocate(Float.SIZE / Byte.SIZE).putFloat(value).array();
     }
-
 }
