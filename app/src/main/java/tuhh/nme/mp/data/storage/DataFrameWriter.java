@@ -150,24 +150,43 @@ public abstract class DataFrameWriter<XType, YType>
     /**
      * Serializes a DataFrame into a byte array.
      *
-     * @param object       The DataFrame to serialize.
-     * @return             The serialized DataFrame.
-     * @throws IOException Thrown when errors occurred while writing to the returned array.
+     * @param object               The DataFrame to serialize.
+     * @return                     The serialized DataFrame.
+     * @throws IOException         Thrown when errors occurred while writing to the returned array.
+     * @throws MPDFFormatException Thrown when a DataPoint is too large to be stored in the file.
+     *                             The causing element is stored in the exception (and can be
+     *                             retrieved using getMetaDataFrame()).
      */
-    private byte[] serializeDataFrame(DataFrame<XType, YType> object) throws IOException
+    private byte[] serializeDataFrame(DataFrame<XType, YType> object)
+        throws IOException, MPDFFormatException
     {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
 
         for (DataPoint<XType, YType> elem : object)
         {
             byte[] serialized_x = serializeX(elem.X);
-            byte[] serialized_y = serializeY(elem.Y);
+            if (serialized_x.length > Short.MAX_VALUE)
+            {
+                throw new MPDFFormatException("XType of DataPoint is serialized too large for " +
+                                              "MPDF format. Is " +
+                                              Integer.toString(serialized_x.length) + ", maximum " +
+                                              Integer.toString(Short.MAX_VALUE) + ".", object);
+            }
 
-            buf.write(ByteBuffer.allocate(Integer.SIZE / Byte.SIZE)
-                      .putInt(serialized_x.length).array());
+            byte[] serialized_y = serializeY(elem.Y);
+            if (serialized_y.length > Short.MAX_VALUE)
+            {
+                throw new MPDFFormatException("YType of DataPoint is serialized too large for " +
+                                              "MPDF format. Is " +
+                                              Integer.toString(serialized_y.length) + ", maximum " +
+                                              Integer.toString(Short.MAX_VALUE) + ".", object);
+            }
+
+            buf.write(ByteBuffer.allocate(Short.SIZE / Byte.SIZE)
+                      .putShort((short)serialized_x.length).array());
             buf.write(serialized_x);
-            buf.write(ByteBuffer.allocate(Integer.SIZE / Byte.SIZE)
-                      .putInt(serialized_y.length).array());
+            buf.write(ByteBuffer.allocate(Short.SIZE / Byte.SIZE)
+                      .putShort((short)serialized_y.length).array());
             buf.write(serialized_y);
         }
 
@@ -177,10 +196,14 @@ public abstract class DataFrameWriter<XType, YType>
     /**
      * Serialize and write the stored data.
      *
-     * @param stream       The stream to write to.
-     * @throws IOException Thrown when errors occurred during stream write.
+     * @param stream               The stream to write to.
+     * @throws IOException         Thrown when errors occurred during stream write.
+     * @throws MPDFFormatException Thrown when the DataFrame's to write have DataPoint's which size
+     *                             is too large and exceeds Short.MAX_VALUE. The causing element is
+     *                             stored in the exception (and can be retrieved using
+     *                             getMetaDataFrame()).
      */
-    public void write(OutputStream stream) throws IOException
+    public void write(OutputStream stream) throws IOException, MPDFFormatException
     {
         stream.write(FILE_HEADER);
 

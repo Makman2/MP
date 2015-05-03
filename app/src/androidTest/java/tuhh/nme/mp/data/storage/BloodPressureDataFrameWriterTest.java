@@ -141,7 +141,7 @@ public class BloodPressureDataFrameWriterTest extends AndroidTestCase
     /**
      * Tests the complete stream writing and data conversion.
      */
-    public void testWrite() throws IOException
+    public void testWrite() throws IOException, MPDFFormatException
     {
         BloodPressureDataFrame frame = new BloodPressureDataFrame(
             "1.0,2.4,2.7,0.5",
@@ -161,27 +161,27 @@ public class BloodPressureDataFrameWriterTest extends AndroidTestCase
         ByteArrayOutputStream compare = new ByteArrayOutputStream();
         compare.write(new byte[] {0x4D, 0x50, 0x44, 0x46, 0x31});
 
-        compare.write(toByte(HighPrecisionDate.epoch.getTime().toByteArray().length));
+        compare.write(toByte((short)(HighPrecisionDate.epoch.getTime().toByteArray().length)));
         compare.write(HighPrecisionDate.epoch.getTime().toByteArray());
-        compare.write(toByte(Float.SIZE / Byte.SIZE));
+        compare.write(toByte((short)(Float.SIZE / Byte.SIZE)));
         compare.write(toByte(1.0f));
 
         compare.write(
-            toByte(HighPrecisionDate.fromNanoseconds(100).getTime().toByteArray().length));
+            toByte((short)(HighPrecisionDate.fromNanoseconds(100).getTime().toByteArray().length)));
         compare.write(HighPrecisionDate.fromNanoseconds(100).getTime().toByteArray());
-        compare.write(toByte(Float.SIZE / Byte.SIZE));
+        compare.write(toByte((short)(Float.SIZE / Byte.SIZE)));
         compare.write(toByte(2.4f));
 
         compare.write(
-            toByte(HighPrecisionDate.fromNanoseconds(200).getTime().toByteArray().length));
+            toByte((short)(HighPrecisionDate.fromNanoseconds(200).getTime().toByteArray().length)));
         compare.write(HighPrecisionDate.fromNanoseconds(200).getTime().toByteArray());
-        compare.write(toByte(Float.SIZE / Byte.SIZE));
+        compare.write(toByte((short)(Float.SIZE / Byte.SIZE)));
         compare.write(toByte(2.7f));
 
         compare.write(
-            toByte(HighPrecisionDate.fromNanoseconds(300).getTime().toByteArray().length));
+            toByte((short)(HighPrecisionDate.fromNanoseconds(300).getTime().toByteArray().length)));
         compare.write(HighPrecisionDate.fromNanoseconds(300).getTime().toByteArray());
-        compare.write(toByte(Float.SIZE / Byte.SIZE));
+        compare.write(toByte((short)(Float.SIZE / Byte.SIZE)));
         compare.write(toByte(0.5f));
 
         byte[] t = compare.toByteArray();
@@ -192,9 +192,9 @@ public class BloodPressureDataFrameWriterTest extends AndroidTestCase
         }
     }
 
-    private byte[] toByte(int value)
+    private byte[] toByte(short value)
     {
-        return ByteBuffer.allocate(Integer.SIZE / Byte.SIZE).putInt(value).array();
+        return ByteBuffer.allocate(Short.SIZE / Byte.SIZE).putShort(value).array();
     }
 
     private byte[] toByte(float value)

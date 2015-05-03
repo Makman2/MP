@@ -96,8 +96,8 @@ public abstract class DataFrameReader<XType, YType>
 
         XType x_value;
         YType y_value;
-        int next_data_length;
-        byte[] data_length_buffer = new byte[4];
+        short next_data_length;
+        byte[] data_length_buffer = new byte[Short.SIZE / Byte.SIZE];
         int read_result;
 
         LinkedList<DataPoint<XType, YType>> data = new LinkedList<>();
@@ -106,12 +106,12 @@ public abstract class DataFrameReader<XType, YType>
         {
             // Extract next DataPoint.
 
-            if (read_result != Integer.SIZE / Byte.SIZE)
+            if (read_result != data_length_buffer.length)
             {
                 throwDataCorruptedException(new DataFrame<>(data));
             }
 
-            next_data_length = ByteBuffer.wrap(data_length_buffer).getInt();
+            next_data_length = ByteBuffer.wrap(data_length_buffer).getShort();
 
             buffer = new byte[next_data_length];
             if (stream.read(buffer, 0, buffer.length) != next_data_length)
@@ -132,12 +132,12 @@ public abstract class DataFrameReader<XType, YType>
             }
 
             if (stream.read(data_length_buffer, 0, data_length_buffer.length) !=
-                Integer.SIZE / Byte.SIZE)
+                data_length_buffer.length)
             {
                 throwDataCorruptedException(new DataFrame<>(data));
             }
 
-            next_data_length = ByteBuffer.wrap(data_length_buffer).getInt();
+            next_data_length = ByteBuffer.wrap(data_length_buffer).getShort();
 
             buffer = new byte[next_data_length];
             if (stream.read(buffer, 0, buffer.length) != next_data_length)

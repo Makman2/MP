@@ -88,7 +88,7 @@ public class BloodPressureDataFrameReaderTest extends AndroidTestCase
     {
         ByteArrayOutputStream input = new ByteArrayOutputStream();
         input.write(new byte[] {0x4D, 0x50, 0x44, 0x46, 0x31});
-        input.write(new byte[] {0, 0, 0, 80});
+        input.write(new byte[] {0, 80});
         input.write(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 
         BloodPressureDataFrameReader uut = new BloodPressureDataFrameReader();
