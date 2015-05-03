@@ -43,19 +43,19 @@ public abstract class DataFrameReader<XType, YType>
     /**
      * Converts a chunk of data to an XType.
      *
-     * @param data                 The data to convert.
-     * @return                     The converted XType.
-     * @throws MPDFFormatException Thrown on invalid input format.
+     * @param data       The data to convert.
+     * @return           The converted XType.
+     * @throws Exception Thrown on invalid input format.
      */
-    protected abstract XType deserializeX(byte[] data) throws MPDFFormatException;
+    protected abstract XType deserializeX(byte[] data) throws Exception;
 
     /**
      * Converts a chunk of data to an YType.
-     * @param data                 The data to convert.
-     * @return                     The converted YType.
-     * @throws MPDFFormatException Thrown on invalid input format.
+     * @param data       The data to convert.
+     * @return           The converted YType.
+     * @throws Exception Thrown on invalid input format.
      */
-    protected abstract YType deserializeY(byte[] data) throws MPDFFormatException;
+    protected abstract YType deserializeY(byte[] data) throws Exception;
 
     /**
      * Parses and checks the file header.
@@ -119,7 +119,17 @@ public abstract class DataFrameReader<XType, YType>
                 throwDataCorruptedException(new DataFrame<>(data));
             }
 
-            x_value = deserializeX(buffer);
+            try
+            {
+                x_value = deserializeX(buffer);
+            }
+            catch (Exception ex)
+            {
+                MPDFFormatException x = new MPDFFormatException("Deserialization of XType failed.",
+                                                                new DataFrame<>(data));
+                x.initCause(ex);
+                throw x;
+            }
 
             if (stream.read(data_length_buffer, 0, data_length_buffer.length) !=
                 Integer.SIZE / Byte.SIZE)
@@ -135,7 +145,17 @@ public abstract class DataFrameReader<XType, YType>
                 throwDataCorruptedException(new DataFrame<>(data));
             }
 
-            y_value = deserializeY(buffer);
+            try
+            {
+                y_value = deserializeY(buffer);
+            }
+            catch (Exception ex)
+            {
+                MPDFFormatException x = new MPDFFormatException("Deserialization of YType failed.",
+                                                                new DataFrame<>(data));
+                x.initCause(ex);
+                throw x;
+            }
 
             data.add(new DataPoint<>(x_value, y_value));
         }
