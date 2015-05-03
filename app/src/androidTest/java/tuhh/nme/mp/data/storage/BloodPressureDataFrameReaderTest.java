@@ -62,6 +62,7 @@ public class BloodPressureDataFrameReaderTest extends AndroidTestCase
         catch (MPDFFormatException ex)
         {
             thrown = true;
+            assertEquals(null, ex.getMetaDataFrame());
         }
 
         assertTrue(thrown);
@@ -74,6 +75,7 @@ public class BloodPressureDataFrameReaderTest extends AndroidTestCase
         catch (MPDFFormatException ex)
         {
             thrown = true;
+            assertEquals(null, ex.getMetaDataFrame());
         }
 
         assertTrue(thrown);
@@ -99,6 +101,7 @@ public class BloodPressureDataFrameReaderTest extends AndroidTestCase
         catch (MPDFFormatException ex)
         {
             thrown = true;
+            assertTrue(ex.getMetaDataFrame().getData().isEmpty());
         }
         assertTrue(thrown);
     }
