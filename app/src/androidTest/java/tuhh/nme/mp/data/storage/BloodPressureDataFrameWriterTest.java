@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import tuhh.nme.mp.data.BloodPressureDataFrame;
 import tuhh.nme.mp.data.DataFrame;
