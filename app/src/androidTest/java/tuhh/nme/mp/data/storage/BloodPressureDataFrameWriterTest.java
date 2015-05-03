@@ -192,11 +192,23 @@ public class BloodPressureDataFrameWriterTest extends AndroidTestCase
         }
     }
 
+    /**
+     * Converts a short into a byte array.
+     *
+     * @param value The short to convert.
+     * @return      The byte array representing the short.
+     */
     private byte[] toByte(short value)
     {
         return ByteBuffer.allocate(Short.SIZE / Byte.SIZE).putShort(value).array();
     }
 
+    /**
+     * Converts a float into a byte array.
+     *
+     * @param value The float to convert.
+     * @return      The byte array representing the float.
+     */
     private byte[] toByte(float value)
     {
         return ByteBuffer.allocate(Float.SIZE / Byte.SIZE).putFloat(value).array();
