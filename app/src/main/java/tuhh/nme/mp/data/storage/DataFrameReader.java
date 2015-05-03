@@ -25,7 +25,9 @@ public abstract class DataFrameReader<XType, YType>
      * @param stream               The stream where to read from.
      * @return                     The back-converted DataFrame.
      * @throws IOException         Thrown when IO errors occurred while trying to read data.
-     * @throws MPDFFormatException Thrown when the stream data is invalid.
+     * @throws MPDFFormatException Thrown when the stream data is invalid. The DataFrame's that
+     *                             could be read so far until exception occurred are retrievable
+     *                             using getMetaDataFrame() at the exception.
      */
     public DataFrame<XType, YType> read(InputStream stream) throws IOException, MPDFFormatException
     {
@@ -83,7 +85,9 @@ public abstract class DataFrameReader<XType, YType>
      * @param stream               The stream where to read from.
      * @return                     The parsed data.
      * @throws IOException         Thrown when IO errors occurred while reading from stream.
-     * @throws MPDFFormatException Thrown on invalid data format.
+     * @throws MPDFFormatException Thrown on invalid data format. The data read until exception
+     *                             raised is stored inside the exception and can be retrieved using
+     *                             getMetaDataFrame().
      */
     private Collection<DataPoint<XType, YType>> readDataEntries(InputStream stream)
         throws IOException, MPDFFormatException
@@ -152,13 +156,12 @@ public abstract class DataFrameReader<XType, YType>
     /**
      * Throws an MPDFFormatException for corrupted data.
      *
-     * @param reconstructed_data   The reconstruction data to initialize the exception with.
+     * @param meta                 The reconstruction data to initialize the exception with.
      * @throws MPDFFormatException Thrown every time.
      */
-    private void throwDataCorruptedException(DataFrame reconstructed_data)
-        throws MPDFFormatException
+    private void throwDataCorruptedException(DataFrame meta) throws MPDFFormatException
     {
-        throw new MPDFFormatException("Data corrupted.", reconstructed_data);
+        throw new MPDFFormatException("Data corrupted.", meta);
     }
 
     /**

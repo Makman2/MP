@@ -5,65 +5,65 @@ import java.util.zip.DataFormatException;
 import tuhh.nme.mp.data.DataFrame;
 
 /**
- * Data format exception for the MP-DataFrame format. Supports passing reconstructed data.
+ * Data format exception for the MP-DataFrame format. Supports passing meta data.
  */
 public class MPDFFormatException extends DataFormatException
 {
     /**
-     * Instantiates a new MPDFFormatException with default message and no reconstructed data.
+     * Instantiates a new MPDFFormatException with default message and no meta-data.
      */
     public MPDFFormatException()
     {
         super();
-        m_Reconstructed = null;
+        m_DataFrameMeta = null;
     }
 
     /**
-     * Instantiates a new MPDFFormatException with no reconstructed data.
+     * Instantiates a new MPDFFormatException with no meta-data.
      *
      * @param message The custom message of the exception.
      */
     public MPDFFormatException(String message)
     {
         super(message);
-        m_Reconstructed = null;
+        m_DataFrameMeta = null;
     }
 
     /**
      * Instantiates a new MPDFFormatException with default message.
      *
-     * @param reconstructed The reconstructed data of the corrupted stream.
+     * @param meta The meta-data DataFrame of this exception.
      */
-    public MPDFFormatException(DataFrame reconstructed)
+    public MPDFFormatException(DataFrame meta)
     {
         super();
-        m_Reconstructed = reconstructed;
+        m_DataFrameMeta = meta;
     }
 
     /**
      * Instantiates a new MPDFFormatException.
      *
-     * @param message       The custom message of the exception.
-     * @param reconstructed The reconstructed data of the corrupted stream.
+     * @param message The custom message of the exception.
+     * @param meta    The meta-data DataFrame of this exception.
      */
-    public MPDFFormatException(String message, DataFrame reconstructed)
+    public MPDFFormatException(String message, DataFrame meta)
     {
         super(message);
-        m_Reconstructed = reconstructed;
+        m_DataFrameMeta = meta;
     }
 
     /**
-     * Returns the data that could be reconstructed until exception.
+     * Returns the associated DataFrame meta-data.
      *
-     * @return The reconstructed DataFrame.
+     * @return The DataFrame meta-data.
      */
-    public DataFrame getReconstructedData()
+    public DataFrame getMetaDataFrame()
     {
-        return m_Reconstructed;
+        return m_DataFrameMeta;
     }
 
     /**
-     * The reconstructed DataFrame.
+     * The meta DataFrame.
      */
-    private DataFrame m_Reconstructed;
+    private DataFrame m_DataFrameMeta;
 }

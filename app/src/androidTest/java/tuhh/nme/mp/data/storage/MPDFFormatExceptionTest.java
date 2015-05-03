@@ -16,10 +16,10 @@ public class MPDFFormatExceptionTest extends AndroidTestCase
         MPDFFormatException uut;
 
         uut = new MPDFFormatException();
-        assertEquals(null, uut.getReconstructedData());
+        assertEquals(null, uut.getMetaDataFrame());
 
         uut = new MPDFFormatException("custom message");
-        assertEquals(null, uut.getReconstructedData());
+        assertEquals(null, uut.getMetaDataFrame());
         assertEquals("custom message", uut.getMessage());
 
         BloodPressureDataFrame reconstruction =
@@ -28,10 +28,10 @@ public class MPDFFormatExceptionTest extends AndroidTestCase
                                        HighPrecisionTimeSpan.fromNanoseconds(1));
 
         uut = new MPDFFormatException(reconstruction);
-        assertSame(reconstruction, uut.getReconstructedData());
+        assertSame(reconstruction, uut.getMetaDataFrame());
 
         uut = new MPDFFormatException("this is a message", reconstruction);
-        assertSame(reconstruction, uut.getReconstructedData());
+        assertSame(reconstruction, uut.getMetaDataFrame());
         assertEquals("this is a message", uut.getMessage());
     }
 }
