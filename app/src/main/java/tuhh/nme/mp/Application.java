@@ -10,7 +10,7 @@ public class Application extends android.app.Application
     /**
      * Instantiates a new application.
      */
-    private Application()
+    public Application()
     {
         super();
     }
