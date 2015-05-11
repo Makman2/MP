@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:text="@string/controls.WifiListItem.design_preview.wifi_text"
+              android:id="@+id/controls.WifiListItem.wifi_text"
+              android:layout_marginStart="8pt"/>
+</LinearLayout>

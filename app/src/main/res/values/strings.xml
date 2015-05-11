@@ -3,4 +3,6 @@
 
     <string name="MainActivity.hello_world">Hello world!</string>
     <string name="MainActivity.action_settings">Settings</string>
+
+    <string name="controls.WifiListItem.design_preview.wifi_text">WiFi SSID</string>
 </resources>
