@@ -1,6 +1,7 @@
 package tuhh.nme.mp;
 
 import tuhh.nme.mp.data.storage.DataFrameFileManager;
+import tuhh.nme.mp.remote.WifiConnector;
 
 /**
  * The static application instance of this project.
@@ -38,5 +39,6 @@ public class Application extends android.app.Application
 
         // Set the DataFrameFileManager context.
         DataFrameFileManager.setContext(this);
+        WifiConnector.setContext(this);
     }
 }
