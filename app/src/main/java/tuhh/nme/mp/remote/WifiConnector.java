@@ -85,6 +85,17 @@ public class WifiConnector
     }
 
     /**
+     * Triggers a new WiFi scan request. This function returns immediately.
+     *
+     * @return true if the rescan was triggered successfully, false if not. Use this value to check
+     *         if you need to wait for a broadcast that signals a finished scan.
+     */
+    public static boolean triggerRescan()
+    {
+        return getWifiManager().startScan();
+    }
+
+    /**
      * Connects to a remote module WiFi.
      *
      * @param wifi                       The WiFi of the remote module to connect to.
