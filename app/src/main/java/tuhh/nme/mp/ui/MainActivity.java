@@ -1,21 +1,56 @@
 package tuhh.nme.mp.ui;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import tuhh.nme.mp.R;
+import tuhh.nme.mp.remote.WifiConnector;
+import tuhh.nme.mp.remote.WifiState;
 
 
-public class MainActivity extends ActionBarActivity
+/**
+ * The MainActivity presented at startup. It shall display the possible remotes to connect to and
+ * makes it available to enable WiFi by the user if disabled.
+ */
+public class MainActivity
+    extends ActionBarActivity
+    implements WifiIsDisabledFragmentListener
 {
+    /**
+     * Instantiates a new MainActivity.
+     */
+    public MainActivity()
+    {
+        m_IsActive = true;
+
+        m_WifiChooserFragment = new WifiChooserFragmentOnDemandObject();
+        m_WifiIsDisabledFragment = new WifiIsDisabledFragmentOnDemandObject();
+    }
+
     // Inherited documentation.
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        // Set startup fragment.
+        Fragment fragment;
+        if (WifiConnector.getWifiState() == WifiState.ENABLED)
+        {
+            fragment = m_WifiChooserFragment.get();
+        }
+        else
+        {
+            fragment = m_WifiIsDisabledFragment.get();
+        }
+
+        getSupportFragmentManager().beginTransaction().add(
+            R.id.MainActivity_fragment_frame,
+            fragment).commit();
     }
 
     // Inherited documentation.
@@ -50,4 +85,62 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    // Inherited documentation.
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        m_IsActive = false;
+    }
+
+    // Inherited documentation.
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        m_IsActive = true;
+
+        // If WiFi was already enabled, make a fragment transition.
+        if (WifiConnector.getWifiState() == WifiState.ENABLED)
+        {
+            changeFragment(m_WifiChooserFragment.get());
+        }
+    }
+
+    // Inherited documentation.
+    @Override
+    public void onWifiSuccessfullyEnabled()
+    {
+        if (m_IsActive)
+        {
+            changeFragment(m_WifiChooserFragment.get());
+        }
+    }
+
+    /**
+     * Changes the main fragment on this activity by replacing it.
+     *
+     * @param fragment The new fragment to display.
+     */
+    private void changeFragment(Fragment fragment)
+    {
+        getSupportFragmentManager().beginTransaction().replace(
+            R.id.MainActivity_fragment_frame,
+            fragment).commit();
+    }
+
+    /**
+     * The WifiChooserFragment that gets displayed.
+     */
+    private WifiChooserFragmentOnDemandObject m_WifiChooserFragment;
+    /**
+     * The WifiIsDisabledFragment that gets displayed.
+     */
+    private WifiIsDisabledFragmentOnDemandObject m_WifiIsDisabledFragment;
+
+    /**
+     * Determines whether the activity is active (true) or paused (false).
+     */
+    boolean m_IsActive;
 }
