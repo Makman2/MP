@@ -9,4 +9,6 @@
     <string name="controls.adapters.ScanResultAdapterItem.design.wifi_text" translatable="false">
         WiFi SSID
     </string>
+
+    <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 </resources>
