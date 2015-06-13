@@ -222,6 +222,22 @@ public final class WifiConnector
     }
 
     /**
+     * Enables WiFi capabilities.
+     */
+    public static void enableWiFi()
+    {
+        getWifiManager().setWifiEnabled(true);
+    }
+
+    /*
+     * Disables WiFi capabilities.
+     */
+    public static void disableWiFi()
+    {
+        getWifiManager().setWifiEnabled(false);
+    }
+
+    /**
      * Checks whether the ScanResult is a valid remote module connectable to.
      *
      * @param wifi The ScanResult that describes the WiFi.
