@@ -10,6 +10,7 @@ import tuhh.nme.mp.R;
 
 public class MainActivity extends ActionBarActivity
 {
+    // Inherited documentation.
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -17,6 +18,7 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.main_activity);
     }
 
+    // Inherited documentation.
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -25,6 +27,7 @@ public class MainActivity extends ActionBarActivity
         return true;
     }
 
+    // Inherited documentation.
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
