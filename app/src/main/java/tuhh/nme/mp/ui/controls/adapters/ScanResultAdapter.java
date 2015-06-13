@@ -49,6 +49,8 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        String present_text = getItem(position).SSID;
+
         if (convertView == null)
         {
             // Inflate design.
@@ -62,7 +64,7 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
                 (TextView)view.findViewById(R.id.controls_adapters_ScanResultAdapterItem_wifi_text);
 
             // Sets display properties.
-            wifi.setText(getItem(position).SSID);
+            wifi.setText(present_text);
 
             return view;
         }
@@ -73,7 +75,7 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
                 R.id.controls_adapters_ScanResultAdapterItem_wifi_text);
 
             // Reset display attributes.
-            wifi.setText(getItem(position).toString());
+            wifi.setText(present_text);
 
             return convertView;
         }
