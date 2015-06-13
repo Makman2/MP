@@ -1,5 +1,7 @@
 package tuhh.nme.mp;
 
+import android.util.Log;
+
 import tuhh.nme.mp.data.storage.DataFrameFileManager;
 import tuhh.nme.mp.remote.WifiConnector;
 
@@ -41,5 +43,40 @@ public class Application extends android.app.Application
         // Set the DataFrameFileManager context.
         DataFrameFileManager.setContext(this);
         WifiConnector.setContext(this);
+
+        // Print the summary program state.
+        printLog();
+    }
+
+    /**
+     * Print the initial program log.
+     *
+     * Can be also used to be called later in program to get a state summary.
+     */
+    public void printLog()
+    {
+        // Print WiFi state.
+        switch (WifiConnector.getWifiState())
+        {
+            case ENABLED:
+                Log.d(Application.class.getName(), "WiFi is currently enabled.");
+                break;
+
+            case ENABLING:
+                Log.d(Application.class.getName(), "WiFi is currently enabling.");
+                break;
+
+            case DISABLED:
+                Log.d(Application.class.getName(), "WiFi is currently disabled.");
+                break;
+
+            case DISABLING:
+                Log.d(Application.class.getName(), "WiFi is currently disabling.");
+                break;
+
+            case UNKNOWN:
+                Log.w(Application.class.getName(), "Warning: Unknown WiFi state!");
+                break;
+        }
     }
 }
