@@ -8,6 +8,8 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuhh.nme.mp.components.CallbackRunnable;
+
 
 /**
  * Handles the WiFi interface used to connect to the remote module.

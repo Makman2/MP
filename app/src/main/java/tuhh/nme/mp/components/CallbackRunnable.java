@@ -1,4 +1,5 @@
-package tuhh.nme.mp.remote;
+package tuhh.nme.mp.components;
+
 
 /**
  * A runnable that allows to define a manual callback.
