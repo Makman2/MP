@@ -11,4 +11,8 @@
     </string>
 
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
+
+    <string name="WifiIsDisabledFragment.message">
+        WiFi is currently turned off.\nTurn it on.
+    </string>
 </resources>
