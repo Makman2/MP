@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +162,8 @@ public final class WifiConnector
      */
     public static void disconnect()
     {
+        Log.d(WifiConnector.class.getName(), "Disconnecting from current WiFi network...");
+
         WifiManager manager = getWifiManager();
         manager.disconnect();
         manager.removeNetwork(m_WifiConfigurationID);
@@ -209,6 +212,8 @@ public final class WifiConnector
     {
         String networkSSID = wifi.SSID;
 
+        Log.d(WifiConnector.class.getName(), "Connecting to WiFi Network '" + networkSSID + "'.");
+
         WifiConfiguration conf = new WifiConfiguration();
         conf.SSID = "\"" + networkSSID + "\"";
         conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
@@ -227,6 +232,7 @@ public final class WifiConnector
     public static void enableWiFi()
     {
         getWifiManager().setWifiEnabled(true);
+        Log.d(WifiConnector.class.getName(), "Attempt to enable WiFi...");
     }
 
     /*
@@ -235,6 +241,7 @@ public final class WifiConnector
     public static void disableWiFi()
     {
         getWifiManager().setWifiEnabled(false);
+        Log.d(WifiConnector.class.getName(), "Attempt to disable WiFi...");
     }
 
     /**
