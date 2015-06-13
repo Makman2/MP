@@ -188,6 +188,17 @@ public class HighPrecisionDate
     }
 
     /**
+     * Returns a string representation of this object.
+     *
+     * @return The string representing this object.
+     */
+    @Override
+    public String toString()
+    {
+        return m_Nanoseconds.toString();
+    }
+
+    /**
      * The epoch date.
      */
     public static final HighPrecisionDate epoch = HighPrecisionDate.fromNanoseconds(0);
