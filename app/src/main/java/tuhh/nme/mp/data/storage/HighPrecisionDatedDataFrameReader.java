@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 import tuhh.nme.mp.data.HighPrecisionDate;
 
+
 /**
  * Base class for all DataFrameReader's with DataFrame's with an x-type of HighPrecisionDate.
  *

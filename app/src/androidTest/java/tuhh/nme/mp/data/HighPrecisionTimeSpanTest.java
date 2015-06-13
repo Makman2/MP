@@ -1,9 +1,9 @@
 package tuhh.nme.mp.data;
 
 import android.test.AndroidTestCase;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 
 public class HighPrecisionTimeSpanTest extends AndroidTestCase
 {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import tuhh.nme.mp.data.DataPoint;
 import tuhh.nme.mp.data.HighPrecisionDate;
 
+
 /**
  * A list of data that maps to Entry's. The contained DataPoint's have as their x-type
  * HighPrecisionDate's. This class supports time scaling to reduce x-axis labels.

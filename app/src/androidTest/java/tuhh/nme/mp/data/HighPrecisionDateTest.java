@@ -1,9 +1,9 @@
 package tuhh.nme.mp.data;
 
 import android.test.AndroidTestCase;
-
 import java.math.BigInteger;
 import java.util.Date;
+
 
 public class HighPrecisionDateTest extends AndroidTestCase
 {

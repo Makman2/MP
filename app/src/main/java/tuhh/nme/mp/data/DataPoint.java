@@ -1,5 +1,6 @@
 package tuhh.nme.mp.data;
 
+
 /**
  * A two dimensional data point.
  *

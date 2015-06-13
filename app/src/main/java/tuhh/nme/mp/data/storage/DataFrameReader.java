@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import tuhh.nme.mp.data.DataFrame;
 import tuhh.nme.mp.data.DataPoint;
 
+
 /**
  * The base class for all readers that support the MPDF (MP-DataFrame) format.
  *

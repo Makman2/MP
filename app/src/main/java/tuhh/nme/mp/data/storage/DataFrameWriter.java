@@ -11,6 +11,7 @@ import java.util.HashMap;
 import tuhh.nme.mp.data.DataFrame;
 import tuhh.nme.mp.data.DataPoint;
 
+
 /**
  * Base class for all DataFrame writer classes.
  *

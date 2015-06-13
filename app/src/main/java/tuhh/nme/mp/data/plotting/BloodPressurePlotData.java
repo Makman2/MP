@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import tuhh.nme.mp.data.HighPrecisionDate;
 
+
 /**
  * Organizes BloodPressureDataFrame's and converts them into plottable Entry's.
  */

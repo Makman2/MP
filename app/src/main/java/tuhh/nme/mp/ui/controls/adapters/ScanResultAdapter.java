@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.List;
 
 import tuhh.nme.mp.R;
+
 
 /**
  * The adapter that displays Wifi ScanResult's.

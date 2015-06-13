@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+
 /**
  * Manages a list of elements, where each element maps onto another type. So this list contains the
  * managed type itself and its mapped elements.

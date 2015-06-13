@@ -2,6 +2,7 @@ package tuhh.nme.mp.data;
 
 import android.test.AndroidTestCase;
 
+
 public class DataPointTest extends AndroidTestCase
 {
     /**

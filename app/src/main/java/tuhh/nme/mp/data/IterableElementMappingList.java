@@ -3,6 +3,7 @@ package tuhh.nme.mp.data;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 /**
  * Maps an Iterable onto a collection, whereby each element can be mapped as a single.
  *

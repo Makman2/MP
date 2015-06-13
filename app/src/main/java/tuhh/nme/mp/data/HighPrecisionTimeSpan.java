@@ -3,6 +3,7 @@ package tuhh.nme.mp.data;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+
 /**
  * Represents a time difference with nanosecond-precision.
  */

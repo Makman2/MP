@@ -1,9 +1,7 @@
 package tuhh.nme.mp.data.plotting;
 
 import android.test.AndroidTestCase;
-
 import com.github.mikephil.charting.data.Entry;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +11,7 @@ import tuhh.nme.mp.data.BloodPressureDataFrame;
 import tuhh.nme.mp.data.DataPoint;
 import tuhh.nme.mp.data.HighPrecisionDate;
 import tuhh.nme.mp.data.HighPrecisionTimeSpan;
+
 
 public class BloodPressurePlotDataTest extends AndroidTestCase
 {

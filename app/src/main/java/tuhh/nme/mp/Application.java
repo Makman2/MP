@@ -3,6 +3,7 @@ package tuhh.nme.mp;
 import tuhh.nme.mp.data.storage.DataFrameFileManager;
 import tuhh.nme.mp.remote.WifiConnector;
 
+
 /**
  * The static application instance of this project.
  */

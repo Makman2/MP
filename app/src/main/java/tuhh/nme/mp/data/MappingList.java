@@ -2,6 +2,7 @@ package tuhh.nme.mp.data;
 
 import java.util.Collection;
 
+
 /**
  * Interface for defining a map that internally associates an InputType to a MappingType.
  *

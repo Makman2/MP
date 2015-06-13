@@ -4,10 +4,10 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Handles the WiFi interface used to connect to the remote module.
