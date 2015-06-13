@@ -1,6 +1,7 @@
 package tuhh.nme.mp.data.storage;
 
 import android.content.Context;
+import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -45,6 +46,9 @@ public class DataFrameFileManager
             throw new IOException("File already exists.");
         }
 
+        Log.d(DataFrameFileManager.class.getName(),
+              "Created MPDF file with timestamp " + timestamp.toString() + ".");
+
         return new FileOutputStream(file);
     }
 
@@ -61,6 +65,9 @@ public class DataFrameFileManager
         {
             throw new IOException("File with the given timestamp could not be deleted.");
         }
+
+        Log.d(DataFrameFileManager.class.getName(),
+              "Deleted MPDF file with timestamp " + timestamp.toString() + ".");
     }
 
     /**
@@ -74,6 +81,8 @@ public class DataFrameFileManager
         {
             delete(stamps);
         }
+
+        Log.d(DataFrameFileManager.class.getName(), "Wiped all saved MPDF files.");
     }
 
     /**
