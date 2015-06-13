@@ -14,8 +14,14 @@ import tuhh.nme.mp.components.CallbackRunnable;
 /**
  * Handles the WiFi interface used to connect to the remote module.
  */
-public class WifiConnector
+public final class WifiConnector
 {
+    /**
+     * Non-instantiatable static class constructor.
+     */
+    private WifiConnector()
+    {}
+
     /**
      * The internal Runnable that connects asynchronously.
      */
