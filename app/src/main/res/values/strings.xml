@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MP</string>
+    <string name="app_name" translatable="false">MP</string>
 
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>
