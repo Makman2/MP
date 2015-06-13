@@ -93,6 +93,16 @@ public final class WifiConnector
     }
 
     /**
+     * Returns the current WiFi state.
+     *
+     * @return The WiFi state.
+     */
+    public static WifiState getWifiState()
+    {
+        return WifiState.fromState(getWifiManager().getWifiState());
+    }
+
+    /**
      * Triggers a new WiFi scan request. This function returns immediately.
      *
      * @return true if the rescan was triggered successfully, false if not. Use this value to check
