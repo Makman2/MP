@@ -177,7 +177,8 @@ public class HighPrecisionDate
      * @return  true if equal, false if not.
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (o == null) return false;
         if (o == this) return true;
         if (!(o instanceof HighPrecisionDate)) return false;
