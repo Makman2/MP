@@ -24,7 +24,7 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
      */
     public ScanResultAdapter(Context context)
     {
-        super(context, R.layout.controls_wifi_list_item);
+        super(context, R.layout.controls_adapters_scan_result_adapter_item);
     }
 
     /**
@@ -35,7 +35,7 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
      */
     public ScanResultAdapter(Context context, List<ScanResult> values)
     {
-        super(context, R.layout.controls_wifi_list_item, values);
+        super(context, R.layout.controls_adapters_scan_result_adapter_item, values);
     }
 
     /**
@@ -53,10 +53,13 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
         {
             // Inflate design.
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.controls_wifi_list_item, parent, false);
+            View view = inflater.inflate(R.layout.controls_adapters_scan_result_adapter_item,
+                                         parent,
+                                         false);
 
             // Associate UI elements.
-            TextView wifi = (TextView)view.findViewById(R.id.controls_WifiListItem_wifi_text);
+            TextView wifi =
+                (TextView)view.findViewById(R.id.controls_adapters_ScanResultAdapterItem_wifi_text);
 
             // Sets display properties.
             wifi.setText(getItem(position).SSID);
@@ -66,8 +69,8 @@ public class ScanResultAdapter extends ArrayAdapter<ScanResult>
         else
         {
             // Associate old UI elements.
-            TextView wifi =
-                (TextView)convertView.findViewById(R.id.controls_WifiListItem_wifi_text);
+            TextView wifi = (TextView)convertView.findViewById(
+                R.id.controls_adapters_ScanResultAdapterItem_wifi_text);
 
             // Reset display attributes.
             wifi.setText(getItem(position).toString());
