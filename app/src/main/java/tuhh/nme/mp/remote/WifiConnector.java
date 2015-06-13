@@ -22,7 +22,7 @@ public class WifiConnector
         /**
          * Creates a new Connector Runnable.
          *
-         * @param wifi The Wifi to connecto to asynchronously.
+         * @param wifi The Wifi to connect to to asynchronously.
          */
         public Connector(ScanResult wifi)
         {
