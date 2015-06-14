@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-      <item
-          android:id="@+id/MainMenu.history"
-          android:title="@string/MainMenu.history_text"
-          app:showAsAction="never" />
+    <item
+        android:id="@+id/MainMenu.history"
+        android:title="@string/MainMenu.history_text"
+        app:showAsAction="never" />
 
-      <item
-          android:id="@+id/MainMenu.settings"
-          android:title="@string/MainMenu.settings_text"
-          app:showAsAction="never" />
+    <item
+        android:id="@+id/MainMenu.settings"
+        android:title="@string/MainMenu.settings_text"
+        app:showAsAction="never" />
 
-      <item
-          android:id="@+id/MainMenu.about"
-          android:title="@string/MainMenu.about_text"
-          app:showAsAction="never" />
+    <item
+        android:id="@+id/MainMenu.about"
+        android:title="@string/MainMenu.about_text"
+        app:showAsAction="never" />
 
 </menu>
