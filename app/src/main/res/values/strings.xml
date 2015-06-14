@@ -5,6 +5,7 @@
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>
     <string name="MainMenu.about_text">About</string>
+    <string name="MainMenu.refresh_text">Refresh</string>
 
     <string name="controls.adapters.ScanResultAdapterItem.design.wifi_text" translatable="false">
         WiFi SSID

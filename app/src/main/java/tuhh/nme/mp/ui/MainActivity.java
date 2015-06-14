@@ -81,6 +81,9 @@ public class MainActivity
 
             case R.id.MainMenu_about:
                 return true;
+
+            case R.id.MainMenu_refresh:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
