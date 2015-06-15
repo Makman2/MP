@@ -187,6 +187,7 @@ public class MainActivity extends ActionBarActivity
     private void changeFragment(Fragment fragment)
     {
         m_ChangeFragmentBottleneck.process(fragment);
+        supportInvalidateOptionsMenu();
     }
 
     /**

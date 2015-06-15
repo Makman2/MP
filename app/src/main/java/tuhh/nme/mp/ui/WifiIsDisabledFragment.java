@@ -3,8 +3,10 @@ package tuhh.nme.mp.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -125,6 +127,9 @@ public class WifiIsDisabledFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
+        // We want to manipulate the menu, so we need to catch onPrepareOptionsMenu().
+        setHasOptionsMenu(true);
+
         // Inflate the layout for this fragment.
         View view = inflater.inflate(R.layout.wifi_is_disabled_fragment, container, false);
         initializeView(view);
@@ -180,6 +185,24 @@ public class WifiIsDisabledFragment extends Fragment
         WifiBroadcastReceiver.detach(m_OnWifiEnablingListener);
         WifiBroadcastReceiver.detach(m_OnWifiDisabledListener);
         WifiBroadcastReceiver.detach(m_OnWifiDisablingListener);
+    }
+
+    // Inherited documentation.
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+
+        // Hide the "refresh" action button.
+        try
+        {
+            menu.findItem(R.id.MainMenu_refresh).setVisible(false);
+        }
+        catch (NullPointerException ex)
+        {
+            Log.w(WifiIsDisabledFragment.class.getName(), "Fragment seems not to be used in " +
+                  "intended activity.");
+        }
     }
 
     /**
