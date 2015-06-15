@@ -79,6 +79,8 @@ public class MainActivity extends ActionBarActivity
                 return true;
 
             case R.id.MainMenu_refresh:
+                // TODO: Implement animation for refresh action menu button.
+                WifiConnector.triggerRescan();
                 return true;
         }
 
