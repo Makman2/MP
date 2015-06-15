@@ -139,6 +139,13 @@ public class WifiIsDisabledFragment extends Fragment
     private void initializeView(View view)
     {
         m_Switch = (Switch)view.findViewById(R.id.WifiIsDisabledFragment_switch);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState)
+    {
+        super.onViewStateRestored(savedInstanceState);
+
         setSwitchFromState(WifiConnector.getWifiState());
         m_Switch.setOnCheckedChangeListener(new SwitchOnCheckedChangeListener());
     }
