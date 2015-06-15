@@ -70,8 +70,6 @@ public class WifiIsDisabledFragment extends Fragment
         public void onWifiEnabled()
         {
             setSwitchFromState(WifiState.ENABLED);
-
-            m_Listener.onWifiSuccessfullyEnabled();
         }
     }
 
@@ -154,15 +152,6 @@ public class WifiIsDisabledFragment extends Fragment
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            m_Listener = (WifiIsDisabledFragmentListener)activity;
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(
-                activity.toString() + " must implement WifiIsDisabledFragmentEventListener");
-        }
 
         // Attach to Wifi broadcasts.
         WifiBroadcastReceiver.attach(m_OnWifiEnabledListener);
@@ -178,7 +167,6 @@ public class WifiIsDisabledFragment extends Fragment
     public void onDetach()
     {
         super.onDetach();
-        m_Listener = null;
 
         // Detach from Wifi broadcasts.
         WifiBroadcastReceiver.detach(m_OnWifiEnabledListener);
@@ -232,10 +220,6 @@ public class WifiIsDisabledFragment extends Fragment
      * The switch that represents the WiFi state.
      */
     private Switch m_Switch;
-    /**
-     * The event listener for this fragment.
-     */
-    private WifiIsDisabledFragmentListener m_Listener;
     /**
      * The listener for WiFi enabling.
      */

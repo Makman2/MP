@@ -15,17 +15,13 @@ import tuhh.nme.mp.remote.WifiState;
  * The MainActivity presented at startup. It shall display the possible remotes to connect to and
  * makes it available to enable WiFi by the user if disabled.
  */
-public class MainActivity
-    extends ActionBarActivity
-    implements WifiIsDisabledFragmentListener
+public class MainActivity extends ActionBarActivity
 {
     /**
      * Instantiates a new MainActivity.
      */
     public MainActivity()
     {
-        m_IsActive = true;
-
         m_WifiChooserFragment = new WifiChooserFragmentOnDemandObject();
         m_WifiIsDisabledFragment = new WifiIsDisabledFragmentOnDemandObject();
     }
@@ -94,7 +90,6 @@ public class MainActivity
     protected void onPause()
     {
         super.onPause();
-        m_IsActive = false;
     }
 
     // Inherited documentation.
@@ -102,20 +97,9 @@ public class MainActivity
     protected void onResume()
     {
         super.onResume();
-        m_IsActive = true;
 
         // If WiFi was already enabled, make a fragment transition.
         if (WifiConnector.getWifiState() == WifiState.ENABLED)
-        {
-            changeFragment(m_WifiChooserFragment.get());
-        }
-    }
-
-    // Inherited documentation.
-    @Override
-    public void onWifiSuccessfullyEnabled()
-    {
-        if (m_IsActive)
         {
             changeFragment(m_WifiChooserFragment.get());
         }
@@ -141,9 +125,4 @@ public class MainActivity
      * The WifiIsDisabledFragment that gets displayed.
      */
     private WifiIsDisabledFragmentOnDemandObject m_WifiIsDisabledFragment;
-
-    /**
-     * Determines whether the activity is active (true) or paused (false).
-     */
-    boolean m_IsActive;
 }
