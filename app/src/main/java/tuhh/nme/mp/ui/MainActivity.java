@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import tuhh.nme.mp.R;
+import tuhh.nme.mp.broadcasts.WifiBroadcastReceiver;
+import tuhh.nme.mp.components.Bottleneck;
 import tuhh.nme.mp.remote.WifiConnector;
 import tuhh.nme.mp.remote.WifiState;
 
@@ -24,6 +26,61 @@ public class MainActivity extends ActionBarActivity
     {
         m_WifiChooserFragment = new WifiChooserFragmentOnDemandObject();
         m_WifiIsDisabledFragment = new WifiIsDisabledFragmentOnDemandObject();
+
+        m_OnWifiEnabledListener = new OnWifiEnabledListener();
+        m_OnWifiDisabledListener = new OnWifiDisabledListener();
+
+        m_ChangeFragmentBottleneck = new ChangeFragmentBottleneck();
+    }
+
+    /**
+     * The Bottleneck used for committing fragment replace transactions.
+     *
+     * Since transactions cannot be committed while the app is paused or stopped, we bottleneck the
+     * calls.
+     */
+    private class ChangeFragmentBottleneck extends Bottleneck
+    {
+        /**
+         * Commits a fragment replace.
+         *
+         * @param fragment The fragment to replace with.
+         */
+        public void process(Fragment fragment)
+        {
+            super.process(fragment);
+        }
+
+        // Inherited documentation.
+        @Override
+        protected void onProcess(Object object) throws Error
+        {
+            getSupportFragmentManager().beginTransaction().replace(
+                R.id.MainActivity_fragment_frame,
+                (Fragment)object).commit();
+        }
+    }
+
+    // Inherited documentation.
+    private class OnWifiEnabledListener implements tuhh.nme.mp.broadcasts.OnWifiEnabledListener
+    {
+        // Inherited documentation.
+        @Override
+        public void onWifiEnabled()
+        {
+            changeFragment(m_WifiChooserFragment.get());
+        }
+    }
+
+    // Inherited documentation.
+    private class OnWifiDisabledListener implements tuhh.nme.mp.broadcasts.OnWifiDisabledListener
+    {
+        // Inherited documentation.
+        @Override
+        public void onWifiDisabled()
+        {
+            changeFragment(m_WifiIsDisabledFragment.get());
+        }
     }
 
     // Inherited documentation.
@@ -47,6 +104,9 @@ public class MainActivity extends ActionBarActivity
         getSupportFragmentManager().beginTransaction().add(
             R.id.MainActivity_fragment_frame,
             fragment).commit();
+
+        WifiBroadcastReceiver.attach(m_OnWifiDisabledListener);
+        WifiBroadcastReceiver.attach(m_OnWifiEnabledListener);
     }
 
     // Inherited documentation.
@@ -89,9 +149,20 @@ public class MainActivity extends ActionBarActivity
 
     // Inherited documentation.
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        WifiBroadcastReceiver.detach(m_OnWifiEnabledListener);
+        WifiBroadcastReceiver.detach(m_OnWifiDisabledListener);
+    }
+
+    // Inherited documentation.
+    @Override
     protected void onPause()
     {
         super.onPause();
+        m_ChangeFragmentBottleneck.setStall(true);
     }
 
     // Inherited documentation.
@@ -99,6 +170,7 @@ public class MainActivity extends ActionBarActivity
     protected void onResume()
     {
         super.onResume();
+        m_ChangeFragmentBottleneck.setStall(false);
 
         // If WiFi was already enabled, make a fragment transition.
         if (WifiConnector.getWifiState() == WifiState.ENABLED)
@@ -114,9 +186,7 @@ public class MainActivity extends ActionBarActivity
      */
     private void changeFragment(Fragment fragment)
     {
-        getSupportFragmentManager().beginTransaction().replace(
-            R.id.MainActivity_fragment_frame,
-            fragment).commit();
+        m_ChangeFragmentBottleneck.process(fragment);
     }
 
     /**
@@ -127,4 +197,18 @@ public class MainActivity extends ActionBarActivity
      * The WifiIsDisabledFragment that gets displayed.
      */
     private WifiIsDisabledFragmentOnDemandObject m_WifiIsDisabledFragment;
+
+    /**
+     * The Bottleneck used to stall transaction commits while in pause or stop mode.
+     */
+    private ChangeFragmentBottleneck m_ChangeFragmentBottleneck;
+
+    /**
+     * The listener that listens for WiFi activation.
+     */
+    private OnWifiEnabledListener m_OnWifiEnabledListener;
+    /**
+     * The listener that listens for WiFi deactivation.
+     */
+    private OnWifiDisabledListener m_OnWifiDisabledListener;
 }
