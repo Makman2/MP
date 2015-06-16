@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity
             fragment = m_WifiIsDisabledFragment.get();
         }
 
-        getSupportFragmentManager().beginTransaction().add(
+        getSupportFragmentManager().beginTransaction().replace(
             R.id.MainActivity_fragment_frame,
             fragment).commit();
 
