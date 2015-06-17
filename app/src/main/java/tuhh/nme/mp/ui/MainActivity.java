@@ -1,5 +1,6 @@
 package tuhh.nme.mp.ui;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -83,12 +84,32 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * The listener that is triggered when the user selects a remote device to connect to from
+     * ListView.
+     */
+    private class OnScanResultItemClickListener implements WifiChooserFragmentOnItemClickListener
+    {
+        // Inherited documentation.
+        @Override
+        public void onItemClick(Object element)
+        {
+            // TODO: Implement remote module connection.
+            // TODO: Pass connection data either directly via Intent (like IP-address) or pass a
+            // TODO: reference to the later implemented background data management task.
+            Intent activity_start_intent = new Intent(MainActivity.this, PresentDataActivity.class);
+            MainActivity.this.startActivity(activity_start_intent);
+        }
+    }
+
     // Inherited documentation.
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        m_WifiChooserFragment.get().setOnItemClickListener(new OnScanResultItemClickListener());
 
         // Set startup fragment.
         Fragment fragment;
