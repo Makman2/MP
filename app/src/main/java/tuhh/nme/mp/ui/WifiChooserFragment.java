@@ -2,10 +2,12 @@ package tuhh.nme.mp.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import tuhh.nme.mp.R;
@@ -40,10 +42,52 @@ public class WifiChooserFragment extends Fragment
         public void onWifiScanResultsAvailable()
         {
             // Update ScanResult list.
-            m_ScanResultAdapter.clear();
-            m_ScanResultAdapter.addAll(WifiConnector.getAvailableDevices());
-            m_ScanResultAdapter.notifyDataSetChanged();
+            ScanResultAdapter adapter = (ScanResultAdapter)m_ListView.getAdapter();
+            adapter.clear();
+            adapter.addAll(WifiConnector.getAvailableDevices());
+            adapter.notifyDataSetChanged();
         }
+    }
+
+    /**
+     * The listener that listens for item clicks in the ListView.
+     *
+     * This listener wraps the public listener WifiChooserFragmentOnItemClickListener.
+     */
+    private class OnItemClickListener implements AdapterView.OnItemClickListener
+    {
+        /**
+         * Creates a new OnItemClickListener.
+         *
+         * @param callback The WifiChooserFragmentOnItemClickListener that gets called from this
+         *                 listener.
+         */
+        public OnItemClickListener(@NonNull WifiChooserFragmentOnItemClickListener callback)
+        {
+            m_Callback = callback;
+        }
+
+        // Inherited documentation.
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            m_Callback.onItemClick(parent.getItemAtPosition(position));
+        }
+
+        /**
+         * Returns the registered callback listener.
+         *
+         * @return The callback listener.
+         */
+        public WifiChooserFragmentOnItemClickListener getCallback()
+        {
+            return m_Callback;
+        }
+
+        /**
+         * The background listener that is called implicitly when invoking onItemClick().
+         */
+        private WifiChooserFragmentOnItemClickListener m_Callback;
     }
 
     // Inherited documentation.
@@ -82,19 +126,63 @@ public class WifiChooserFragment extends Fragment
      */
     private void initializeView(View view)
     {
-        ListView list = (ListView)view.findViewById(R.id.WifiChooserFragment_scan_result_list);
-        m_ScanResultAdapter = new ScanResultAdapter(this.getActivity(),
-                                                    WifiConnector.getAvailableDevices());
-
-        list.setAdapter(m_ScanResultAdapter);
+        m_ListView = (ListView)view.findViewById(R.id.WifiChooserFragment_scan_result_list);
+        m_ListView.setAdapter(new ScanResultAdapter(this.getActivity(),
+                                                    WifiConnector.getAvailableDevices()));
+        m_ListView.setOnItemClickListener(m_OnItemClickListener);
     }
 
     /**
-     * The adapter that is responsible for presenting the ScanResult's from the last WiFi scan.
+     * Sets the WifiChooserFragmentOnItemClickListener that shall listen to item clicks on the
+     * list.
+     *
+     * @param listener The listener to register. Passing null means no listener gets registered.
      */
-    private ScanResultAdapter m_ScanResultAdapter;
+    public void setOnItemClickListener(WifiChooserFragmentOnItemClickListener listener)
+    {
+        if (listener == null)
+        {
+            m_OnItemClickListener = null;
+        }
+        else
+        {
+            m_OnItemClickListener = new OnItemClickListener(listener);
+        }
+
+        if (m_ListView != null)
+            m_ListView.setOnItemClickListener(m_OnItemClickListener);
+    }
+
+    /**
+     * Returns the registered WifiChooserFragmentOnItemClickListener that is responsible for
+     * handling ListView item clicks.
+     *
+     * @return The registered WifiChooserFragmentOnItemClickListener. If none registered, returns
+     *         null.
+     */
+    public WifiChooserFragmentOnItemClickListener getOnItemClickListener()
+    {
+        if (m_OnItemClickListener == null)
+        {
+            return null;
+        }
+        else
+        {
+            return m_OnItemClickListener.getCallback();
+        }
+    }
+
+    /**
+     * The ListView that displays all possible remote modules the user can connect to.
+     */
+    private ListView m_ListView;
+
     /**
      * The listener that listens for new WiFi scans available.
      */
     private OnWifiScanResultsAvailableListener m_OnWifiScanResultsAvailableListener;
+    /**
+     * The listener that attaches to the list view item click.
+     */
+    private OnItemClickListener m_OnItemClickListener;
 }
