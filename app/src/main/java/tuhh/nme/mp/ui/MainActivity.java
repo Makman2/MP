@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.broadcasts.WifiBroadcastReceiver;
 import tuhh.nme.mp.components.Bottleneck;
+import tuhh.nme.mp.components.OnDemandObject;
 import tuhh.nme.mp.remote.WifiConnector;
 import tuhh.nme.mp.remote.WifiState;
 
@@ -62,6 +63,34 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * Creates a WifiChooserFragment on demand.
+     */
+    public class WifiChooserFragmentOnDemandObject extends OnDemandObject<WifiChooserFragment>
+    {
+        /**
+         * Instantiates a new WifiChooserFragmentOnDemandObject.
+         */
+        public WifiChooserFragmentOnDemandObject()
+        {
+            super();
+        }
+
+        /**
+         * Instantiates the WifiChooserFragment.
+         *
+         * @return The WifiChooserFragment.
+         */
+        @Override
+        protected WifiChooserFragment instantiate()
+        {
+            WifiChooserFragment instance = new WifiChooserFragment();
+            instance.setOnItemClickListener(new OnScanResultItemClickListener());
+
+            return instance;
+        }
+    }
+
     // Inherited documentation.
     private class OnWifiEnabledListener implements tuhh.nme.mp.broadcasts.OnWifiEnabledListener
     {
@@ -108,8 +137,6 @@ public class MainActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
-        m_WifiChooserFragment.get().setOnItemClickListener(new OnScanResultItemClickListener());
 
         // Set startup fragment.
         Fragment fragment;
