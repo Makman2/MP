@@ -28,7 +28,9 @@ public class PresentDataActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.present_data_activity);
 
-        // TODO: Set startup fragment.
+        getSupportFragmentManager().beginTransaction().replace(
+            R.id.PresentDataActivity_fragment_frame,
+            new LiveDataFragment()).commit();
     }
 
     // Inherited documentation.
