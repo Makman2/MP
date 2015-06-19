@@ -63,6 +63,8 @@ public class PresentDataActivity extends ActionBarActivity
                 return true;
 
             case R.id.PresentDataMenu_about:
+                Intent activity_start_intent2 = new Intent(this, AboutActivity.class);
+                startActivity(activity_start_intent2);
                 return true;
         }
 

@@ -186,6 +186,8 @@ public class MainActivity extends ActionBarActivity
                 return true;
 
             case R.id.MainMenu_about:
+                Intent activity_start_intent2 = new Intent(this, AboutActivity.class);
+                startActivity(activity_start_intent2);
                 return true;
 
             case R.id.MainMenu_refresh:
