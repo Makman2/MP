@@ -127,7 +127,7 @@ public class MainActivity extends ActionBarActivity
             // TODO: Pass connection data either directly via Intent (like IP-address) or pass a
             // TODO: reference to the later implemented background data management task.
             Intent activity_start_intent = new Intent(MainActivity.this, PresentDataActivity.class);
-            MainActivity.this.startActivity(activity_start_intent);
+            startActivity(activity_start_intent);
         }
     }
 
