@@ -26,6 +26,10 @@
 
     <string name="SettingsActivity.label">Settings</string>
 
+    <string name="AboutActivity.label">About</string>
+    <string name="AboutActivity.by_text">by</string>
+    <string name="AboutActivity.authors">Mischa Krüger\nPayam</string>
+
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 
     <string name="WifiIsDisabledFragment.message">
