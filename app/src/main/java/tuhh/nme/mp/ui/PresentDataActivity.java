@@ -1,5 +1,6 @@
 package tuhh.nme.mp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -57,6 +58,8 @@ public class PresentDataActivity extends ActionBarActivity
                 return true;
 
             case R.id.PresentDataMenu_settings:
+                Intent activity_start_intent = new Intent(this, SettingsActivity.class);
+                startActivity(activity_start_intent);
                 return true;
 
             case R.id.PresentDataMenu_about:
