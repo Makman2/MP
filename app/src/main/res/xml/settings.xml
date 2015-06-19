@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="device_address"
+        android:title="@string/Settings.device_ip.title"
+        android:summary="@string/Settings.device_ip.summary"
+        android:dialogTitle="@string/Settings.device_ip.dialog_title"
+        android:inputType="numberDecimal"
+        android:digits="0123456789."
+        android:maxLength="15"
+        android:defaultValue="192.168.1.1" />
+
+    <EditTextPreference
+        android:key="device_port"
+        android:title="@string/Settings.device_port.title"
+        android:summary="@string/Settings.device_port.summary"
+        android:dialogTitle="@string/Settings.device_port.dialog_title"
+        android:inputType="number"
+        android:maxLength="5"
+        android:defaultValue="712" />
+
+</PreferenceScreen>
