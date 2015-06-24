@@ -10,6 +10,8 @@
     <string name="Settings.device_port.title">Device port</string>
     <string name="Settings.device_port.summary">The port of the device to connect to.</string>
     <string name="Settings.device_port.dialog_title">Enter port number</string>
+    <string name="Settings.auto_save.title">Auto Save</string>
+    <string name="Settings.auto_save.summary">Every live-data preview will be saved.</string>
 
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>

@@ -21,4 +21,10 @@
         android:maxLength="5"
         android:defaultValue="712" />
 
+    <CheckBoxPreference
+        android:key="auto_save"
+        android:title="@string/Settings.auto_save.title"
+        android:summary="@string/Settings.auto_save.summary"
+        android:defaultValue="true" />
+
 </PreferenceScreen>
