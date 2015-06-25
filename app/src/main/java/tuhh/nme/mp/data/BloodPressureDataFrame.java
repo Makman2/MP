@@ -11,7 +11,7 @@ import java.util.List;
 public class BloodPressureDataFrame extends HighPrecisionDatedDataFrame<Float>
 {
     /**
-     * Instantiates a new PressureDataFrame class and associates the given data with
+     * Instantiates a new BloodPressureDataFrame class and associates the given data with
      * HighPrecisionDate's.
      *
      * @param data The data.
@@ -27,7 +27,7 @@ public class BloodPressureDataFrame extends HighPrecisionDatedDataFrame<Float>
     }
 
     /**
-     * Instantiates a new PressureDataFrame class from the given data set.
+     * Instantiates a new BloodPressureDataFrame class from the given data set.
      *
      * @param data A collection of data to initialize with.
      */
@@ -37,7 +37,7 @@ public class BloodPressureDataFrame extends HighPrecisionDatedDataFrame<Float>
     }
 
     /**
-     * Instantiates a new PressureDataFrame class from remote module raw data.
+     * Instantiates a new BloodPressureDataFrame class from remote module raw data.
      *
      * @param raw                    The raw data string from the module. This is a comma separated
      *                               list of floating-point values.
