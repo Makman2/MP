@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import tuhh.nme.mp.R;
 
@@ -17,12 +19,24 @@ import tuhh.nme.mp.R;
  */
 public class ManualConnectActivity extends ActionBarActivity
 {
+    private class OnClickConnectListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            // TODO: Implement connection.
+        }
+    }
+
     // Inherited documentation.
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manual_connect_activity);
+
+        Button btn = (Button)findViewById(R.id.ManualConnectActivity_connect_button);
+        btn.setOnClickListener(new OnClickConnectListener());
     }
 
     // Inherited documentation.
