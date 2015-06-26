@@ -435,6 +435,14 @@ public class Client
         m_SocketInteractor.terminate();
     }
 
+    // Inherited documentation.
+    @Override
+    protected void finalize() throws Throwable
+    {
+        close();
+        super.finalize();
+    }
+
     /**
      * Returns the address the Client is connected to.
      *
