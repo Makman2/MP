@@ -126,8 +126,7 @@ public class MainActivity extends ActionBarActivity
             // TODO: Implement remote module connection.
             // TODO: Pass connection data either directly via Intent (like IP-address) or pass a
             // TODO: reference to the later implemented background data management task.
-            Intent activity_start_intent = new Intent(MainActivity.this, PresentDataActivity.class);
-            startActivity(activity_start_intent);
+            startActivity(new Intent(MainActivity.this, PresentDataActivity.class));
         }
     }
 
@@ -190,13 +189,11 @@ public class MainActivity extends ActionBarActivity
                 return true;
 
             case R.id.MainMenu_settings:
-                Intent activity_start_intent = new Intent(this, SettingsActivity.class);
-                startActivity(activity_start_intent);
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             case R.id.MainMenu_about:
-                Intent activity_start_intent2 = new Intent(this, AboutActivity.class);
-                startActivity(activity_start_intent2);
+                startActivity(new Intent(this, AboutActivity.class));
                 return true;
         }
 
