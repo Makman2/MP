@@ -177,6 +177,10 @@ public class MainActivity extends ActionBarActivity
 
         switch (id)
         {
+            case R.id.MainMenu_manual_connect:
+                startActivity(new Intent(this, ManualConnectActivity.class));
+                return true;
+
             case R.id.MainMenu_history:
                 return true;
 

@@ -36,6 +36,10 @@
             android:name=".ui.AboutActivity"
             android:label="@string/AboutActivity.label" />
 
+        <activity
+            android:name=".ui.ManualConnectActivity"
+            android:label="@string/app_name" />
+
         <receiver android:name=".broadcasts.WifiBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />

@@ -13,6 +13,7 @@
     <string name="Settings.auto_save.title">Auto Save</string>
     <string name="Settings.auto_save.summary">Every live-data preview will be saved.</string>
 
+    <string name="MainMenu.manual_connect_text">Manual connect</string>
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>
     <string name="MainMenu.about_text">About</string>
@@ -31,6 +32,11 @@
     <string name="AboutActivity.label">About</string>
     <string name="AboutActivity.by_text">by</string>
     <string name="AboutActivity.authors">Mischa Krüger\nPayam</string>
+
+    <string name="ManualConnectActivity.head">
+        Press the button to connect to a remote module on the same network as this device.
+    </string>
+    <string name="ManualConnectActivity.button">Connect</string>
 
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 
