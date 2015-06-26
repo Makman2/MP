@@ -13,11 +13,11 @@
     <string name="Settings.auto_save.title">Auto Save</string>
     <string name="Settings.auto_save.summary">Every live-data preview will be saved.</string>
 
+    <string name="MainMenu.refresh_text">Refresh</string>
     <string name="MainMenu.manual_connect_text">Manual connect</string>
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>
     <string name="MainMenu.about_text">About</string>
-    <string name="MainMenu.refresh_text">Refresh</string>
 
     <string name="PresentDataMenu.history_text">History</string>
     <string name="PresentDataMenu.settings_text">Settings</string>
