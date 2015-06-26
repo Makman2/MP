@@ -186,6 +186,7 @@ public class MainActivity extends ActionBarActivity
                 return true;
 
             case R.id.MainMenu_history:
+                // TODO: Load history activity here.
                 return true;
 
             case R.id.MainMenu_settings:
