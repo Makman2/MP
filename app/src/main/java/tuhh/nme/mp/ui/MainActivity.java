@@ -177,6 +177,11 @@ public class MainActivity extends ActionBarActivity
 
         switch (id)
         {
+            case R.id.MainMenu_refresh:
+                // TODO: Implement animation for refresh action menu button.
+                WifiConnector.triggerRescan();
+                return true;
+
             case R.id.MainMenu_manual_connect:
                 startActivity(new Intent(this, ManualConnectActivity.class));
                 return true;
@@ -192,11 +197,6 @@ public class MainActivity extends ActionBarActivity
             case R.id.MainMenu_about:
                 Intent activity_start_intent2 = new Intent(this, AboutActivity.class);
                 startActivity(activity_start_intent2);
-                return true;
-
-            case R.id.MainMenu_refresh:
-                // TODO: Implement animation for refresh action menu button.
-                WifiConnector.triggerRescan();
                 return true;
         }
 
