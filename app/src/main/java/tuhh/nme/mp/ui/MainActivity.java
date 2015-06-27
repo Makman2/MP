@@ -123,9 +123,6 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onItemClick(Object element)
         {
-            // TODO: Implement remote module connection.
-            // TODO: Pass connection data either directly via Intent (like IP-address) or pass a
-            // TODO: reference to the later implemented background data management task.
             startActivity(new Intent(MainActivity.this, PresentDataActivity.class));
         }
     }
