@@ -24,7 +24,7 @@ public class ManualConnectActivity extends ActionBarActivity
         @Override
         public void onClick(View v)
         {
-            // TODO: Implement connection.
+            startActivity(new Intent(ManualConnectActivity.this, PresentDataActivity.class));
         }
     }
 

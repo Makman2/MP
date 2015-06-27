@@ -41,6 +41,15 @@
         Press the button to connect to a remote module on the same network as this device.
     </string>
     <string name="ManualConnectActivity.button">Connect</string>
+    <string name="ManualConnectActivity.invalid_host_dialog_message">
+        Invalid device address!
+    </string>
+    <string name="ManualConnectActivity.connection_refused_dialog_message">
+        Connection refused!
+    </string>
+    <string name="ManualConnectActivity.connection_fail_dialog_message">
+        Failed to connect to remote device!
+    </string>
 
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 
