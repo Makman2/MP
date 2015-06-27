@@ -43,4 +43,6 @@
     <string name="WifiIsDisabledFragment.message">
         WiFi is currently turned off.\nTurn it on.
     </string>
+
+    <string name="dialogs.AlertDialogFragment.ok">OK</string>
 </resources>
