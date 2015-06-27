@@ -19,7 +19,7 @@
         android:dialogTitle="@string/Settings.device_port.dialog_title"
         android:inputType="number"
         android:maxLength="5"
-        android:defaultValue="712" />
+        android:defaultValue="1337" />
 
     <CheckBoxPreference
         android:key="auto_save"
