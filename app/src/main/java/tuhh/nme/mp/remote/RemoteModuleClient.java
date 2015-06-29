@@ -1,5 +1,6 @@
 package tuhh.nme.mp.remote;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -59,23 +60,33 @@ public class RemoteModuleClient
             out_stream.write(CMD_START_TRANSFER);
             out_stream.flush();
 
-            byte[] buffer = new byte[2];
-
-            ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
-
-            for (int i = 0; i < m_Count; i++)
+            try
             {
-                if (short_buffer.capacity() != in_stream.read(buffer))
-                {
-                    // Server seems to work wrong since he sent the wrong number of bytes.
-                    throw new InvalidReactionException(
-                        "Server sent wrong number of bytes. Expected " +
-                        Integer.toString(short_buffer.capacity()) + " bytes.");
-                }
+                byte[] buffer = new byte[2];
 
-                short_buffer.position(0);
-                short_buffer.put(buffer);
-                data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+                ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
+
+                for (int i = 0; i < m_Count; i++)
+                {
+                    if (short_buffer.capacity() != in_stream.read(buffer))
+                    {
+                        // Server seems to work wrong since he sent the wrong number of bytes.
+                        throw new InvalidReactionException(
+                            "Server sent wrong number of bytes. Expected " +
+                            Integer.toString(short_buffer.capacity()) + " bytes.");
+                    }
+
+                    short_buffer.position(0);
+                    short_buffer.put(buffer);
+                    data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+                }
+            }
+            catch(IOException ex)
+            {
+                // Re-raise the exception after closing, so we stop the data transfer.
+                out_stream.write(CMD_STOP_TRANSFER);
+                out_stream.flush();
+                throw ex;
             }
 
             // Stop data transfer.
