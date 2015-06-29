@@ -49,12 +49,10 @@ public class Client
         @Override
         public void run()
         {
-            Socket socket;
-
             // Connect socket to address.
             try
             {
-                socket = new Socket(m_Address, m_Port);
+                m_Socket = new Socket(m_Address, m_Port);
             }
             catch (IOException ex)
             {
@@ -67,11 +65,11 @@ public class Client
             m_InitializationLock.unlock();
 
             // Wait for incoming tasks.
-            while (!socket.isClosed())
+            while (!m_Socket.isClosed())
             {
                 try
                 {
-                    m_SocketCommandQueue.take().run(socket);
+                    m_SocketCommandQueue.take().run(m_Socket);
                 }
                 catch (InterruptedException ignored)
                 {
@@ -83,17 +81,7 @@ public class Client
             setReady(false);
 
             // Flush pipe.
-            while (!m_SocketCommandQueue.isEmpty())
-            {
-                try
-                {
-                    m_SocketCommandQueue.take().run(null);
-                }
-                catch (InterruptedException ignored)
-                {
-                    // Ignore this exception. When the queue wait is interrupted, try it again.
-                }
-            }
+            flushPipe();
         }
 
         /**
@@ -209,6 +197,49 @@ public class Client
         }
 
         /**
+         * Kills the background thread, closes the socket and flushes through all remaining
+         * commands.
+         */
+        public void forceStop()
+        {
+            m_SocketInteractorThread.interrupt();
+            while (true)
+            {
+                try
+                {
+                    m_SocketInteractorThread.join();
+                    break;
+                }
+                catch (InterruptedException ex)
+                {
+                    // Do nothing, retry until no interrupt occurs.
+                }
+            }
+
+            // Flush through pipe.
+            setFlushThrough(true);
+            flushPipe();
+        }
+
+        /**
+         * Flushes all remaining commands in the pipe.
+         */
+        private void flushPipe()
+        {
+            while (!m_SocketCommandQueue.isEmpty())
+            {
+                try
+                {
+                    m_SocketCommandQueue.take().run(null);
+                }
+                catch (InterruptedException ignored)
+                {
+                    // Ignore this exception. When the queue wait is interrupted, try it again.
+                }
+            }
+        }
+
+        /**
          * Returns the address this class is connected to.
          *
          * @return The address.
@@ -268,6 +299,11 @@ public class Client
          * The lock that blocks waitUntilReady().
          */
         private final SimpleLock m_InitializationLock;
+
+        /**
+         * The socket instance used in the thread.
+         */
+        private Socket m_Socket;
 
         /**
          * The queue that contains the commands to process.
@@ -378,6 +414,17 @@ public class Client
     public void waitForShutdown() throws InterruptedException
     {
         m_SocketInteractorThread.join();
+    }
+
+    /**
+     * Tells the background Client thread to immediately terminate and close the connection.
+     *
+     * This call blocks until the thread is terminated and all remaining SocketCommand's are
+     * flushed.
+     */
+    public void terminate()
+    {
+        m_SocketInteractor.forceStop();
     }
 
     // Inherited documentation.
