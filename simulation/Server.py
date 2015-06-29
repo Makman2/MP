@@ -62,42 +62,54 @@ class ServerHandler(socketserver.BaseRequestHandler):
         Waits for an incoming 1-byte command.
         """
         x = self.request.recv(1)
-        if len(x) == 0:
-            self.server.printv("Received ping.")
-        else:
-            self.server.printv("Received command: {} ({})".format(
-                x, inverse_commands[x]))
-            return int.from_bytes(x, "big")
+        if len(x) != 0:
+            x = int.from_bytes(x, "big")
+            try:
+                self.server.printv("Received command: {} ({})".format(
+                    hex(x), self.inverse_commands[x]))
+            except KeyError:
+                self.server.printv("Received unknown command: {}".format(
+                    hex(x)))
+
+            return x
 
     def handle(self):
         """
-        Handles an incoming data packet.
+        Handles an incoming connection.
         """
-        cmd = self._receive_command()
+        self.server.printv("Connection opened.")
 
-        if cmd == self.commands["CMD_START_TRANSFER"]:
-            self.server.printv("Starting transfer...")
+        data_generator = DataGenerator()
 
-            to = self.request.gettimeout()
-            self.request.settimeout(self.server.data_rate)
+        while True:
+            cmd = self._receive_command()
 
-            running = True
-            data_generator = DataGenerator()
+            if cmd == self.commands["CMD_START_TRANSFER"]:
+                self.server.printv("Starting transfer...")
 
-            while running:
-                try:
-                    cmd = self._receive_command()
+                to = self.request.gettimeout()
+                self.request.settimeout(self.server.data_rate)
 
-                    if cmd == self.commands["CMD_STOP_TRANSFER"]:
-                        self.request.settimeout(to)
-                        running = False
+                running = True
 
-                except socket.timeout:
-                    # No command received, continue sending data.
-                    value_to_send = data_generator.generate()
-                    self.request.sendall(
-                        self._convert_short_to_string(value_to_send))
-                    self.server.printv("Sent {}.".format(value_to_send))
+                while running:
+                    try:
+                        cmd = self._receive_command()
 
-            self.server.printv(
-                "Received {}. Transfer complete.".format(inverse_commands[cmd]))
+                        if cmd == self.commands["CMD_STOP_TRANSFER"]:
+                            self.request.settimeout(to)
+                            running = False
+
+                    except socket.timeout:
+                        # No command received, continue sending data.
+                        value_to_send = data_generator.generate()
+                        self.request.sendall(
+                            self._convert_short_to_string(value_to_send))
+                        self.server.printv("Sent {}.".format(value_to_send))
+
+                self.server.printv("Transfer complete.")
+
+            elif cmd == None:
+                self.server.printv("Connection closed.")
+                break
+
