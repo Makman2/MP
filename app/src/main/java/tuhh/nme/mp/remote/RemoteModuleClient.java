@@ -156,6 +156,16 @@ public class RemoteModuleClient
     }
 
     /**
+     * Tells the background Client thread to immediately terminate and close the connection.
+     *
+     * This call blocks until all remaining commands are flushed.
+     */
+    public void terminate()
+    {
+        m_Client.terminate();
+    }
+
+    /**
      * Returns the address the Client is connected to.
      *
      * @return The address.
