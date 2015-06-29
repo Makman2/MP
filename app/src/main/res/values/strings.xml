@@ -40,7 +40,7 @@
 
     <string name="AboutActivity.label">About</string>
     <string name="AboutActivity.by_text">by</string>
-    <string name="AboutActivity.authors">Mischa Krüger\nPayam</string>
+    <string name="AboutActivity.authors">Mischa Krüger\nPayam Mirzaei</string>
 
     <string name="ManualConnectActivity.head">
         Press the button to connect to a remote module on the same network as this device.
