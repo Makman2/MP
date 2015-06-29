@@ -116,13 +116,13 @@ public class LiveDataFragment extends Fragment
         {
             try
             {
-                m_Client.close();
+                m_Client.terminate();
                 Log.d(LiveDataFragment.class.getName(), "Client closed.");
             }
             catch (SocketCommandHandlingException ex)
             {
                 Log.e(LiveDataFragment.class.getName(),
-                      "Error closing the remote module client service.",
+                      "Error terminating the remote module client service.",
                       ex);
             }
         }
