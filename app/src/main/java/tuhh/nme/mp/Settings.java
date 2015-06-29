@@ -20,6 +20,7 @@ public final class Settings
         public static final String device_address = "192.168.1.1";
         public static final String device_port = "1337";
         public static final boolean auto_save = true;
+        public static final String data_fetch_rate = "4";
     }
 
     /**
@@ -40,4 +41,8 @@ public final class Settings
      * Whether the live data preview auto-saves the data.
      */
     public static final String auto_save = "auto_save";
+    /**
+     * The number of data points collected per request.
+     */
+    public static final String data_fetch_rate = "data_fetch_rate";
 }

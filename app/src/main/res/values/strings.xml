@@ -12,6 +12,11 @@
     <string name="Settings.device_port.dialog_title">Enter port number</string>
     <string name="Settings.auto_save.title">Auto Save</string>
     <string name="Settings.auto_save.summary">Every live-data preview will be saved.</string>
+    <string name="Settings.data_fetch_rate.title">Data Fetch Rate</string>
+    <string name="Settings.data_fetch_rate.summary">
+        Number of data points fetched per request.
+    </string>
+    <string name="Settings.data_fetch_rate.dialog_title">Enter fetch rate</string>
 
     <string name="MainMenu.refresh_text">Refresh</string>
     <string name="MainMenu.manual_connect_text">Manual connect</string>
