@@ -33,9 +33,11 @@ public class Client
 
             m_ThreadReady = false;
             m_ThreadError = null;
+            m_FlushThrough = false;
 
             m_ThreadReadyLock = new Object();
             m_ThreadErrorLock = new Object();
+            m_FlushThroughLock = new Object();
             m_InitializationLock = new SimpleLock();
 
             m_InitializationLock.lock();
@@ -69,8 +71,7 @@ public class Client
             {
                 try
                 {
-                    SocketCommand cmd = m_SocketCommandQueue.take();
-                    cmd.run(socket);
+                    m_SocketCommandQueue.take().run(socket);
                 }
                 catch (InterruptedException ignored)
                 {
@@ -78,17 +79,21 @@ public class Client
                 }
             }
 
-            // Close socket.
-            try
-            {
-                socket.close();
-            }
-            catch (IOException ex)
-            {
-                setError(ex);
-            }
-
+            setFlushThrough(true);
             setReady(false);
+
+            // Flush pipe.
+            while (!m_SocketCommandQueue.isEmpty())
+            {
+                try
+                {
+                    m_SocketCommandQueue.take().run(null);
+                }
+                catch (InterruptedException ignored)
+                {
+                    // Ignore this exception. When the queue wait is interrupted, try it again.
+                }
+            }
         }
 
         /**
@@ -118,11 +123,11 @@ public class Client
         }
 
         /**
-         * Sets the error that caused the thread to exit.
+         * Sets the connection error that caused the thread to exit.
          *
          * @param value The Exception that caused the thread exit.
          */
-        private void setError(Throwable value)
+        private void setError(IOException value)
         {
             synchronized (m_ThreadErrorLock)
             {
@@ -131,15 +136,47 @@ public class Client
         }
 
         /**
-         * Returns the error that caused the thread to crash.
+         * Returns the connection error that caused the thread to exit.
          *
-         * @return The Exception that caused the thread to crash. If null, no error occurred.
+         * @return The Exception that caused the thread to exit. If null, no error occurred.
          */
-        public Throwable getError()
+        public IOException getError()
         {
             synchronized (m_ThreadErrorLock)
             {
                 return m_ThreadError;
+            }
+        }
+
+        /**
+         * Sets the flush-through flag.
+         *
+         * The flush-through flag tells the thread to handle incoming commands immediately since
+         * the socket thread is closed.
+         *
+         * @param value The value for the flush-through flag.
+         */
+        private void setFlushThrough(boolean value)
+        {
+            synchronized (m_FlushThroughLock)
+            {
+                m_FlushThrough = value;
+            }
+        }
+
+        /**
+         * Gets the flush-through flag.
+         *
+         * The flush-through flag tells the thread to handle incoming commands immediately since
+         * the socket thread is closed.
+         *
+         * @return The flush-through flag.
+         */
+        private boolean getFlushThrough()
+        {
+            synchronized (m_FlushThroughLock)
+            {
+                return m_FlushThrough;
             }
         }
 
@@ -161,7 +198,14 @@ public class Client
          */
         public void putCommand(SocketCommand command) throws InterruptedException
         {
-            m_SocketCommandQueue.put(command);
+            if (getFlushThrough())
+            {
+                command.run(null);
+            }
+            else
+            {
+                m_SocketCommandQueue.put(command);
+            }
         }
 
         /**
@@ -200,7 +244,12 @@ public class Client
         /**
          * The error that caused the thread to exit.
          */
-        private Throwable m_ThreadError;
+        private IOException m_ThreadError;
+        /**
+         * The flush-through flag that determines whether to flush incoming commands immediately
+         * and not queue them into the thread.
+         */
+        private boolean m_FlushThrough;
 
         /**
          * The lock for accessing the thread-ready state.
@@ -210,6 +259,11 @@ public class Client
          * The lock for accessing the thread error.
          */
         private final Object m_ThreadErrorLock;
+        /**
+         * The lock for accessing the flush-through flag.
+         */
+        private final Object m_FlushThroughLock;
+
         /**
          * The lock that blocks waitUntilReady().
          */
@@ -221,27 +275,23 @@ public class Client
         private final BlockingQueue<SocketCommand> m_SocketCommandQueue;
     }
 
-    private class CloseSocketCommand extends SocketCommand<Exception>
+    private class CloseSocketCommand extends SocketCommand<Void>
     {
         /**
          * Handles the processing of this command.
          *
-         * @param socket The socket to operate on.
-         * @return       An Exception that occurred during handling. If no exception occurred,
-         *               returns null.
+         * @param socket     The socket to operate on.
+         * @return           An Exception that occurred during handling. If no exception occurred,
+         *                   returns null.
+         * @throws Throwable Any error that occurs during close.
          */
         @Override
-        protected Exception handle(Socket socket)
+        protected Void handle(Socket socket) throws Throwable
         {
-            try
+            if (socket != null)
             {
                 socket.close();
             }
-            catch (IOException ex)
-            {
-                return ex;
-            }
-
             return null;
         }
     }
@@ -249,11 +299,11 @@ public class Client
     /**
      * Instantiates a new Client.
      *
-     * @param address    The address to connect the client to.
-     * @param port       The port to connect to.
-     * @throws Throwable Any error that occurred during thread initialization.
+     * @param address      The address to connect the client to.
+     * @param port         The port to connect to.
+     * @throws IOException Thrown when the client couldn't connect to given address and port.
      */
-    public Client(InetAddress address, int port) throws Throwable
+    public Client(InetAddress address, int port) throws IOException
     {
         m_SocketInteractor = new SocketInteractor(address, port);
         m_SocketInteractorThread = new Thread(m_SocketInteractor);
@@ -286,19 +336,21 @@ public class Client
      *
      * You can override this function to provide custom closing behaviour.
      *
-     * @throws Exception Thrown when something goes wrong during closing.
+     * Note that the underlying thread doesn't have to be terminated, this function just signals the
+     * thread to shutdown. If you want to be sure that the thread finished, call waitForShutdown().
+     *
+     * @throws SocketCommandHandlingException Thrown when something goes wrong during closing.
      */
-    public void close() throws Exception
+    public void close() throws SocketCommandHandlingException
     {
         CloseSocketCommand cmd = new CloseSocketCommand();
-        boolean errored = true;
 
-        while(errored)
+        while(true)
         {
             try
             {
                 command(cmd);
-                errored = false;
+                break;
             }
             catch (InterruptedException ignored)
             {
@@ -306,15 +358,13 @@ public class Client
             }
         }
 
-        // getResult() blocks until result is available.
-        Exception result = cmd.getResult();
-        if (result != null)
-        {
-            throw result;
-        }
+        // getResult() blocks until result is available. So in this case it blocks until the close
+        // gets handled.
+        cmd.getResult();
 
         // Don't join the socket thread, improves user experience. The thread will shutdown
         // sooner or later after the CloseSocketCommand.
+        // If the user wants to wait for complete shutdown he can use waitForShutdown().
     }
 
     /**
