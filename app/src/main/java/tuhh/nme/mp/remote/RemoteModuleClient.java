@@ -1,5 +1,7 @@
 package tuhh.nme.mp.remote;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -78,7 +80,9 @@ public class RemoteModuleClient
 
                     short_buffer.position(0);
                     short_buffer.put(buffer);
-                    data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+                    short sh = short_buffer.getShort(0);
+                    Log.v("V", "Received " + Short.toString(sh));
+                    data.add(new DataPoint<>(HighPrecisionDate.now(), sh));
                 }
             }
             catch(IOException ex)
