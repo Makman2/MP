@@ -1,6 +1,5 @@
 package tuhh.nme.mp.remote;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -39,54 +38,59 @@ public class RemoteModuleClient
         /**
          * Handles the command processing.
          *
-         * @param socket The socket to operate on.
-         * @return       The fetched values from the remote module packed into a DataFrame.
+         * @param socket     The socket to operate on.
+         * @return           The fetched values from the remote module packed into a DataFrame.
+         * @throws Throwable The exception that was raised during handling.
          */
         @Override
-        protected HighPrecisionDatedDataFrame<Short> handle(Socket socket)
+        protected HighPrecisionDatedDataFrame<Short> handle(Socket socket) throws Throwable
         {
-            ArrayList<DataPoint<HighPrecisionDate, Short>> data = new ArrayList<>();
-            data.ensureCapacity(m_Count);
-
-            try
-            {
-                OutputStream out_stream = socket.getOutputStream();
-                InputStream in_stream = socket.getInputStream();
-
-                out_stream.write(CMD_START_TRANSFER);
-                out_stream.flush();
-
-                byte[] buffer = new byte[2];
-
-                ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
-
-                for (int i = 0; i < m_Count; i++)
-                {
-                    if (short_buffer.capacity() != in_stream.read(buffer))
-                    {
-                        // Server seems to work wrong since he sent the wrong number of bytes.
-                        return null;
-                    }
-
-                    short_buffer.position(0);
-                    short_buffer.put(buffer);
-                    data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
-                }
-
-                // Stop data transfer.
-                out_stream.write(CMD_STOP_TRANSFER);
-                out_stream.flush();
-            }
-            catch (IOException ex)
+            if (socket == null)
             {
                 return null;
             }
 
+            ArrayList<DataPoint<HighPrecisionDate, Short>> data = new ArrayList<>();
+            data.ensureCapacity(m_Count);
+
+            OutputStream out_stream = socket.getOutputStream();
+            InputStream in_stream = socket.getInputStream();
+
+            out_stream.write(CMD_START_TRANSFER);
+            out_stream.flush();
+
+            byte[] buffer = new byte[2];
+
+            ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
+
+            for (int i = 0; i < m_Count; i++)
+            {
+                if (short_buffer.capacity() != in_stream.read(buffer))
+                {
+                    // Server seems to work wrong since he sent the wrong number of bytes.
+                    throw new InvalidReactionException(
+                        "Server sent wrong number of bytes. Expected " +
+                        Integer.toString(short_buffer.capacity()) + " bytes.");
+                }
+
+                short_buffer.position(0);
+                short_buffer.put(buffer);
+                data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+            }
+
+            // Stop data transfer.
+            out_stream.write(CMD_STOP_TRANSFER);
+            out_stream.flush();
+
+            // It's possible that this command was too slow to stop the data-transfer exactly
+            // at that time when we finished reading, so we have data left in the socket buffer.
+            //in_stream.skip(Long.MAX_VALUE);
+
             return new HighPrecisionDatedDataFrame<>(data);
         }
 
-        private final int CMD_START_TRANSFER = 0x00;
-        private final int CMD_STOP_TRANSFER = 0x01;
+        private static final int CMD_START_TRANSFER = 0x00;
+        private static final int CMD_STOP_TRANSFER = 0x01;
 
         /**
          * The number of values to fetch in this command.
@@ -111,12 +115,15 @@ public class RemoteModuleClient
      *
      * This routine blocks the calling thread until the data is completely received.
      *
-     * @param count                 The number of data points to fetch.
-     * @return                      The received data packed into a DataFrame.
-     * @throws InterruptedException Thrown when the command could not be placed into processing
-     *                              queue.
+     * @param count                           The number of data points to fetch.
+     * @return                                The received data packed into a DataFrame.
+     * @throws InterruptedException           Thrown when the read command could not be placed into
+     *                                        processing queue.
+     * @throws SocketCommandHandlingException Thrown when an exception occurred during network read
+     *                                        attempt.
      */
-    public HighPrecisionDatedDataFrame<Short> read(int count) throws InterruptedException
+    public HighPrecisionDatedDataFrame<Short> read(int count)
+        throws InterruptedException, SocketCommandHandlingException
     {
         GetDataFrameCommand cmd = new GetDataFrameCommand(count);
         m_Client.command(cmd);
@@ -126,9 +133,9 @@ public class RemoteModuleClient
     /**
      * Closes the Client connection.
      *
-     * @throws Exception Thrown when something goes wrong during close.
+     * @throws SocketCommandHandlingException Thrown when something goes wrong during close.
      */
-    public void close() throws Exception
+    public void close() throws SocketCommandHandlingException
     {
         m_Client.close();
     }
