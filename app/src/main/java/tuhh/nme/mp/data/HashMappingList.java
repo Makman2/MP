@@ -35,7 +35,9 @@ public abstract class HashMappingList<InputType, MappingType>
     @Override
     public final MappingType add(InputType object)
     {
-        return m_Data.put(object, map(object));
+        MappingType mp = map(object);
+        m_Data.put(object, mp);
+        return mp;
     }
 
     /**
@@ -52,9 +54,7 @@ public abstract class HashMappingList<InputType, MappingType>
 
         for (InputType elem : objects)
         {
-            MappingType mapped_element = map(elem);
-            mapped.add(mapped_element);
-            m_Data.put(elem, mapped_element);
+            mapped.add(add(elem));
         }
 
         return mapped;

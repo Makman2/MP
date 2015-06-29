@@ -50,33 +50,55 @@ public class BloodPressurePlotDataTest extends AndroidTestCase
                                        HighPrecisionDate.fromMicroseconds(50),
                                        HighPrecisionTimeSpan.fromMicroseconds(10));
 
-        uut.add(data);
+        Collection<Entry> mapping = uut.add(data);
 
         assertEquals(1, uut.size());
 
         Iterator<Entry> it = uut.mappings().iterator().next().iterator();
+        Iterator<Entry> map_it = mapping.iterator();
 
         Entry elem = it.next();
+        Entry map_elem = map_it.next();
         assertEquals(0.0f, elem.getVal());
+        assertEquals(0.0f, map_elem.getVal());
         assertEquals(50000, elem.getXIndex());
+        assertEquals(50000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(1.0f, elem.getVal());
+        assertEquals(1.0f, map_elem.getVal());
         assertEquals(60000, elem.getXIndex());
+        assertEquals(60000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(2.0f, elem.getVal());
+        assertEquals(2.0f, map_elem.getVal());
         assertEquals(70000, elem.getXIndex());
+        assertEquals(70000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(3.0f, elem.getVal());
+        assertEquals(3.0f, map_elem.getVal());
         assertEquals(80000, elem.getXIndex());
+        assertEquals(80000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(7.0f, elem.getVal());
+        assertEquals(7.0f, map_elem.getVal());
         assertEquals(90000, elem.getXIndex());
+        assertEquals(90000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(21.7f, elem.getVal());
+        assertEquals(21.7f, map_elem.getVal());
         assertEquals(100000, elem.getXIndex());
+        assertEquals(100000, map_elem.getXIndex());
         elem = it.next();
+        map_elem = map_it.next();
         assertEquals(33.5f, elem.getVal());
+        assertEquals(33.5f, map_elem.getVal());
         assertEquals(110000, elem.getXIndex());
+        assertEquals(110000, map_elem.getXIndex());
     }
 
     /**
