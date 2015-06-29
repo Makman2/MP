@@ -203,18 +203,6 @@ public class Client
         public void forceStop()
         {
             m_SocketInteractorThread.interrupt();
-            while (true)
-            {
-                try
-                {
-                    m_SocketInteractorThread.join();
-                    break;
-                }
-                catch (InterruptedException ex)
-                {
-                    // Do nothing, retry until no interrupt occurs.
-                }
-            }
 
             // Flush through pipe.
             setFlushThrough(true);
