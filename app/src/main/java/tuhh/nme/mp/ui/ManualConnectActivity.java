@@ -5,21 +5,27 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import tuhh.nme.mp.R;
 
 
 /**
- * This Activity presents the data to the user.
+ * The activity that allows to use the current network. This activity is mostly for debugging and
+ * demonstration purposes.
+ *
+ * It is also useful for devices that connect to an existing network.
  */
-public class PresentDataActivity extends ActionBarActivity
+public class ManualConnectActivity extends ActionBarActivity
 {
-    /**
-     * Instantiates a new PresentDataActivity.
-     */
-    public PresentDataActivity()
+    private class OnClickConnectListener implements View.OnClickListener
     {
-        super();
+        @Override
+        public void onClick(View v)
+        {
+            startActivity(new Intent(ManualConnectActivity.this, PresentDataActivity.class));
+        }
     }
 
     // Inherited documentation.
@@ -27,11 +33,10 @@ public class PresentDataActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.present_data_activity);
+        setContentView(R.layout.manual_connect_activity);
 
-        getSupportFragmentManager().beginTransaction().replace(
-            R.id.PresentDataActivity_fragment_frame,
-            new LiveDataFragment()).commit();
+        Button btn = (Button)findViewById(R.id.ManualConnectActivity_connect_button);
+        btn.setOnClickListener(new OnClickConnectListener());
     }
 
     // Inherited documentation.
@@ -39,7 +44,7 @@ public class PresentDataActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.present_data_menu, menu);
+        getMenuInflater().inflate(R.menu.manual_connect_menu, menu);
         return true;
     }
 
@@ -54,15 +59,15 @@ public class PresentDataActivity extends ActionBarActivity
 
         switch (id)
         {
-            case R.id.PresentDataMenu_history:
+            case R.id.ManualConnectMenu_history:
                 // TODO: Load history activity here.
                 return true;
 
-            case R.id.PresentDataMenu_settings:
+            case R.id.ManualConnectMenu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
-            case R.id.PresentDataMenu_about:
+            case R.id.ManualConnectMenu_about:
                 startActivity(new Intent(this, AboutActivity.class));
                 return true;
         }

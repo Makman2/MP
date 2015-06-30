@@ -110,6 +110,18 @@ public class HighPrecisionDate
     }
 
     /**
+     * Returns the current date at invocation.
+     *
+     * Note that the time has millisecond precision, since the system time is not finer graded.
+     *
+     * @return The current date.
+     */
+    public static HighPrecisionDate now()
+    {
+        return new HighPrecisionDate(new Date());
+    }
+
+    /**
      * Returns the amount of time stored (in nanoseconds) in this HighPrecisionDate.
      *
      * @return The number of nanoseconds.

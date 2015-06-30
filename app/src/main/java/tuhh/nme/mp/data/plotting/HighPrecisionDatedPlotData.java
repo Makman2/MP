@@ -19,7 +19,7 @@ public abstract class HighPrecisionDatedPlotData<YType>
     /**
      * Instantiates a new HighPrecisionDatedPlotData without scale and relative count from epoch.
      */
-    HighPrecisionDatedPlotData()
+    public HighPrecisionDatedPlotData()
     {
         this(HighPrecisionDate.epoch, BigDecimal.ONE);
     }
@@ -29,7 +29,7 @@ public abstract class HighPrecisionDatedPlotData<YType>
      *
      * @param start The relative starting date that indicates the "zero"-time.
      */
-    HighPrecisionDatedPlotData(HighPrecisionDate start)
+    public HighPrecisionDatedPlotData(HighPrecisionDate start)
     {
         this(start, BigDecimal.ONE);
     }
@@ -39,7 +39,7 @@ public abstract class HighPrecisionDatedPlotData<YType>
      *
      * @param time_scale The time-span scaling factor.
      */
-    HighPrecisionDatedPlotData(BigDecimal time_scale)
+    public HighPrecisionDatedPlotData(BigDecimal time_scale)
     {
         this(HighPrecisionDate.epoch, time_scale);
     }
@@ -50,7 +50,7 @@ public abstract class HighPrecisionDatedPlotData<YType>
      * @param start      The relative starting date that indicates the "zero"-time.
      * @param time_scale The time-span scaling factor.
      */
-    HighPrecisionDatedPlotData(HighPrecisionDate start, BigDecimal time_scale)
+    public HighPrecisionDatedPlotData(HighPrecisionDate start, BigDecimal time_scale)
     {
         super();
         m_StartingDate = start;

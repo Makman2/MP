@@ -21,4 +21,6 @@ public class SettingsFragment extends PreferenceFragment
     }
 
     // TODO: Add validations for text settings like IP address.
+
+    // TODO: Display actual values of settings inside the description text.
 }

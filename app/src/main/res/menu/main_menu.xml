@@ -4,6 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/MainMenu.refresh"
+        android:title="@string/MainMenu.refresh_text"
+        android:icon="@drawable/ic_cached_white"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/MainMenu.manual_connect"
+        android:title="@string/MainMenu.manual_connect_text"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/MainMenu.history"
         android:title="@string/MainMenu.history_text"
         app:showAsAction="never" />
@@ -17,11 +28,5 @@
         android:id="@+id/MainMenu.about"
         android:title="@string/MainMenu.about_text"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/MainMenu.refresh"
-        android:title="@string/MainMenu.refresh_text"
-        android:icon="@drawable/ic_cached_white"
-        app:showAsAction="ifRoom"/>
 
 </menu>

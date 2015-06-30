@@ -123,11 +123,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onItemClick(Object element)
         {
-            // TODO: Implement remote module connection.
-            // TODO: Pass connection data either directly via Intent (like IP-address) or pass a
-            // TODO: reference to the later implemented background data management task.
-            Intent activity_start_intent = new Intent(MainActivity.this, PresentDataActivity.class);
-            startActivity(activity_start_intent);
+            startActivity(new Intent(MainActivity.this, PresentDataActivity.class));
         }
     }
 
@@ -177,22 +173,25 @@ public class MainActivity extends ActionBarActivity
 
         switch (id)
         {
-            case R.id.MainMenu_history:
-                return true;
-
-            case R.id.MainMenu_settings:
-                Intent activity_start_intent = new Intent(this, SettingsActivity.class);
-                startActivity(activity_start_intent);
-                return true;
-
-            case R.id.MainMenu_about:
-                Intent activity_start_intent2 = new Intent(this, AboutActivity.class);
-                startActivity(activity_start_intent2);
-                return true;
-
             case R.id.MainMenu_refresh:
                 // TODO: Implement animation for refresh action menu button.
                 WifiConnector.triggerRescan();
+                return true;
+
+            case R.id.MainMenu_manual_connect:
+                startActivity(new Intent(this, ManualConnectActivity.class));
+                return true;
+
+            case R.id.MainMenu_history:
+                // TODO: Load history activity here.
+                return true;
+
+            case R.id.MainMenu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+
+            case R.id.MainMenu_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 return true;
         }
 

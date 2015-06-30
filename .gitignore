@@ -1,6 +1,13 @@
+# Android Studio
 .gradle
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /build
+
+# Gedit temporary files
+*~
+
+# Python ignores
+*/__pycache__/

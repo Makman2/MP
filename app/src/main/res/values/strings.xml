@@ -12,11 +12,17 @@
     <string name="Settings.device_port.dialog_title">Enter port number</string>
     <string name="Settings.auto_save.title">Auto Save</string>
     <string name="Settings.auto_save.summary">Every live-data preview will be saved.</string>
+    <string name="Settings.data_fetch_rate.title">Data Fetch Rate</string>
+    <string name="Settings.data_fetch_rate.summary">
+        Number of data points fetched per request.
+    </string>
+    <string name="Settings.data_fetch_rate.dialog_title">Enter fetch rate</string>
 
+    <string name="MainMenu.refresh_text">Refresh</string>
+    <string name="MainMenu.manual_connect_text">Manual connect</string>
     <string name="MainMenu.history_text">History</string>
     <string name="MainMenu.settings_text">Settings</string>
     <string name="MainMenu.about_text">About</string>
-    <string name="MainMenu.refresh_text">Refresh</string>
 
     <string name="PresentDataMenu.history_text">History</string>
     <string name="PresentDataMenu.settings_text">Settings</string>
@@ -30,11 +36,27 @@
 
     <string name="AboutActivity.label">About</string>
     <string name="AboutActivity.by_text">by</string>
-    <string name="AboutActivity.authors">Mischa Krüger\nPayam</string>
+    <string name="AboutActivity.authors">Mischa Krüger\nPayam Mirzaei</string>
+
+    <string name="ManualConnectActivity.head">
+        Press the button to connect to a remote module on the same network as this device.
+    </string>
+    <string name="ManualConnectActivity.button">Connect</string>
+    <string name="ManualConnectActivity.invalid_host_dialog_message">
+        Invalid device address!
+    </string>
+    <string name="ManualConnectActivity.connection_refused_dialog_message">
+        Connection refused!
+    </string>
+    <string name="ManualConnectActivity.connection_fail_dialog_message">
+        Failed to connect to remote device!
+    </string>
 
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 
     <string name="WifiIsDisabledFragment.message">
         WiFi is currently turned off.\nTurn it on.
     </string>
+
+    <string name="dialogs.AlertDialogFragment.ok">OK</string>
 </resources>

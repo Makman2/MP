@@ -2,6 +2,7 @@ package tuhh.nme.mp;
 
 import android.util.Log;
 
+import tuhh.nme.mp.components.SharedObjectMemory;
 import tuhh.nme.mp.data.storage.DataFrameFileManager;
 import tuhh.nme.mp.remote.WifiConnector;
 
@@ -44,8 +45,21 @@ public class Application extends android.app.Application
         DataFrameFileManager.setContext(this);
         WifiConnector.setContext(this);
 
+        // Initialize shared object memory.
+        m_Memory = new SharedObjectMemory();
+
         // Print the summary program state.
         printLog();
+    }
+
+    /**
+     * Returns the application shared memory.
+     *
+     * @return The shared memory object.
+     */
+    public SharedObjectMemory getSharedMemory()
+    {
+        return m_Memory;
     }
 
     /**
@@ -79,4 +93,9 @@ public class Application extends android.app.Application
                 break;
         }
     }
+
+    /**
+     * The shared memory for this application.
+     */
+    private SharedObjectMemory m_Memory;
 }
