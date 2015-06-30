@@ -200,7 +200,7 @@ public class Client
          * Kills the background thread, closes the socket and flushes through all remaining
          * commands.
          */
-        public void forceStop()
+        public void terminate()
         {
             m_SocketInteractorThread.interrupt();
 
@@ -395,13 +395,16 @@ public class Client
      * Waits until the background thread is completely shutdown.
      *
      * You should be aware to call close() in some place, otherwise this call will block
-     * permanently.
+     * permanently. But it does not block if you already terminated the Client.
      *
      * @throws InterruptedException Thrown when the blocking call gets interrupted.
      */
     public void waitForShutdown() throws InterruptedException
     {
-        m_SocketInteractorThread.join();
+        if (!m_SocketInteractorThread.isInterrupted())
+        {
+            m_SocketInteractorThread.join();
+        }
     }
 
     /**
@@ -412,7 +415,7 @@ public class Client
      */
     public void terminate()
     {
-        m_SocketInteractor.forceStop();
+        m_SocketInteractor.terminate();
     }
 
     // Inherited documentation.
