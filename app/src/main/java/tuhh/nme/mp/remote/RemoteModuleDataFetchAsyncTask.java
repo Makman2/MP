@@ -1,6 +1,7 @@
 package tuhh.nme.mp.remote;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import tuhh.nme.mp.data.HighPrecisionDatedDataFrame;
@@ -67,12 +68,21 @@ public abstract class RemoteModuleDataFetchAsyncTask
     /**
      * Instantiates a new RemoteModuleDataFetchAsyncTask.
      *
-     * @param client     The client from where to fetch data.
-     * @param fetch_rate The number of data points fetched per request.
+     * @param client                    The client from where to fetch data.
+     * @param fetch_rate                The number of data points fetched per request. Needs to be
+     *                                  greater than zero.
+     * @throws IllegalArgumentException Thrown when fetch rate is zero or less.
      */
-    public RemoteModuleDataFetchAsyncTask(RemoteModuleClient client, int fetch_rate)
+    public RemoteModuleDataFetchAsyncTask(@NonNull RemoteModuleClient client, int fetch_rate)
+        throws IllegalArgumentException
     {
         m_Client = client;
+
+        if (fetch_rate < 1)
+        {
+            throw new IllegalArgumentException("Fetch rate can't be zero or less.");
+        }
+
         m_FetchRate = fetch_rate;
         m_FetchStarted = false;
     }
