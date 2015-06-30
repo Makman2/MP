@@ -100,8 +100,11 @@ public class LiveDataFragment extends Fragment
 
         // Instantiate FetchDataAsyncTask here because it loads settings that can only be accessed
         // if the attaching activity is known.
-        m_FetchDataAsyncTask = new FetchDataAsyncTask();
-        m_FetchDataAsyncTask.start();
+        if (m_Client != null)
+        {
+            m_FetchDataAsyncTask = new FetchDataAsyncTask();
+            m_FetchDataAsyncTask.start();
+        }
     }
 
     // Inherited documentation.
@@ -110,10 +113,10 @@ public class LiveDataFragment extends Fragment
     {
         super.onDestroy();
 
-        m_FetchDataAsyncTask.stop();
-
         if (m_Client != null)
         {
+            m_FetchDataAsyncTask.stop();
+
             try
             {
                 m_Client.terminate();
