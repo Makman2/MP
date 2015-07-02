@@ -439,7 +439,7 @@ public class Client
     @Override
     protected void finalize() throws Throwable
     {
-        close();
+        terminate();
         super.finalize();
     }
 
