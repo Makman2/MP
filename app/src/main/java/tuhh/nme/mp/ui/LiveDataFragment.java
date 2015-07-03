@@ -112,7 +112,6 @@ public class LiveDataFragment extends Fragment
             else
             {
                 m_Client = null;
-                String error_message;
 
                 AlertDialogFragment dialog = new AlertDialogFragment();
                 dialog.setRetainInstance(true);
@@ -133,21 +132,21 @@ public class LiveDataFragment extends Fragment
 
                 if (ex instanceof UnknownHostException)
                 {
-                    error_message = "Unknown host.";
+                    Log.d(LiveDataFragment.class.getName(), "Unknown host.", ex);
                     dialog.setMessage(R.string.LiveDataFragment_invalid_host_dialog_message);
                 }
                 else if(ex instanceof ConnectException)
                 {
-                    error_message = "Connection refused.";
+                    Log.d(LiveDataFragment.class.getName(), "Connection refused.", ex);
                     dialog.setMessage(R.string.LiveDataFragment_connection_refused_dialog_message);
                 }
                 else
                 {
-                    error_message = "Failed to connect to remote device.";
+                    Log.e(LiveDataFragment.class.getName(),
+                          "Failed to connect to remote device.",
+                          ex);
                     dialog.setMessage(R.string.LiveDataFragment_connection_fail_dialog_message);
                 }
-
-                Log.e(LiveDataFragment.class.getName(), error_message, ex);
 
                 if (getActivity() != null)
                 {
