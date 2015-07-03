@@ -224,5 +224,5 @@ public class LiveDataFragment extends Fragment
     /**
      * The connected RemoteModuleClient that is connected to the remote module.
      */
-    RemoteModuleClient m_Client;
+    private RemoteModuleClient m_Client;
 }
