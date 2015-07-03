@@ -1,5 +1,9 @@
 package tuhh.nme.mp.ui;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -15,6 +19,7 @@ import tuhh.nme.mp.R;
 import tuhh.nme.mp.Settings;
 import tuhh.nme.mp.remote.RemoteModuleClient;
 import tuhh.nme.mp.ui.dialogs.AlertDialogFragment;
+import tuhh.nme.mp.ui.dialogs.IndeterminateProgressDialogFragment;
 
 
 /**
@@ -22,6 +27,150 @@ import tuhh.nme.mp.ui.dialogs.AlertDialogFragment;
  */
 public class LiveDataFragment extends Fragment
 {
+    /**
+     * The asynchronous connect task.
+     */
+    private class ConnectAsyncTask extends AsyncTask<Void, Void, Throwable>
+    {
+        // Inherited documentation.
+        @Override
+        protected void onPreExecute()
+        {
+            Activity activity = getActivity();
+
+            if (activity == null)
+            {
+                Log.w(LiveDataFragment.class.getName(),
+                      "Can't access preferences, manually loading defaults.");
+
+                m_Address = Settings.Default.device_address;
+                m_Port = Integer.valueOf(Settings.Default.device_port);
+            }
+            else
+            {
+                SharedPreferences preferences =
+                    PreferenceManager.getDefaultSharedPreferences(activity);
+
+                m_Address = preferences.getString(Settings.device_address,
+                                                  Settings.Default.device_address);
+                m_Port = Integer.valueOf(preferences.getString(Settings.device_port,
+                                                               Settings.Default.device_port));
+            }
+
+            m_ProgressDialog = new IndeterminateProgressDialogFragment();
+            m_ProgressDialog.setRetainInstance(true);
+            m_ProgressDialog.setCancelable(true);
+            m_ProgressDialog.setMessage(R.string.LiveDataFragment_connecting_dialog_message);
+            m_ProgressDialog.setOnCancelListener(
+                new DialogInterface.OnCancelListener()
+                {
+                    @Override
+                    public void onCancel(DialogInterface dialog)
+                    {
+                        Activity activity = getActivity();
+                        if (activity != null)
+                        {
+                            getActivity().finish();
+                        }
+                    }
+                });
+
+            m_ProgressDialog.show(getActivity().getFragmentManager(), null);
+        }
+
+        // Inherited documentation.
+        @Override
+        protected Throwable doInBackground(Void... params)
+        {
+            try
+            {
+                m_Client = new RemoteModuleClient(InetAddress.getByName(m_Address), m_Port);
+            }
+            catch (Throwable ex)
+            {
+                return ex;
+            }
+
+            return null;
+        }
+
+        // Inherited documentation.
+        @Override
+        protected void onPostExecute(Throwable ex)
+        {
+            if (m_ProgressDialog.getActivity() != null)
+            {
+                m_ProgressDialog.dismiss();
+            }
+
+            if (ex == null)
+            {
+                Log.d(LiveDataFragment.class.getName(), "Client successfully connected.");
+
+                // TODO: Start here the data fetch.
+            }
+            else
+            {
+                m_Client = null;
+                String error_message;
+
+                AlertDialogFragment dialog = new AlertDialogFragment();
+                dialog.setRetainInstance(true);
+                dialog.setCancelable(true);
+                dialog.setOnDismissListener(
+                    new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                            Activity activity = getActivity();
+                            if (activity != null)
+                            {
+                                getActivity().finish();
+                            }
+                        }
+                    });
+
+                if (ex instanceof UnknownHostException)
+                {
+                    error_message = "Unknown host.";
+                    dialog.setMessage(R.string.LiveDataFragment_invalid_host_dialog_message);
+                }
+                else if(ex instanceof ConnectException)
+                {
+                    error_message = "Connection refused.";
+                    dialog.setMessage(R.string.LiveDataFragment_connection_refused_dialog_message);
+                }
+                else
+                {
+                    error_message = "Failed to connect to remote device.";
+                    dialog.setMessage(R.string.LiveDataFragment_connection_fail_dialog_message);
+                }
+
+                Log.e(LiveDataFragment.class.getName(), error_message, ex);
+
+                if (getActivity() != null)
+                {
+                    dialog.show(getActivity().getFragmentManager(), null);
+                }
+            }
+        }
+
+        /**
+         * The address to connect to.
+         */
+        private String m_Address;
+        /**
+         * The port to connect to.
+         */
+        private int m_Port;
+
+        /**
+         * The progress dialog that informs the user about connection attempt.
+         */
+        private IndeterminateProgressDialogFragment m_ProgressDialog;
+    }
+
     /**
      * Instantiates a new LiveDataFragment.
      */
@@ -45,57 +194,7 @@ public class LiveDataFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         // Connect to remote module.
-
-        String address = PreferenceManager.getDefaultSharedPreferences(
-            getActivity()).getString(Settings.device_address,
-                                     Settings.Default.device_address);
-        int port = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(
-            getActivity()).getString(Settings.device_port,
-                                     Settings.Default.device_port));
-
-        try
-        {
-            // TODO: Make connection threaded over an AsyncTask and show meanwhile a progress
-            // TODO: dialog.
-            m_Client = new RemoteModuleClient(InetAddress.getByName(address), port);
-
-            Log.d(LiveDataFragment.class.getName(), "Client successfully connected.");
-        }
-        catch (UnknownHostException ex)
-        {
-            m_Client = null;
-
-            AlertDialogFragment dialog = new AlertDialogFragment();
-            dialog.setMessage(R.string.ManualConnectActivity_invalid_host_dialog_message);
-            dialog.show(getActivity().getFragmentManager(), null);
-        }
-        catch (ConnectException ex)
-        {
-            m_Client = null;
-
-            Log.e(ManualConnectActivity.class.getName(),
-                  "Connection refused.",
-                  ex);
-
-            AlertDialogFragment dialog = new AlertDialogFragment();
-            dialog.setMessage(R.string.ManualConnectActivity_connection_refused_dialog_message);
-            dialog.show(getActivity().getFragmentManager(), null);
-        }
-        catch (Throwable ex)
-        {
-            m_Client = null;
-
-            Log.e(ManualConnectActivity.class.getName(),
-                  "Failed to connect to remote device.",
-                  ex);
-
-            AlertDialogFragment dialog = new AlertDialogFragment();
-            dialog.setMessage(R.string.ManualConnectActivity_connection_fail_dialog_message);
-            dialog.show(getActivity().getFragmentManager(), null);
-        }
-
-        // TODO: Close the containing activity after the user clicked the OK button of an error
-        // TODO: dialog.
+        new ConnectAsyncTask().execute();
     }
 
     // Inherited documentation.
