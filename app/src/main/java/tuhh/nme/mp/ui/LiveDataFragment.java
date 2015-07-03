@@ -207,6 +207,8 @@ public class LiveDataFragment extends Fragment
         {
             try
             {
+                // TODO: Wait for close asynchronously for a constant amount of time. If still
+                // TODO: blocking, then use terminate().
                 m_Client.close();
                 Log.d(LiveDataFragment.class.getName(), "Client closed.");
             }
