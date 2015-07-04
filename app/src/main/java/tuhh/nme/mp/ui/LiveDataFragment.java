@@ -183,6 +183,7 @@ public class LiveDataFragment extends Fragment
         return inflater.inflate(R.layout.live_data_fragment, container, false);
     }
 
+    // Inherited documentation.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
