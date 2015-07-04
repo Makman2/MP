@@ -111,13 +111,24 @@ public class RemoteModuleClient
     /**
      * Instantiates a RemoteModuleClient.
      *
-     * @param address      The address to connect to.
-     * @param port         The port to connect to.
-     * @throws IOException Any error that occurs during connection initialization.
+     * This constructor does not actually connect to the target. To do so, use connect().
+     *
+     * @param address The address to connect to.
+     * @param port    The port to connect to.
      */
-    public RemoteModuleClient(InetAddress address, int port) throws IOException
+    public RemoteModuleClient(InetAddress address, int port)
     {
         m_Client = new Client(address, port);
+    }
+
+    /**
+     * Connects to the desired device.
+     *
+     * @throws IOException Thrown when the client couldn't connect to given address and port.
+     */
+    public void connect() throws IOException
+    {
+        m_Client.connect();
     }
 
     /**

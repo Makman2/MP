@@ -335,17 +335,27 @@ public class Client
     /**
      * Instantiates a new Client.
      *
-     * This call blocks until the underlying thread has successfully been started and is ready to
-     * receive SocketCommand's.
+     * This constructor does not connect to the target. Use connect() to actually connect.
      *
-     * @param address      The address to connect the client to.
-     * @param port         The port to connect to.
-     * @throws IOException Thrown when the client couldn't connect to given address and port.
+     * @param address The address to connect the client to.
+     * @param port    The port to connect to.
      */
-    public Client(InetAddress address, int port) throws IOException
+    public Client(InetAddress address, int port)
     {
         m_SocketInteractor = new SocketInteractor(address, port);
         m_SocketInteractorThread = new Thread(m_SocketInteractor);
+    }
+
+    /**
+     * Connects to the desired device.
+     *
+     * This call blocks until the underlying thread has successfully been started and is ready to
+     * process SocketCommand's.
+     *
+     * @throws IOException Thrown when the client couldn't connect to given address and port.
+     */
+    public void connect() throws IOException
+    {
         m_SocketInteractorThread.start();
 
         m_SocketInteractor.waitUntilReady();

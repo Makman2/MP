@@ -36,27 +36,6 @@ public class LiveDataFragment extends Fragment
         @Override
         protected void onPreExecute()
         {
-            Activity activity = getActivity();
-
-            if (activity == null)
-            {
-                Log.w(LiveDataFragment.class.getName(),
-                      "Can't access preferences, manually loading defaults.");
-
-                m_Address = Settings.Default.device_address;
-                m_Port = Integer.valueOf(Settings.Default.device_port);
-            }
-            else
-            {
-                SharedPreferences preferences =
-                    PreferenceManager.getDefaultSharedPreferences(activity);
-
-                m_Address = preferences.getString(Settings.device_address,
-                                                  Settings.Default.device_address);
-                m_Port = Integer.valueOf(preferences.getString(Settings.device_port,
-                                                               Settings.Default.device_port));
-            }
-
             m_ProgressDialog = new IndeterminateProgressDialogFragment();
             m_ProgressDialog.setRetainInstance(true);
             m_ProgressDialog.setCancelable(true);
@@ -84,7 +63,7 @@ public class LiveDataFragment extends Fragment
         {
             try
             {
-                m_Client = new RemoteModuleClient(InetAddress.getByName(m_Address), m_Port);
+                m_Client.connect();
             }
             catch (Throwable ex)
             {
@@ -130,12 +109,7 @@ public class LiveDataFragment extends Fragment
                         }
                     });
 
-                if (ex instanceof UnknownHostException)
-                {
-                    Log.d(LiveDataFragment.class.getName(), "Unknown host.", ex);
-                    dialog.setMessage(R.string.LiveDataFragment_invalid_host_dialog_message);
-                }
-                else if(ex instanceof ConnectException)
+                if (ex instanceof ConnectException)
                 {
                     Log.d(LiveDataFragment.class.getName(), "Connection refused.", ex);
                     dialog.setMessage(R.string.LiveDataFragment_connection_refused_dialog_message);
@@ -154,15 +128,6 @@ public class LiveDataFragment extends Fragment
                 }
             }
         }
-
-        /**
-         * The address to connect to.
-         */
-        private String m_Address;
-        /**
-         * The port to connect to.
-         */
-        private int m_Port;
 
         /**
          * The progress dialog that informs the user about connection attempt.
@@ -192,8 +157,62 @@ public class LiveDataFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
-        // Connect to remote module.
-        new ConnectAsyncTask().execute();
+        Activity activity = getActivity();
+
+        String address;
+        int port;
+
+        if (activity == null)
+        {
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't access preferences, manually loading defaults.");
+
+            address = Settings.Default.device_address;
+            port = Integer.valueOf(Settings.Default.device_port);
+        }
+        else
+        {
+            SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(activity);
+
+            address = preferences.getString(Settings.device_address,
+                                            Settings.Default.device_address);
+            port = Integer.valueOf(preferences.getString(Settings.device_port,
+                                                         Settings.Default.device_port));
+        }
+
+        try
+        {
+            m_Client = new RemoteModuleClient(InetAddress.getByName(address), port);
+            // Connect to remote module.
+            new ConnectAsyncTask().execute();
+        }
+        catch (UnknownHostException ex)
+        {
+            Log.d(LiveDataFragment.class.getName(), "Unknown host.", ex);
+
+            if (activity != null)
+            {
+                AlertDialogFragment dialog = new AlertDialogFragment();
+                dialog.setRetainInstance(true);
+                dialog.setCancelable(true);
+                dialog.setOnDismissListener(
+                    new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                            Activity activity = getActivity();
+                            if (activity != null)
+                            {
+                                getActivity().finish();
+                            }
+                        }
+                    });
+                dialog.setMessage(R.string.LiveDataFragment_invalid_host_dialog_message);
+                dialog.show(activity.getFragmentManager(), null);
+            }
+        }
     }
 
     // Inherited documentation.
@@ -202,21 +221,18 @@ public class LiveDataFragment extends Fragment
     {
         super.onDestroy();
 
-        if (m_Client != null)
+        try
         {
-            try
-            {
-                // TODO: Wait for close asynchronously for a constant amount of time. If still
-                // TODO: blocking, then use terminate().
-                m_Client.close();
-                Log.d(LiveDataFragment.class.getName(), "Client closed.");
-            }
-            catch (Exception ex)
-            {
-                Log.e(LiveDataFragment.class.getName(),
-                      "Error closing the remote module client service.",
-                      ex);
-            }
+            // TODO: Wait for close asynchronously for a constant amount of time. If still
+            // TODO: blocking, then use terminate().
+            m_Client.close();
+            Log.d(LiveDataFragment.class.getName(), "Client closed.");
+        }
+        catch (Exception ex)
+        {
+            Log.e(LiveDataFragment.class.getName(),
+                  "Error closing the remote module client service.",
+                  ex);
         }
     }
 
