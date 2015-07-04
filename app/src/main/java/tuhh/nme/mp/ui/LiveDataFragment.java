@@ -18,6 +18,7 @@ import java.net.UnknownHostException;
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.Settings;
 import tuhh.nme.mp.remote.RemoteModuleClient;
+import tuhh.nme.mp.remote.RemoteModuleDataFetchAsyncTask;
 import tuhh.nme.mp.ui.dialogs.AlertDialogFragment;
 import tuhh.nme.mp.ui.dialogs.IndeterminateProgressDialogFragment;
 
@@ -86,7 +87,14 @@ public class LiveDataFragment extends Fragment
             {
                 Log.d(LiveDataFragment.class.getName(), "Client successfully connected.");
 
-                // TODO: Start here the data fetch.
+                if (getActivity() != null)
+                {
+                    if (!getActivity().isDestroyed())
+                    {
+                        m_DataFetchAsyncTask = new DataFetchAsyncTask();
+                        m_DataFetchAsyncTask.start();
+                    }
+                }
             }
             else
             {
@@ -136,11 +144,34 @@ public class LiveDataFragment extends Fragment
     }
 
     /**
+     * The AsyncTask that fetches continuously data from remote module in background.
+     */
+    private class DataFetchAsyncTask extends RemoteModuleDataFetchAsyncTask
+    {
+        /**
+         * Instantiates a new DataFetchAsyncTask.
+         */
+        public DataFetchAsyncTask()
+        {
+            super(m_Client, getDataFetchRate());
+        }
+
+        // Inherited documentation.
+        @Override
+        protected void onIncomingData(HighPrecisionDatedDataFrame<Short> data)
+        {
+            // TODO: Update plot data here.
+        }
+    }
+
+    /**
      * Instantiates a new LiveDataFragment.
      */
     public LiveDataFragment()
     {
         super();
+
+        m_DataFetchAsyncTask = null;
     }
 
     // Inherited documentation.
@@ -221,6 +252,11 @@ public class LiveDataFragment extends Fragment
     {
         super.onDestroy();
 
+        if (m_DataFetchAsyncTask != null)
+        {
+            m_DataFetchAsyncTask.stop();
+        }
+
         try
         {
             // TODO: Wait for close asynchronously for a constant amount of time. If still
@@ -237,7 +273,35 @@ public class LiveDataFragment extends Fragment
     }
 
     /**
+     * Retrieves the setting "data_fetch_rate".
+     *
+     * @return The data fetch rate.
+     */
+    private int getDataFetchRate()
+    {
+        Activity activity = getActivity();
+
+        if (activity == null)
+        {
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't access preferences, manually loading defaults.");
+
+            return Integer.valueOf(Settings.Default.data_fetch_rate);
+        }
+        else
+        {
+            return Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(activity)
+                .getString(Settings.data_fetch_rate, Settings.Default.data_fetch_rate));
+        }
+    }
+
+    /**
      * The connected RemoteModuleClient that is connected to the remote module.
      */
     private RemoteModuleClient m_Client;
+
+    /**
+     * The background and continuous data fetch AsyncTask.
+     */
+    private DataFetchAsyncTask m_DataFetchAsyncTask;
 }
