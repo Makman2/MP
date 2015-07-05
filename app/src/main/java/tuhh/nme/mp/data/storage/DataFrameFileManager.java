@@ -136,6 +136,25 @@ public class DataFrameFileManager
     }
 
     /**
+     * Gets the size of the file stored with given timestamp.
+     *
+     * @param timestamp    The timestamp that identifies the MPDF file.
+     * @return             The size of the file in bytes.
+     * @throws IOException Thrown when the file identified by given timestamp does not exist.
+     */
+    public static long size(HighPrecisionDate timestamp) throws IOException
+    {
+        File file = getFile(timestamp);
+
+        if (!file.exists())
+        {
+            throw new IOException("File does not exist.");
+        }
+
+        return getFile(timestamp).length();
+    }
+
+    /**
      * Returns all available timestamps for that MPDF files are saved.
      *
      * @return The collection of the timestamps that identify each MPDF file.
