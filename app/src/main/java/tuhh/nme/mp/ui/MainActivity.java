@@ -183,7 +183,7 @@ public class MainActivity extends ActionBarActivity
                 return true;
 
             case R.id.MainMenu_history:
-                // TODO: Load history activity here.
+                startActivity(new Intent(this, HistoryActivity.class));
                 return true;
 
             case R.id.MainMenu_settings:

@@ -45,6 +45,10 @@
     <string name="ManualConnectMenu.settings_text">Settings</string>
     <string name="ManualConnectMenu.about_text">About</string>
 
+    <string name="HistoryMenu.wipe_text">Wipe</string>
+    <string name="HistoryMenu.settings_text">Settings</string>
+    <string name="HistoryMenu.about_text">About</string>
+
     <string name="controls.adapters.ScanResultAdapterItem.design.wifi_text" translatable="false">
         WiFi SSID
     </string>
@@ -52,6 +56,12 @@
     <string name="controls.adapters.HistoryFileAdapterItem.design.text">Timestamp</string>
 
     <string name="SettingsActivity.label">Settings</string>
+
+    <string name="HistoryActivity.label">History</string>
+    <string name="HistoryActivity.wipe_question">
+        Do you really want to delete all stored data records?
+    </string>
+    <string name="HistoryActivity.wipe_failed_message">Wiping all records failed!</string>
 
     <string name="AboutActivity.label">About</string>
     <string name="AboutActivity.by_text">by</string>
@@ -78,6 +88,8 @@
     <string name="WifiIsDisabledFragment.message">
         WiFi is currently turned off.\nTurn it on.
     </string>
+
+    <string name="HistoryBrowserFragment.no_data_stored">No data stored.</string>
 
     <string name="dialogs.AlertDialogFragment.ok">OK</string>
 

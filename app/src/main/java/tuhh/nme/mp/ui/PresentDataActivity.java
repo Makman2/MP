@@ -55,7 +55,7 @@ public class PresentDataActivity extends ActionBarActivity
         switch (id)
         {
             case R.id.PresentDataMenu_history:
-                // TODO: Load history activity here.
+                startActivity(new Intent(this, HistoryActivity.class));
                 return true;
 
             case R.id.PresentDataMenu_settings:

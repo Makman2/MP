@@ -60,7 +60,7 @@ public class ManualConnectActivity extends ActionBarActivity
         switch (id)
         {
             case R.id.ManualConnectMenu_history:
-                // TODO: Load history activity here.
+                startActivity(new Intent(this, HistoryActivity.class));
                 return true;
 
             case R.id.ManualConnectMenu_settings:
