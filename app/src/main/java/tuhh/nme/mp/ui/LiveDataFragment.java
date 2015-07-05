@@ -11,12 +11,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.Settings;
+import tuhh.nme.mp.data.HighPrecisionDate;
+import tuhh.nme.mp.data.HighPrecisionDatedDataFrame;
+import tuhh.nme.mp.data.plotting.HighPrecisionDatedPlotData;
+import tuhh.nme.mp.data.plotting.PressurePlotData;
 import tuhh.nme.mp.remote.RemoteModuleClient;
 import tuhh.nme.mp.remote.RemoteModuleDataFetchAsyncTask;
 import tuhh.nme.mp.ui.dialogs.AlertDialogFragment;
@@ -160,7 +171,37 @@ public class LiveDataFragment extends Fragment
         @Override
         protected void onIncomingData(HighPrecisionDatedDataFrame<Short> data)
         {
-            // TODO: Update plot data here.
+            if (data == null)
+            {
+                return;
+            }
+
+            Entry elem = null;
+            Iterator<Entry> it = m_PlotData.add(data).iterator();
+            // Don't use a for-each loop since we want to keep the last processed value later.
+            while (it.hasNext())
+            {
+                elem = it.next();
+                m_Chart.getLineData().addEntry(elem, 0);
+            }
+
+            int xvals = m_Chart.getLineData().getXValCount();
+
+            // Add labels so the last fetched value can be displayed.
+            // elem can't be null since we get every time data if it is not null itself.
+            for (int i = xvals; i < elem.getXIndex(); i++)
+            {
+                m_Chart.getLineData().addXValue(Integer.toString(i));
+            }
+
+            m_Chart.notifyDataSetChanged();
+
+            // Move view to new incoming values.
+            m_Chart.setVisibleXRange(m_VisibleChartXRange);
+            m_Chart.moveViewToX(xvals - m_VisibleChartXRange);
+            m_Chart.fitScreen();
+
+            m_Chart.invalidate();
         }
     }
 
@@ -180,7 +221,12 @@ public class LiveDataFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.live_data_fragment, container, false);
+        View view = inflater.inflate(R.layout.live_data_fragment, container, false);
+
+        m_Chart = (LineChart)view.findViewById(R.id.LiveDataFragment_chart);
+        prepareChart();
+
+        return view;
     }
 
     // Inherited documentation.
@@ -274,6 +320,47 @@ public class LiveDataFragment extends Fragment
     }
 
     /**
+     * Prepares the chart for live data-preview.
+     */
+    private void prepareChart()
+    {
+        // Setup the only data-set.
+        ArrayList<Entry> y = new ArrayList<>();
+        // Insert a dummy entry since MPAndroidChart crashes with NullPointerException when having
+        // a LineDataSet without any Entry. This renders (0,0), but there's no other choice for now.
+        y.add(new Entry(0.0f, 0));
+
+        LineDataSet set = new LineDataSet(y, "Data");
+        set.setColor(getResources().getColor(R.color.red));
+        set.setCircleColor(getResources().getColor(R.color.red));
+
+        // Add the first labels visible in the initial view-x-range.
+        m_VisibleChartXRange = getLivescrollingXRange().multiply(new BigDecimal("1000000000"))
+                                   .multiply(getChartXScale()).floatValue();
+
+        ArrayList<String> labels = new ArrayList<>();
+        int visible_x_range = (int)m_VisibleChartXRange;
+        labels.ensureCapacity(visible_x_range);
+        for (int i = 0; i < visible_x_range; i++)
+        {
+            labels.add(Integer.toString(i));
+        }
+
+        // Apply data-set and adjust plot properties.
+        m_Chart.setData(new LineData(labels, set));
+        m_Chart.getLineData().setDrawValues(false);
+
+        m_Chart.setTouchEnabled(false);
+        m_Chart.setDescription("");
+        m_Chart.getLegend().setEnabled(false);
+        m_Chart.getXAxis().setSpaceBetweenLabels(8);
+
+        // Set up plot data that automatically converts the sent values to Entry's.
+        m_PlotData = new PressurePlotData();
+        m_PlotData.setTimeScaleAndStartingDate(getChartXScale(), HighPrecisionDate.now());
+    }
+
+    /**
      * Retrieves the setting "data_fetch_rate".
      *
      * @return The data fetch rate.
@@ -297,6 +384,53 @@ public class LiveDataFragment extends Fragment
     }
 
     /**
+     * Retrieves the setting "chart_x_scale".
+     *
+     * @return The x-axis scaling for data chart.
+     */
+    private BigDecimal getChartXScale()
+    {
+        Activity activity = getActivity();
+
+        if (activity == null)
+        {
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't access preferences, manually loading defaults.");
+
+            return new BigDecimal(Settings.Default.chart_x_scale);
+        }
+        else
+        {
+            return new BigDecimal(PreferenceManager.getDefaultSharedPreferences(activity)
+                .getString(Settings.chart_x_scale, Settings.Default.chart_x_scale));
+        }
+    }
+
+    /**
+     * Retrieves the setting "chart_livescroll_x_range_time".
+     *
+     * @return The visible x-range while livescrolling.
+     */
+    private BigDecimal getLivescrollingXRange()
+    {
+        Activity activity = getActivity();
+
+        if (activity == null)
+        {
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't access preferences, manually loading defaults.");
+
+            return new BigDecimal(Settings.Default.chart_livescroll_x_range_time);
+        }
+        else
+        {
+            return new BigDecimal(PreferenceManager.getDefaultSharedPreferences(activity)
+                .getString(Settings.chart_livescroll_x_range_time,
+                           Settings.Default.chart_livescroll_x_range_time));
+        }
+    }
+
+    /**
      * The connected RemoteModuleClient that is connected to the remote module.
      */
     private RemoteModuleClient m_Client;
@@ -305,4 +439,18 @@ public class LiveDataFragment extends Fragment
      * The background and continuous data fetch AsyncTask.
      */
     private DataFetchAsyncTask m_DataFetchAsyncTask;
+
+    /**
+     * The chart that displays the data.
+     */
+    private LineChart m_Chart;
+
+    /**
+     * The plot data that contains the received DataFrame's.
+     */
+    private HighPrecisionDatedPlotData<Short> m_PlotData;
+    /**
+     * The visible chart x-range while livescrolling.
+     */
+    private float m_VisibleChartXRange;
 }

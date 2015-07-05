@@ -36,4 +36,24 @@
         android:maxLength="3"
         android:defaultValue="4"/>
 
+    <EditTextPreference
+        android:key="chart_x_scale"
+        android:title="@string/Settings.chart_x_scale.title"
+        android:summary="@string/Settings.chart_x_scale.summary"
+        android:dialogTitle="@string/Settings.chart_x_scale.dialog_title"
+        android:inputType="numberDecimal"
+        android:digits="0123456789."
+        android:maxLength="20"
+        android:defaultValue="0.0000001" />
+
+    <EditTextPreference
+        android:key="chart_livescroll_x_range_time"
+        android:title="@string/Settings.chart_livescroll_x_range_time.title"
+        android:summary="@string/Settings.chart_livescroll_x_range_time.summary"
+        android:dialogTitle="@string/Settings.chart_livescroll_x_range_time.dialog_title"
+        android:inputType="numberDecimal"
+        android:digits="0123456789."
+        android:maxLength="11"
+        android:defaultValue="5" />
+
 </PreferenceScreen>

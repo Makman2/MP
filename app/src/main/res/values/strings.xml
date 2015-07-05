@@ -17,6 +17,19 @@
         Number of data points fetched per request.
     </string>
     <string name="Settings.data_fetch_rate.dialog_title">Enter fetch rate</string>
+    <string name="Settings.chart_x_scale.title">Chart X-Scale</string>
+    <string name="Settings.chart_x_scale.summary">
+        The x-axis scaling factor for the charts used for display. The smaller the scaling the
+        finer-graded the display, but the worse the performance.
+    </string>
+    <string name="Settings.chart_x_scale.dialog_title">Enter scaling factor</string>
+    <string name="Settings.chart_livescroll_x_range_time.title">Chart Livescroll Range</string>
+    <string name="Settings.chart_livescroll_x_range_time.summary">
+        The displayed x-values area of the chart when livescrolling.
+    </string>
+    <string name="Settings.chart_livescroll_x_range_time.dialog_title">
+        Enter livescrolling range (in seconds)
+    </string>
 
     <string name="MainMenu.refresh_text">Refresh</string>
     <string name="MainMenu.manual_connect_text">Manual connect</string>
