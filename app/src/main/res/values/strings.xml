@@ -69,7 +69,7 @@
     <string name="LiveDataFragment.connection_fail_dialog_message">
         Failed to connect to remote device!
     </string>
-    <string name="LiveDataFragment.connecting_dialog_message">Connecting...</string>
+    <string name="LiveDataFragment.connecting_dialog_message">Connecting…</string>
 
     <string name="WifiChooserFragment.title">Please choose a remote device to connect to:</string>
 
