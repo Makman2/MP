@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="72dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/app_name"
-        android:textSize="32sp"
-        android:drawableLeft="@mipmap/ic_launcher"
-        android:drawablePadding="24dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingBottom="24dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/AboutActivity.by_text"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/AboutActivity.authors"/>
-
-</LinearLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="tuhh.nme.mp.ui.AboutFragment" />
