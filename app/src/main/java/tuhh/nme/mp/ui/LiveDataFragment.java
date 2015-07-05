@@ -15,6 +15,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -24,10 +25,14 @@ import java.util.Iterator;
 
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.Settings;
+import tuhh.nme.mp.data.DataPoint;
 import tuhh.nme.mp.data.HighPrecisionDate;
 import tuhh.nme.mp.data.HighPrecisionDatedDataFrame;
 import tuhh.nme.mp.data.plotting.HighPrecisionDatedPlotData;
 import tuhh.nme.mp.data.plotting.PressurePlotData;
+import tuhh.nme.mp.data.storage.DataFrameFileManager;
+import tuhh.nme.mp.data.storage.MPDFFormatException;
+import tuhh.nme.mp.data.storage.PressureDataFrameWriter;
 import tuhh.nme.mp.remote.RemoteModuleClient;
 import tuhh.nme.mp.remote.RemoteModuleDataFetchAsyncTask;
 import tuhh.nme.mp.ui.dialogs.AlertDialogFragment;
@@ -310,6 +315,37 @@ public class LiveDataFragment extends Fragment
             // TODO: blocking, then use terminate().
             m_Client.close();
             Log.d(LiveDataFragment.class.getName(), "Client closed.");
+
+            for (Iterable<DataPoint<HighPrecisionDate, Short>> frame : m_PlotData.inputs())
+            {
+                ArrayList<DataPoint<HighPrecisionDate, Short>> data_points = new ArrayList<>();
+                for (DataPoint<HighPrecisionDate, Short> point : frame)
+                {
+                    data_points.add(point);
+                }
+                writer.add(new HighPrecisionDatedDataFrame<>(data_points));
+            }
+
+            try
+            {
+                writer.write(DataFrameFileManager.create(m_PlotData.getStartingDate()));
+            }
+            catch (IOException ex)
+            {
+                // TODO: Display alert dialog.
+                Log.w(LiveDataFragment.class.getName(),
+                      "Can't save history data for timestamp " +
+                          m_PlotData.getStartingDate().toString() + "!",
+                      ex);
+            }
+            catch (MPDFFormatException ex)
+            {
+                // Can't happen technically since the MPDF-writer writes fixed size data below
+                // maximum length.
+                Log.e(LiveDataFragment.class.getName(),
+                      "Fatal error in " + PressureDataFrameWriter.class.getSimpleName() + ".",
+                      ex);
+            }
         }
         catch (Exception ex)
         {
@@ -427,6 +463,29 @@ public class LiveDataFragment extends Fragment
             return new BigDecimal(PreferenceManager.getDefaultSharedPreferences(activity)
                 .getString(Settings.chart_livescroll_x_range_time,
                            Settings.Default.chart_livescroll_x_range_time));
+        }
+    }
+
+    /**
+     * Retrieves the setting "auto_save".
+     *
+     * @return Whether to save live-data.
+     */
+    public boolean getAutoSave()
+    {
+        Activity activity = getActivity();
+
+        if (activity == null)
+        {
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't access preferences, manually loading defaults.");
+
+            return Settings.Default.auto_save;
+        }
+        else
+        {
+            return PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean(Settings.auto_save, Settings.Default.auto_save);
         }
     }
 
