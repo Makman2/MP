@@ -11,12 +11,29 @@
         android:layout_gravity="center"
         android:src="@drawable/ic_poll_orange" />
 
-    <TextView
-        android:id="@+id/controls.adapters.HistoryFileAdapterItem.timestamp"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:text="@string/controls.adapters.HistoryFileAdapterItem.design.text" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/controls.adapters.HistoryFileAdapterItem.timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/controls.adapters.HistoryFileAdapterItem.design.text" />
+
+        <TextView
+            android:id="@+id/controls.adapters.HistoryFileAdapterItem.file_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text="@string/controls.adapters.HistoryFileAdapterItem.design.size_text"/>
+
+    </LinearLayout>
 
 </LinearLayout>
