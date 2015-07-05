@@ -44,7 +44,7 @@ public abstract class RemoteModuleDataFetchAsyncTask
 
                 m_Client.terminate();
 
-                Log.e(FetchDataAsyncTask.class.getName(),
+                Log.w(FetchDataAsyncTask.class.getName(),
                       "Serious error during remote data read attempt. Disconnected client.",
                       ex);
 
