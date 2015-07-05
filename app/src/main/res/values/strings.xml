@@ -78,4 +78,7 @@
     </string>
 
     <string name="dialogs.AlertDialogFragment.ok">OK</string>
+
+    <string name="dialogs.YesNoDialogFragment.yes">Yes</string>
+    <string name="dialogs.YesNoDialogFragment.no">No</string>
 </resources>
