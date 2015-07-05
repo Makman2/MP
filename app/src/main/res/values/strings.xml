@@ -49,6 +49,8 @@
         WiFi SSID
     </string>
 
+    <string name="controls.adapters.HistoryFileAdapterItem.design.text">Timestamp</string>
+
     <string name="SettingsActivity.label">Settings</string>
 
     <string name="AboutActivity.label">About</string>
