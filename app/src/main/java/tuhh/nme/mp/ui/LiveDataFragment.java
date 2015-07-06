@@ -22,6 +22,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.Settings;
@@ -157,6 +160,83 @@ public class LiveDataFragment extends Fragment
          * The progress dialog that informs the user about connection attempt.
          */
         private IndeterminateProgressDialogFragment m_ProgressDialog;
+    }
+
+    /**
+     * Performs an asynchronous client close and terminates if the normal close takes too long.
+     */
+    private class ConnectionCloseAsyncTask extends AsyncTask<Integer, Void, Void>
+    {
+        /**
+         * Internal close AsyncTask that invokes normal close.
+         */
+        private class InternalCloseAsyncTask extends AsyncTask<Void, Void, Void>
+        {
+            // Inherited documentation.
+            @Override
+            protected Void doInBackground(Void... params)
+            {
+                // A SocketCommandHandlingException shall lead to an ExecutionException and should
+                // be immediately terminated.
+                m_Client.close();
+                Log.d(LiveDataFragment.class.getName(), "Client closed.");
+                return null;
+            }
+        }
+
+        // Inherited documentation.
+        @Override
+        protected void onPreExecute()
+        {
+            m_InternalCloseAsyncTask = new InternalCloseAsyncTask();
+            m_InternalCloseAsyncTask.executeOnExecutor(THREAD_POOL_EXECUTOR);
+        }
+
+        /**
+         * Waits a specific amount of time.
+         *
+         * @param params The time to sleep in milliseconds.
+         */
+        @Override
+        protected Void doInBackground(Integer... params)
+        {
+            try
+            {
+                m_InternalCloseAsyncTask.get(params[0], TimeUnit.MILLISECONDS);
+            }
+            catch (InterruptedException ex)
+            {
+                Log.w(
+                    LiveDataFragment.class.getName(),
+                    "Close attempt interrupted. Terminating client.",
+                    ex);
+
+                m_Client.terminate();
+            }
+            catch (ExecutionException ex)
+            {
+                Log.w(
+                    LiveDataFragment.class.getName(),
+                    "Socket raised exception. Terminating client.",
+                    ex);
+
+                m_Client.terminate();
+            }
+            catch (TimeoutException ex)
+            {
+                Log.w(
+                    LiveDataFragment.class.getName(),
+                    "Waited for " + Integer.toString(params[0]) +
+                        "ms, but peer didn't respond. Terminating client.",
+                    ex);
+
+                m_Client.terminate();
+            }
+
+            return null;
+        }
+
+        private InternalCloseAsyncTask m_InternalCloseAsyncTask;
     }
 
     /**
@@ -309,12 +389,15 @@ public class LiveDataFragment extends Fragment
             m_DataFetchAsyncTask.stop();
         }
 
+        // Wait for 10s until we terminate the client thread.
+        // We rely on parallel thread execution since the normal close blocks.
+        if (m_Client != null)
+        {
+            new ConnectionCloseAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 10000);
+        }
+
         try
         {
-            // TODO: Wait for close asynchronously for a constant amount of time. If still
-            // TODO: blocking, then use terminate().
-            m_Client.close();
-            Log.d(LiveDataFragment.class.getName(), "Client closed.");
 
             for (Iterable<DataPoint<HighPrecisionDate, Short>> frame : m_PlotData.inputs())
             {
@@ -346,12 +429,6 @@ public class LiveDataFragment extends Fragment
                       "Fatal error in " + PressureDataFrameWriter.class.getSimpleName() + ".",
                       ex);
             }
-        }
-        catch (Exception ex)
-        {
-            Log.e(LiveDataFragment.class.getName(),
-                  "Error closing the remote module client service.",
-                  ex);
         }
     }
 
