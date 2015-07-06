@@ -203,6 +203,30 @@ public class HighPrecisionDate implements Parcelable
     }
 
     /**
+     * Determines whether this instance is less than the given HighPrecisionDate.
+     *
+     * @param dt The HighPrecisionDate to compare with.
+     * @return   If this instance is less, returns true, otherwise false.
+     */
+    public boolean less(HighPrecisionDate dt)
+    {
+        int compare = m_Nanoseconds.compareTo(dt.m_Nanoseconds);
+        return compare == -1;
+    }
+
+    /**
+     * Determines whether this instance is greater than the given HighPrecisionDate.
+     *
+     * @param dt The HighPrecisionDate to compare with.
+     * @return   If this instance is greater, returns true, otherwise false.
+     */
+    public boolean greater(HighPrecisionDate dt)
+    {
+        int compare = m_Nanoseconds.compareTo(dt.m_Nanoseconds);
+        return compare == 1;
+    }
+
+    /**
      * Returns a string representation of this object.
      *
      * @return The string representing this object.
