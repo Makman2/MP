@@ -1,5 +1,8 @@
 package tuhh.nme.mp.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -7,7 +10,7 @@ import java.util.Date;
 /**
  * A date with nanosecond precision. Starts counting from epoch (1/1/1970 00:00:00:000:000).
  */
-public class HighPrecisionDate
+public class HighPrecisionDate implements Parcelable
 {
     /**
      * Instantiates a new HighPrecisionDate from the given count of nanoseconds passed since epoch.
@@ -209,6 +212,37 @@ public class HighPrecisionDate
     {
         return m_Nanoseconds.toString();
     }
+
+    // Inherited documentation.
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    // Inherited documentation.
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeString(toString());
+    }
+
+    /**
+     * Creates a Parcelable creator.
+     */
+    public static final Parcelable.Creator<HighPrecisionDate> CREATOR =
+        new Parcelable.Creator<HighPrecisionDate>()
+        {
+            public HighPrecisionDate createFromParcel(Parcel in)
+            {
+                return new HighPrecisionDate(new BigInteger(in.readString()));
+            }
+
+            public HighPrecisionDate[] newArray(int size)
+            {
+                return new HighPrecisionDate[size];
+            }
+        };
 
     /**
      * The epoch date.
