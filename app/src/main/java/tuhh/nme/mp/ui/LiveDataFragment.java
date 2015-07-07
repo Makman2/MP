@@ -396,39 +396,37 @@ public class LiveDataFragment extends Fragment
             new ConnectionCloseAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 10000);
         }
 
+        PressureDataFrameWriter writer = new PressureDataFrameWriter();
+
+        for (Iterable<DataPoint<HighPrecisionDate, Short>> frame : m_PlotData.inputs())
+        {
+            ArrayList<DataPoint<HighPrecisionDate, Short>> data_points = new ArrayList<>();
+            for (DataPoint<HighPrecisionDate, Short> point : frame)
+            {
+                data_points.add(point);
+            }
+            writer.add(new HighPrecisionDatedDataFrame<>(data_points));
+        }
+
         try
         {
-
-            for (Iterable<DataPoint<HighPrecisionDate, Short>> frame : m_PlotData.inputs())
-            {
-                ArrayList<DataPoint<HighPrecisionDate, Short>> data_points = new ArrayList<>();
-                for (DataPoint<HighPrecisionDate, Short> point : frame)
-                {
-                    data_points.add(point);
-                }
-                writer.add(new HighPrecisionDatedDataFrame<>(data_points));
-            }
-
-            try
-            {
-                writer.write(DataFrameFileManager.create(m_PlotData.getStartingDate()));
-            }
-            catch (IOException ex)
-            {
-                // TODO: Display alert dialog.
-                Log.w(LiveDataFragment.class.getName(),
-                      "Can't save history data for timestamp " +
-                          m_PlotData.getStartingDate().toString() + "!",
-                      ex);
-            }
-            catch (MPDFFormatException ex)
-            {
-                // Can't happen technically since the MPDF-writer writes fixed size data below
-                // maximum length.
-                Log.e(LiveDataFragment.class.getName(),
-                      "Fatal error in " + PressureDataFrameWriter.class.getSimpleName() + ".",
-                      ex);
-            }
+            writer.write(DataFrameFileManager.create(m_PlotData.getStartingDate()));
+        }
+        catch (IOException ex)
+        {
+            // TODO: Display alert dialog.
+            Log.w(LiveDataFragment.class.getName(),
+                  "Can't save history data for timestamp " +
+                      m_PlotData.getStartingDate().toString() + "!",
+                  ex);
+        }
+        catch (MPDFFormatException ex)
+        {
+            // Can't happen technically since the MPDF-writer writes fixed size data below
+            // maximum length.
+            Log.e(LiveDataFragment.class.getName(),
+                  "Fatal error in " + PressureDataFrameWriter.class.getSimpleName() + ".",
+                  ex);
         }
     }
 
