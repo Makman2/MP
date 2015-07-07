@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<!-- Use a RelativeLayout since other layouts do not inflate over the whole ListView item row -->
+<!-- width, so now the user doesn't need to tip exactly on the label, but can click the whole -->
+<!-- row. -->
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/controls.adapters.ScanResultAdapterItem.wifi_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="8pt"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/controls.adapters.ScanResultAdapterItem.design.wifi_text"
-        android:layout_marginStart="8pt"/>
+        android:text="@string/controls.adapters.ScanResultAdapterItem.design.wifi_text" />
 
-</LinearLayout>
+</RelativeLayout>
