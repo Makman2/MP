@@ -1,12 +1,14 @@
 package tuhh.nme.mp.ui;
 
 import android.content.Intent;
+import android.net.wifi.ScanResult;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import tuhh.nme.mp.IntentExtra;
 import tuhh.nme.mp.R;
 import tuhh.nme.mp.broadcasts.WifiBroadcastReceiver;
 import tuhh.nme.mp.components.Bottleneck;
@@ -123,7 +125,11 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onItemClick(Object element)
         {
-            startActivity(new Intent(MainActivity.this, PresentDataActivity.class));
+            WifiConnector.connect((ScanResult) element);
+            Intent activity_start_intent = new Intent(MainActivity.this, PresentDataActivity.class);
+            activity_start_intent.putExtra(IntentExtra.present_data_activity_app_wifi_connected,
+                                           true);
+            startActivity(activity_start_intent);
         }
     }
 

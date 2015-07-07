@@ -6,7 +6,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import tuhh.nme.mp.IntentExtra;
 import tuhh.nme.mp.R;
+import tuhh.nme.mp.remote.WifiConnector;
 
 
 /**
@@ -28,6 +30,10 @@ public class PresentDataActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.present_data_activity);
+
+        m_DisconnectFromWifi = getIntent().getBooleanExtra(
+            IntentExtra.present_data_activity_app_wifi_connected,
+            false);
 
         getSupportFragmentManager().beginTransaction().replace(
             R.id.PresentDataActivity_fragment_frame,
@@ -69,4 +75,21 @@ public class PresentDataActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    // Inherited documentation.
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (m_DisconnectFromWifi)
+        {
+            WifiConnector.disconnect();
+        }
+    }
+
+    /**
+     * Whether to disconnect from user specific WLAN when destroying activity.
+     */
+    private boolean m_DisconnectFromWifi;
 }
