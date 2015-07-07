@@ -30,7 +30,7 @@ public class RemoteModuleClient
          */
         DENSITY0,
         /**
-         * 4 values per package.
+         * 1 value per package.
          */
         DENSITY1,
         /**
@@ -80,7 +80,7 @@ public class RemoteModuleClient
                     return 2;
 
                 case DENSITY1:
-                    return 4;
+                    return 1;
 
                 case DENSITY2:
                     return 6;

@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="Settings_data_fetch_rate_entries">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
-        <item>10</item>
-        <item>12</item>
-        <item>14</item>
-        <item>16</item>
-        <item>18</item>
-        <item>20</item>
+        <item>1</item>
     </string-array>
 
     <string-array name="Settings_data_fetch_rate_entry_values">
-        <item>DENSITY0</item>
         <item>DENSITY1</item>
-        <item>DENSITY2</item>
-        <item>DENSITY3</item>
-        <item>DENSITY4</item>
-        <item>DENSITY5</item>
-        <item>DENSITY6</item>
-        <item>DENSITY7</item>
-        <item>DENSITY8</item>
-        <item>DENSITY9</item>
     </string-array>
 </resources>
 
