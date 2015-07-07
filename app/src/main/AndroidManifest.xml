@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.ManualConnectActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
 
         <activity
             android:name=".ui.PresentDataActivity"
-            android:label="MP" />
+            android:label="@string/app_name" />
 
         <activity
             android:name=".ui.SettingsActivity"
@@ -37,7 +37,7 @@
             android:label="@string/AboutActivity.label" />
 
         <activity
-            android:name=".ui.ManualConnectActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name" />
 
         <activity
