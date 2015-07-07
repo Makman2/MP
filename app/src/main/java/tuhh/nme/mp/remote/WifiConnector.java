@@ -166,7 +166,11 @@ public final class WifiConnector
 
         WifiManager manager = getWifiManager();
         manager.disconnect();
-        manager.removeNetwork(m_WifiConfigurationID);
+        manager.disableNetwork(m_WifiConfigurationID);
+        if (!m_WifiConfigurationAlreadyExisted)
+        {
+            manager.removeNetwork(m_WifiConfigurationID);
+        }
         manager.reconnect();
     }
 
@@ -214,12 +218,30 @@ public final class WifiConnector
 
         Log.d(WifiConnector.class.getName(), "Connecting to WiFi Network '" + networkSSID + "'.");
 
-        WifiConfiguration conf = new WifiConfiguration();
-        conf.SSID = "\"" + networkSSID + "\"";
-        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-
         WifiManager manager = getWifiManager();
-        m_WifiConfigurationID = manager.addNetwork(conf);
+
+        WifiConfiguration conf = null;
+
+        m_WifiConfigurationAlreadyExisted = false;
+        for (WifiConfiguration config : manager.getConfiguredNetworks())
+        {
+            if (config.SSID == wifi.SSID)
+            {
+                // Found already existing configuration, use that.
+                m_WifiConfigurationAlreadyExisted = true;
+                conf = config;
+                m_WifiConfigurationID = conf.networkId;
+                break;
+            }
+        }
+
+        if (!m_WifiConfigurationAlreadyExisted)
+        {
+            conf = new WifiConfiguration();
+            conf.SSID = "\"" + networkSSID + "\"";
+            conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            m_WifiConfigurationID = manager.addNetwork(conf);
+        }
 
         manager.disconnect();
         manager.enableNetwork(m_WifiConfigurationID, true);
@@ -292,4 +314,10 @@ public final class WifiConnector
      * already registered WiFi configurations.
      */
     private static int m_WifiConfigurationID;
+
+    /**
+     * Checks whether the WiFi configuration for given ScanResult already existed or not. If it
+     * already existed, it shall not be deleted from system.
+     */
+    private static boolean m_WifiConfigurationAlreadyExisted;
 }
