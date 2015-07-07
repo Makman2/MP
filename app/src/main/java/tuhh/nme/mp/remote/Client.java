@@ -449,7 +449,14 @@ public class Client
     @Override
     protected void finalize() throws Throwable
     {
-        terminate();
+        try
+        {
+            terminate();
+        }
+        catch (Throwable ignored)
+        {
+            // Just try to terminate.
+        }
         super.finalize();
     }
 
