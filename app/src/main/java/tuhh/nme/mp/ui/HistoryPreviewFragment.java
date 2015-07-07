@@ -117,6 +117,12 @@ public class HistoryPreviewFragment extends Fragment
 
             Collections.sort(values, new DataPointXHighPrecisionDateComparator());
 
+            if (values.size() == 0)
+            {
+                // Empty file saved. This case should not occur, but catch anyway.
+                return null;
+            }
+
             HighPrecisionDate min_x_time = values.get(0).X;
 
             ArrayList<Entry> y = new ArrayList<>();
@@ -143,6 +149,11 @@ public class HistoryPreviewFragment extends Fragment
         @Override
         protected void onPostExecute(LineData data)
         {
+            if (data == null)
+            {
+                return;
+            }
+
             if (m_Error == null)
             {
                 m_Chart.setData(data);
