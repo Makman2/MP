@@ -21,6 +21,144 @@ import tuhh.nme.mp.data.HighPrecisionDatedDataFrame;
 public class RemoteModuleClient
 {
     /**
+     * The transfer package sizes/densities available in the remote module device.
+     */
+    public enum TransferDensity
+    {
+        /**
+         * 2 values per package.
+         */
+        DENSITY0,
+        /**
+         * 4 values per package.
+         */
+        DENSITY1,
+        /**
+         * 6 values per package.
+         */
+        DENSITY2,
+        /**
+         * 8 values per package.
+         */
+        DENSITY3,
+        /**
+         * 10 values per package.
+         */
+        DENSITY4,
+        /**
+         * 12 values per package.
+         */
+        DENSITY5,
+        /**
+         * 14 values per package.
+         */
+        DENSITY6,
+        /**
+         * 16 values per package.
+         */
+        DENSITY7,
+        /**
+         * 18 values per package.
+         */
+        DENSITY8,
+        /**
+         * 20 values per package.
+         */
+        DENSITY9;
+
+        /**
+         * Returns the value count corresponding to the given density.
+         *
+         * @param density The density to determine the package size of.
+         * @return        The package size. -1 if the given density is invalid.
+         */
+        public static int count(TransferDensity density)
+        {
+            switch (density)
+            {
+                case DENSITY0:
+                    return 2;
+
+                case DENSITY1:
+                    return 4;
+
+                case DENSITY2:
+                    return 6;
+
+                case DENSITY3:
+                    return 8;
+
+                case DENSITY4:
+                    return 10;
+
+                case DENSITY5:
+                    return 12;
+
+                case DENSITY6:
+                    return 14;
+
+                case DENSITY7:
+                    return 16;
+
+                case DENSITY8:
+                    return 18;
+
+                case DENSITY9:
+                    return 20;
+
+                default:
+                    return -1;
+            }
+        }
+
+        /**
+         * Returns the network protocol command byte.
+         *
+         * @param density                   The density to determine protocol command of.
+         * @return                          The protocol command of the given density.
+         * @throws IllegalArgumentException Thrown when the given density is not supported.
+         */
+        static char protocolCommand(TransferDensity density) throws IllegalArgumentException
+        {
+            switch (density)
+            {
+                case DENSITY0:
+                    return 0x30;
+
+                case DENSITY1:
+                    return 0x31;
+
+                case DENSITY2:
+                    return 0x32;
+
+                case DENSITY3:
+                    return 0x33;
+
+                case DENSITY4:
+                    return 0x34;
+
+                case DENSITY5:
+                    return 0x35;
+
+                case DENSITY6:
+                    return 0x36;
+
+                case DENSITY7:
+                    return 0x37;
+
+                case DENSITY8:
+                    return 0x38;
+
+                case DENSITY9:
+                    return 0x39;
+
+                default:
+                    throw new IllegalArgumentException("Given density not supported!");
+            }
+        }
+    }
+
+    /**
      * The command that fetches a bunch of data.
      */
     private class GetDataFrameCommand extends SocketCommand<HighPrecisionDatedDataFrame<Short>>
@@ -28,11 +166,11 @@ public class RemoteModuleClient
         /**
          * Instantiates a new GetDataFrameCommand.
          *
-         * @param count The number of values to fetch.
+         * @param density The number of values to fetch.
          */
-        public GetDataFrameCommand(int count)
+        public GetDataFrameCommand(TransferDensity density)
         {
-            m_Count = count;
+            m_Density = density;
         }
 
         /**
@@ -51,61 +189,44 @@ public class RemoteModuleClient
             }
 
             ArrayList<DataPoint<HighPrecisionDate, Short>> data = new ArrayList<>();
-            data.ensureCapacity(m_Count);
+            int pkg_size = TransferDensity.count(m_Density);
+            data.ensureCapacity(pkg_size);
 
             OutputStream out_stream = socket.getOutputStream();
             InputStream in_stream = socket.getInputStream();
 
-            out_stream.write(CMD_START_TRANSFER);
+            out_stream.write(TransferDensity.protocolCommand(m_Density));
             out_stream.flush();
 
-            try
+            // Since the remote module has problems to send two bytes (it sets the low-byte to zero
+            // every time, regardless of data), we receive three and ignore the zero byte.
+            byte[] buffer = new byte[3];
+
+            ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
+
+            // Don't catch socket errors, pass them to the socket thread.
+            for (int i = 0; i < pkg_size; i++)
             {
-                byte[] buffer = new byte[2];
-
-                ByteBuffer short_buffer = ByteBuffer.allocate(Short.SIZE / Byte.SIZE);
-
-                for (int i = 0; i < m_Count; i++)
+                if (buffer.length != in_stream.read(buffer))
                 {
-                    if (short_buffer.capacity() != in_stream.read(buffer))
-                    {
-                        // Server seems to work wrong since it has sent the wrong number of bytes.
-                        throw new InvalidReactionException(
-                            "Server sent wrong number of bytes. Expected " +
-                            Integer.toString(short_buffer.capacity()) + " bytes.");
-                    }
-
-                    short_buffer.position(0);
-                    short_buffer.put(buffer);
-                    data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+                    // Server seems to work wrong since it has sent the wrong number of bytes.
+                    throw new InvalidReactionException(
+                        "Server sent wrong number of bytes. Expected " +
+                        Integer.toString(buffer.length) + " bytes.");
                 }
-            }
-            catch(IOException ex)
-            {
-                // Re-raise the exception after closing, so we stop the data transfer.
-                out_stream.write(CMD_STOP_TRANSFER);
-                out_stream.flush();
-                throw ex;
-            }
 
-            // Stop data transfer.
-            out_stream.write(CMD_STOP_TRANSFER);
-            out_stream.flush();
-
-            // It's possible that this command was too slow to stop the data-transfer exactly
-            // at that time when we finished reading, so we have data left in the socket buffer.
-            //in_stream.skip(Long.MAX_VALUE);
+                short_buffer.position(0);
+                short_buffer.put(buffer, 1, buffer.length - 1);
+                data.add(new DataPoint<>(HighPrecisionDate.now(), short_buffer.getShort(0)));
+            }
 
             return new HighPrecisionDatedDataFrame<>(data);
         }
 
-        private static final int CMD_START_TRANSFER = 0x00;
-        private static final int CMD_STOP_TRANSFER = 0x01;
-
         /**
          * The number of values to fetch in this command.
          */
-        private final int m_Count;
+        private final TransferDensity m_Density;
     }
 
     /**
@@ -136,17 +257,18 @@ public class RemoteModuleClient
      *
      * This routine blocks the calling thread until the data is completely received.
      *
-     * @param count                           The number of data points to fetch.
+     * @param density                         The density that determines the number of data points
+     *                                        to fetch.
      * @return                                The received data packed into a DataFrame.
      * @throws InterruptedException           Thrown when the read command could not be placed into
      *                                        processing queue.
      * @throws SocketCommandHandlingException Thrown when an exception occurred during network read
      *                                        attempt.
      */
-    public HighPrecisionDatedDataFrame<Short> read(int count)
+    public HighPrecisionDatedDataFrame<Short> read(TransferDensity density)
         throws InterruptedException, SocketCommandHandlingException
     {
-        GetDataFrameCommand cmd = new GetDataFrameCommand(count);
+        GetDataFrameCommand cmd = new GetDataFrameCommand(density);
         m_Client.command(cmd);
         return cmd.getResult();
     }

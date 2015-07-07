@@ -31,7 +31,7 @@ public abstract class RemoteModuleDataFetchAsyncTask
             try
             {
                 // This call blocks until finished.
-                return m_Client.read(m_FetchRate);
+                return m_Client.read(m_FetchDensity);
             }
             catch (InterruptedException ex)
             {
@@ -69,21 +69,21 @@ public abstract class RemoteModuleDataFetchAsyncTask
      * Instantiates a new RemoteModuleDataFetchAsyncTask.
      *
      * @param client                    The client from where to fetch data.
-     * @param fetch_rate                The number of data points fetched per request. Needs to be
-     *                                  greater than zero.
+     * @param fetch_density             The number of data points fetched per request.
      * @throws IllegalArgumentException Thrown when fetch rate is zero or less.
      */
-    public RemoteModuleDataFetchAsyncTask(@NonNull RemoteModuleClient client, int fetch_rate)
+    public RemoteModuleDataFetchAsyncTask(@NonNull RemoteModuleClient client,
+                                          RemoteModuleClient.TransferDensity fetch_density)
         throws IllegalArgumentException
     {
         m_Client = client;
 
-        if (fetch_rate < 1)
+        if (RemoteModuleClient.TransferDensity.count(fetch_density) == -1)
         {
-            throw new IllegalArgumentException("Fetch rate can't be zero or less.");
+            throw new IllegalArgumentException("Fetch density is invalid.");
         }
 
-        m_FetchRate = fetch_rate;
+        m_FetchDensity = fetch_density;
         m_FetchStarted = false;
     }
 
@@ -125,7 +125,7 @@ public abstract class RemoteModuleDataFetchAsyncTask
     /**
      * The number of data points to fetch per request.
      */
-    private int m_FetchRate;
+    private RemoteModuleClient.TransferDensity m_FetchDensity;
     /**
      * Whether the fetch thread started or not.
      */

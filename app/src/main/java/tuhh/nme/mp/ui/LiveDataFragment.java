@@ -478,7 +478,7 @@ public class LiveDataFragment extends Fragment
      *
      * @return The data fetch rate.
      */
-    private int getDataFetchRate()
+    private RemoteModuleClient.TransferDensity getDataFetchRate()
     {
         Activity activity = getActivity();
 
@@ -487,12 +487,13 @@ public class LiveDataFragment extends Fragment
             Log.w(LiveDataFragment.class.getName(),
                   "Can't access preferences, manually loading defaults.");
 
-            return Integer.valueOf(Settings.Default.data_fetch_rate);
+            return RemoteModuleClient.TransferDensity.valueOf(Settings.Default.data_fetch_rate);
         }
         else
         {
-            return Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(activity)
-                .getString(Settings.data_fetch_rate, Settings.Default.data_fetch_rate));
+            return RemoteModuleClient.TransferDensity.valueOf(
+                PreferenceManager.getDefaultSharedPreferences(activity)
+                    .getString(Settings.data_fetch_rate, Settings.Default.data_fetch_rate));
         }
     }
 

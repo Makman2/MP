@@ -16,7 +16,7 @@
     <string name="Settings.data_fetch_rate.summary">
         Number of data points fetched per request.
     </string>
-    <string name="Settings.data_fetch_rate.dialog_title">Enter fetch rate</string>
+    <string name="Settings.data_fetch_rate.dialog_title">Choose fetch rate</string>
     <string name="Settings.chart_x_scale.title">Chart X-Scale</string>
     <string name="Settings.chart_x_scale.summary">
         The x-axis scaling factor for the charts used for display. The smaller the scaling the

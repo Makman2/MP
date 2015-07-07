@@ -27,14 +27,14 @@
         android:summary="@string/Settings.auto_save.summary"
         android:defaultValue="true" />
 
-    <EditTextPreference
+    <ListPreference
         android:key="data_fetch_rate"
         android:title="@string/Settings.data_fetch_rate.title"
         android:summary="@string/Settings.data_fetch_rate.summary"
         android:dialogTitle="@string/Settings.data_fetch_rate.dialog_title"
-        android:inputType="number"
-        android:maxLength="3"
-        android:defaultValue="4" />
+        android:entries="@array/Settings_data_fetch_rate_entries"
+        android:entryValues="@array/Settings_data_fetch_rate_entry_values"
+        android:defaultValue="DENSITY1" />
 
     <EditTextPreference
         android:key="chart_x_scale"

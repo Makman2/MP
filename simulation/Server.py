@@ -41,8 +41,16 @@ class ServerHandler(socketserver.BaseRequestHandler):
     """
 
     # Server commands.
-    commands = {"CMD_START_TRANSFER": 0x00,
-                "CMD_STOP_TRANSFER": 0x01}
+    commands = {"CMD_TRANSFER_DENSITY0": 0x30,
+                "CMD_TRANSFER_DENSITY1": 0x31,
+                "CMD_TRANSFER_DENSITY2": 0x32,
+                "CMD_TRANSFER_DENSITY3": 0x33,
+                "CMD_TRANSFER_DENSITY4": 0x34,
+                "CMD_TRANSFER_DENSITY5": 0x35,
+                "CMD_TRANSFER_DENSITY6": 0x36,
+                "CMD_TRANSFER_DENSITY7": 0x37,
+                "CMD_TRANSFER_DENSITY8": 0x38,
+                "CMD_TRANSFER_DENSITY9": 0x39}
 
     # Inverse order of commands to allow command string lookup by value.
     inverse_commands = {v: k for k, v in commands.items()}
@@ -72,6 +80,23 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
             return x
 
+    def _send_transfer_package(self, size, data_generator):
+        """
+        Sends a data-package with specified size.
+
+        :param size:           The number of values to send.
+        :param data_generator: The data generator that generates the values to
+                               send.
+        """
+        self.server.printv("Transfer package (size = {})...".format(size))
+        for i in range(size):
+            value_to_send = data_generator.generate()
+            # The send emulates also the zero byte from the remote module.
+            self.request.sendall(
+                bytes([0]) + self._convert_short_to_string(value_to_send))
+            self.server.printv("Sent {}.".format(value_to_send))
+        self.server.printv("Transfer complete.")
+
     def handle(self):
         """
         Handles an incoming connection.
@@ -83,32 +108,37 @@ class ServerHandler(socketserver.BaseRequestHandler):
         while True:
             cmd = self._receive_command()
 
-            if cmd == self.commands["CMD_START_TRANSFER"]:
-                self.server.printv("Starting transfer...")
-
-                to = self.request.gettimeout()
-                self.request.settimeout(self.server.data_rate)
-
-                running = True
-
-                while running:
-                    try:
-                        cmd = self._receive_command()
-
-                        if cmd == self.commands["CMD_STOP_TRANSFER"]:
-                            self.request.settimeout(to)
-                            running = False
-
-                    except socket.timeout:
-                        # No command received, continue sending data.
-                        value_to_send = data_generator.generate()
-                        self.request.sendall(
-                            self._convert_short_to_string(value_to_send))
-                        self.server.printv("Sent {}.".format(value_to_send))
-
-                self.server.printv("Transfer complete.")
-
-            elif cmd == None:
+            if cmd == None:
                 self.server.printv("Connection closed.")
                 break
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY0"]:
+                self._send_transfer_package(2, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY1"]:
+                self._send_transfer_package(4, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY2"]:
+                self._send_transfer_package(6, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY3"]:
+                self._send_transfer_package(8, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY4"]:
+                self._send_transfer_package(10, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY5"]:
+                self._send_transfer_package(12, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY6"]:
+                self._send_transfer_package(14, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY7"]:
+                self._send_transfer_package(16, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY8"]:
+                self._send_transfer_package(18, data_generator)
+
+            elif cmd == self.commands["CMD_TRANSFER_DENSITY9"]:
+                self._send_transfer_package(20, data_generator)
 

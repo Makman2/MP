@@ -20,7 +20,7 @@ public final class Settings
         public static final String device_address = "192.168.1.1";
         public static final String device_port = "1337";
         public static final boolean auto_save = true;
-        public static final String data_fetch_rate = "4";
+        public static final String data_fetch_rate = "DENSITY1";
         public static final String chart_x_scale = "0.0000001";
         public static final String chart_livescroll_x_range_time = "5";
     }
