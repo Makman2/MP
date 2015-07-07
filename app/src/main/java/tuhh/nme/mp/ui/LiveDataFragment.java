@@ -206,29 +206,26 @@ public class LiveDataFragment extends Fragment
             }
             catch (InterruptedException ex)
             {
-                Log.w(
-                    LiveDataFragment.class.getName(),
-                    "Close attempt interrupted. Terminating client.",
-                    ex);
+                Log.w(LiveDataFragment.class.getName(),
+                      "Close attempt interrupted. Terminating client.",
+                      ex);
 
                 m_Client.terminate();
             }
             catch (ExecutionException ex)
             {
-                Log.w(
-                    LiveDataFragment.class.getName(),
-                    "Socket raised exception. Terminating client.",
-                    ex);
+                Log.w(LiveDataFragment.class.getName(),
+                      "Socket raised exception. Terminating client.",
+                      ex);
 
                 m_Client.terminate();
             }
             catch (TimeoutException ex)
             {
-                Log.w(
-                    LiveDataFragment.class.getName(),
-                    "Waited for " + Integer.toString(params[0]) +
-                        "ms, but peer didn't respond. Terminating client.",
-                    ex);
+                Log.w(LiveDataFragment.class.getName(),
+                      "Waited for " + Integer.toString(params[0]) +
+                          "ms, but peer didn't respond. Terminating client.",
+                      ex);
 
                 m_Client.terminate();
             }
