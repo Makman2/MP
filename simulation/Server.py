@@ -116,7 +116,8 @@ class ServerHandler(socketserver.BaseRequestHandler):
                 self._send_transfer_package(2, data_generator)
 
             elif cmd == self.commands["CMD_TRANSFER_DENSITY1"]:
-                self._send_transfer_package(4, data_generator)
+                # Presentation modification.
+                self._send_transfer_package(1, data_generator)
 
             elif cmd == self.commands["CMD_TRANSFER_DENSITY2"]:
                 self._send_transfer_package(6, data_generator)
