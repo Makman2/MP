@@ -151,6 +151,8 @@ public class HistoryPreviewFragment extends Fragment
                 m_Chart.setDescription("");
                 m_Chart.getLegend().setEnabled(false);
                 m_Chart.getXAxis().setSpaceBetweenLabels(8);
+                m_Chart.getAxisLeft().setStartAtZero(false);
+                m_Chart.getAxisRight().setEnabled(false);
 
                 m_Chart.invalidate();
             }

@@ -467,6 +467,8 @@ public class LiveDataFragment extends Fragment
         m_Chart.setDescription("");
         m_Chart.getLegend().setEnabled(false);
         m_Chart.getXAxis().setSpaceBetweenLabels(8);
+        m_Chart.getAxisLeft().setStartAtZero(false);
+        m_Chart.getAxisRight().setEnabled(false);
 
         // Set up plot data that automatically converts the sent values to Entry's.
         m_PlotData = new PressurePlotData();
