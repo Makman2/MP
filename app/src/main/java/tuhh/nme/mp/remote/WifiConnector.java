@@ -274,7 +274,15 @@ public final class WifiConnector
      */
     private static boolean isRemoteModule(ScanResult wifi)
     {
-        // TODO Implement remote module characteristics condition.
+        String[] security_modes = {"WEP", "PSK", "EAP"};
+        for (String elem : security_modes)
+        {
+            if (wifi.capabilities.contains(elem))
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 
