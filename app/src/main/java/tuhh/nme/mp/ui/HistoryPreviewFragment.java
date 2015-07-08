@@ -156,14 +156,14 @@ public class HistoryPreviewFragment extends Fragment
 
             if (m_Error == null)
             {
-                m_Chart.setData(data);
-                m_Chart.getLineData().setDrawValues(false);
-
                 m_Chart.setDescription("");
                 m_Chart.getLegend().setEnabled(false);
                 m_Chart.getXAxis().setSpaceBetweenLabels(8);
                 m_Chart.getAxisLeft().setStartAtZero(false);
                 m_Chart.getAxisRight().setEnabled(false);
+
+                m_Chart.setData(data);
+                m_Chart.getLineData().setDrawValues(false);
 
                 m_Chart.invalidate();
             }
