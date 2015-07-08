@@ -117,8 +117,6 @@ public class LiveDataFragment extends Fragment
             }
             else
             {
-                m_Client = null;
-
                 AlertDialogFragment dialog = new AlertDialogFragment();
                 dialog.setRetainInstance(true);
                 dialog.setCancelable(true);
@@ -349,6 +347,8 @@ public class LiveDataFragment extends Fragment
         }
         catch (UnknownHostException ex)
         {
+            m_Client = null;
+
             Log.d(LiveDataFragment.class.getName(), "Unknown host.", ex);
 
             if (activity != null)

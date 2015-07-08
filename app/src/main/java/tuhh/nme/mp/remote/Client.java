@@ -40,9 +40,10 @@ public class Client
             m_FlushThroughLock = new Object();
             m_InitializationLock = new SimpleLock();
 
-            m_InitializationLock.lock();
-
+            m_Socket = null;
             m_SocketCommandQueue = new LinkedBlockingQueue<>();
+
+            m_InitializationLock.lock();
         }
 
         // Inherited documentation.
@@ -58,6 +59,7 @@ public class Client
             {
                 setError(ex);
                 m_InitializationLock.unlock();
+                setFlushThrough(true);
                 return;
             }
 
@@ -204,13 +206,16 @@ public class Client
         {
             m_SocketInteractorThread.interrupt();
 
-            try
+            if (m_Socket != null)
             {
-                m_Socket.close();
-            }
-            catch (IOException ignored)
-            {
-                // Something went wrong, but anyway we tried to close.
+                try
+                {
+                    m_Socket.close();
+                }
+                catch (IOException ignored)
+                {
+                    // Something went wrong, but anyway we tried to close.
+                }
             }
 
             // Flush through pipe.
@@ -351,6 +356,10 @@ public class Client
      *
      * This call blocks until the underlying thread has successfully been started and is ready to
      * process SocketCommand's.
+     *
+     * You should only call this function once after you've created this Client, since the
+     * background thread flushes commands through then. If you want to connect a second time,
+     * instantiate a new Client.
      *
      * @throws IOException Thrown when the client couldn't connect to given address and port.
      */
