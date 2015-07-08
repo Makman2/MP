@@ -222,8 +222,7 @@ public class LiveDataFragment extends Fragment
             {
                 Log.w(LiveDataFragment.class.getName(),
                       "Waited for " + Integer.toString(params[0]) +
-                          "ms, but peer didn't respond. Terminating client.",
-                      ex);
+                          "ms, but peer didn't respond. Terminating client.");
 
                 m_Client.terminate();
             }
