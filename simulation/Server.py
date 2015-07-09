@@ -1,6 +1,7 @@
 import socket
 import socketserver
 import struct
+import time
 
 from DataGenerator import DataGenerator
 
@@ -88,13 +89,19 @@ class ServerHandler(socketserver.BaseRequestHandler):
         :param data_generator: The data generator that generates the values to
                                send.
         """
-        self.server.printv("Transfer package (size = {})...".format(size))
-        for i in range(size):
-            value_to_send = data_generator.generate()
+        def send(value):
             # The send emulates also the zero byte from the remote module.
             self.request.sendall(
-                bytes([0]) + self._convert_short_to_string(value_to_send))
-            self.server.printv("Sent {}.".format(value_to_send))
+                bytes([0]) + self._convert_short_to_string(value))
+            self.server.printv("Sent {}.".format(value))
+
+        self.server.printv("Transfer package (size = {})...".format(size))
+
+        for i in range(size - 1):
+            send(data_generator.generate())
+            time.sleep(self.server.data_rate)
+
+        send(data_generator.generate())
         self.server.printv("Transfer complete.")
 
     def handle(self):
